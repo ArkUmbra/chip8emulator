@@ -4,6 +4,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.arkumbra.chip8.Machine;
+import com.arkumbra.chip8.TestUtils;
+import com.arkumbra.chip8.opcode.impl.Op00E0;
 import com.arkumbra.chip8.screen.Screen;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,11 +22,11 @@ public class Op00E0Test {
 
   @Test
   public void testClearsScreen() {
-    Screen screen = mock(Screen.class);
+    Machine machineMock = TestUtils.mockMachineAndParts();
 
-    sut.execute("00E0", screen, null);
+    sut.execute(0x00E0, machineMock);
 
-    verify(screen, times(1)).clearScreen();
+    verify(machineMock.getScreen(), times(1)).clearScreen();
   }
 
 }

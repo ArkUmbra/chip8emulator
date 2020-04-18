@@ -1,11 +1,10 @@
 package com.arkumbra.chip8.opcode;
 
-import com.arkumbra.chip8.ProgramCounter;
-import com.arkumbra.chip8.screen.Screen;
+import com.arkumbra.chip8.Machine;
 
 public interface OpCode {
 
-    short getOpcode();
+    OpCodeLabel getOpCodeLabel();
 
-    void execute(String rawCommand, Screen screen, ProgramCounter pg);
+    void execute(Integer rawCommand, Machine machine);
 }
