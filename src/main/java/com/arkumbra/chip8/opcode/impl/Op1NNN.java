@@ -1,10 +1,17 @@
 package com.arkumbra.chip8.opcode.impl;
 
 import com.arkumbra.chip8.Machine;
+import com.arkumbra.chip8.bitmask.BitMask;
+import com.arkumbra.chip8.bitmask.BitMasks;
 import com.arkumbra.chip8.opcode.OpCode;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
 
 public class Op1NNN implements OpCode {
+
+  @Override
+  public BitMask getBitMask() {
+    return BitMasks.THREE_COL;
+  }
 
   @Override
   public OpCodeLabel getOpCodeLabel() {
@@ -12,14 +19,9 @@ public class Op1NNN implements OpCode {
   }
 
   @Override
-  public void execute(Integer rawCommand, Machine machine) {
-    short gotoAddress = getAddressToUse(rawCommand);
-
+  public void execute(char gotoAddress, Machine machine) {
     machine.getProgramCounter().goTo(gotoAddress);
   }
 
-  private Short getAddressToUse(Integer rawCommand) {
-    // TODO
-    return -1;
-  }
+
 }

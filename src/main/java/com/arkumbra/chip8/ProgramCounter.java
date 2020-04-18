@@ -5,9 +5,9 @@ public interface ProgramCounter {
   void increment();
 
   int getPosition();
-  void goTo(short position);
+  void goTo(char position);
 
-  void push(short val);
-  short pop();
+  void push(char val);
+  char pop();
 
 }

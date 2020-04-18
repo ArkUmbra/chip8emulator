@@ -22,13 +22,14 @@ public class Chip8 implements RoutineRunner {
    */
   @Override
   public OpCodeLabel runCycle() {
-    int rawOpCode = memory.readRawOpCode(programCounter);
+    char rawOpCode = memory.readRawOpCode(programCounter);
     OpCode opCode = opCodeLookup.lookup(rawOpCode);
+    char opData = opCode.getBitMask().applyMask(rawOpCode);
 
     // if op code for 'return' then don't execute
     OpCodeLabel opCodeLabel = opCode.getOpCodeLabel();
     if (opCodeLabel != OpCodeLabel.Op00EEReturn) {
-      opCode.execute(rawOpCode, machine);
+      opCode.execute(opData, machine);
     }
 
     return opCodeLabel;

@@ -2,6 +2,6 @@ package com.arkumbra.chip8.opcode;
 
 public interface OpCodeLookup {
 
-  OpCode lookup(Integer rawOpCode);
+  OpCode lookup(char rawOpCode);
 
 }

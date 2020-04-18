@@ -1,10 +1,10 @@
 package com.arkumbra.chip8;
 
-import com.arkumbra.chip8.opcode.OpCode;
-
 public interface Memory {
 
-  void load(short[] memory);
+  void load(char[] memory);
 
-  int readRawOpCode(ProgramCounter programCounter);
+  char readRawOpCode(ProgramCounter programCounter);
+
+  String dumpMemoryToHex();
 }

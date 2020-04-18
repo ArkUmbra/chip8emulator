@@ -18,16 +18,15 @@ public class MemoryTest {
 
   @Test
   public void test() {
-    short opCodeLeft = 0xA2;  // binary 10100010
-    short opCodeRight = 0xF0; // binary 11110000
-    int expectedOpCode = 0xA2F0;
+    char opCodeLeft = (char)0xA2;       // binary 10100010
+    char opCodeRight = (char)0xF0;      // binary         11110000
+    char expectedOpCode = (char)0xA2F0; // binary 1010001011110000
 
     System.out.println("Left   " + Integer.toBinaryString(opCodeLeft));
     System.out.println("Right          " + Integer.toBinaryString(opCodeRight));
 
-    short[] memory = new short[] {
-        opCodeLeft,
-        opCodeRight
+    char[] memory = new char[] {
+        (char)(opCodeLeft << 8 | opCodeRight)
     };
 
     systemUnderTest.load(memory);
@@ -35,10 +34,13 @@ public class MemoryTest {
     ProgramCounter pgMock = mock(ProgramCounter.class);
     when(pgMock.getPosition()).thenReturn(0);
 
-    int resultOpCode = systemUnderTest.readRawOpCode(pgMock);
+    char resultOpCode = systemUnderTest.readRawOpCode(pgMock);
+
     System.out.println("Result " + Integer.toBinaryString(resultOpCode));
 
     assertEquals(expectedOpCode, resultOpCode);
+
+
   }
 
 }
