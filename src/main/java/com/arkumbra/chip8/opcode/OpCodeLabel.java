@@ -6,5 +6,6 @@ public enum OpCodeLabel {
   Op00EEReturn,
   Op1NNNGoto,
   Op2NNNCallSubroutine,
+  Op3XNNSkip, Op4XNNSkip,
 
 }

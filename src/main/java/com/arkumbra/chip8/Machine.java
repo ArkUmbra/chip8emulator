@@ -7,5 +7,6 @@ public interface Machine {
   RoutineRunner getRoutineRunner();
   Screen getScreen();
   ProgramCounter getProgramCounter();
+  Registers getRegisters();
 
 }

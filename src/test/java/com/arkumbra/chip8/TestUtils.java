@@ -13,10 +13,12 @@ public class TestUtils {
     ProgramCounter pc = mock(ProgramCounter.class);
     RoutineRunner rr = mock(RoutineRunner.class);
     Screen screen = mock(Screen.class);
+    Registers registers = mock(Registers.class);
 
     when(machineMock.getProgramCounter()).thenReturn(pc);
     when(machineMock.getRoutineRunner()).thenReturn(rr);
     when(machineMock.getScreen()).thenReturn(screen);
+    when(machineMock.getRegisters()).thenReturn(registers);
 
     return machineMock;
   }
