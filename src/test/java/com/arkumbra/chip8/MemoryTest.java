@@ -39,8 +39,6 @@ public class MemoryTest {
     System.out.println("Result " + Integer.toBinaryString(resultOpCode));
 
     assertEquals(expectedOpCode, resultOpCode);
-
-
   }
 
 }

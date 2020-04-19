@@ -9,7 +9,7 @@ import com.arkumbra.chip8.bitmask.BitMasks;
 import com.arkumbra.chip8.opcode.OpCode;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
 
-public class Op5XY0 implements OpCode {
+public class Op8XY0 implements OpCode {
 
   @Override
   public BitMask getBitMask() {
@@ -18,7 +18,7 @@ public class Op5XY0 implements OpCode {
 
   @Override
   public OpCodeLabel getOpCodeLabel() {
-    return OpCodeLabel.Op5XY0Skip;
+    return OpCodeLabel.Op8XY0CopyRegister;
   }
 
   @Override
@@ -30,9 +30,7 @@ public class Op5XY0 implements OpCode {
     DataRegister dataRegisterX = registers.getRegister(RegisterKey.toKey(dataRegisterXRaw));
     DataRegister dataRegisterY = registers.getRegister(RegisterKey.toKey(dataRegisterYRaw));
 
-    if (dataRegisterX.get() == dataRegisterY.get()) {
-      machine.getProgramCounter().increment();
-    }
+    dataRegisterX.set(dataRegisterY.get());
   }
 
 }

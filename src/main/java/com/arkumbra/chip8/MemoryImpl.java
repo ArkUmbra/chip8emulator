@@ -22,10 +22,7 @@ public class MemoryImpl implements Memory {
 
     for (char c : memory) {
       // Can't find a method to do char -> hex directly, so split the char into two bytes
-      String hex = Hex.encodeHexString(new byte[]{
-          (byte)(c >> 8),
-          (byte)(c)
-      });
+      String hex = RadixUtils.charToHex(c);
       sb.append(hex);
       sb.append(System.lineSeparator());
     }
