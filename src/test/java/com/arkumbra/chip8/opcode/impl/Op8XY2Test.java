@@ -27,7 +27,7 @@ public class Op8XY2Test {
   @Test
   public void testExecute_whenAndRegisterYToRegisterX() {
     // B - registerX. D - registerY
-    char inputOpCode = 0x8BD1;
+    char inputOpCode = 0x8BD2;
 
     // different values in each register
     char valueInRegisterX = 0x12;

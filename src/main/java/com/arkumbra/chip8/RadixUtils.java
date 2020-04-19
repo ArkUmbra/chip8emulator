@@ -15,7 +15,7 @@ public class RadixUtils {
     String binary = Integer.toBinaryString(value);
     String hex = charToHex(value);
 
-    System.out.println(hex + " : " + binary);
+    System.out.println(hex + " : " + binary + " : " + (int)value);
 
   }
 

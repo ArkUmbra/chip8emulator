@@ -27,7 +27,7 @@ public class Op8XY3Test {
   @Test
   public void testExecute_XORRegisterYToRegisterX() {
     // B - registerX. D - registerY
-    char inputOpCode = 0x8BD1;
+    char inputOpCode = 0x8BD3;
 
     // different values in each register
     char valueInRegisterX = 0x12;
