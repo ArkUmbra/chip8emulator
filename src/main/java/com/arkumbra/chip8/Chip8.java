@@ -1,5 +1,8 @@
 package com.arkumbra.chip8;
 
+import com.arkumbra.chip8.machine.Machine;
+import com.arkumbra.chip8.machine.ProgramCounter;
+import com.arkumbra.chip8.machine.RoutineRunner;
 import com.arkumbra.chip8.opcode.OpCode;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
 import com.arkumbra.chip8.opcode.OpCodeLookup;

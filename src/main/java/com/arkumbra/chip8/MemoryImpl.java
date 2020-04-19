@@ -1,7 +1,6 @@
 package com.arkumbra.chip8;
 
-import java.nio.ByteBuffer;
-import org.apache.commons.codec.binary.Hex;
+import com.arkumbra.chip8.machine.ProgramCounter;
 
 public class MemoryImpl implements Memory {
 

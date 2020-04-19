@@ -6,13 +6,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import com.arkumbra.chip8.DataRegister;
-import com.arkumbra.chip8.Machine;
-import com.arkumbra.chip8.RegisterKey;
+import com.arkumbra.chip8.machine.DataRegister;
+import com.arkumbra.chip8.machine.Machine;
+import com.arkumbra.chip8.machine.RegisterKey;
 import com.arkumbra.chip8.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class Op8XY0Test {
 

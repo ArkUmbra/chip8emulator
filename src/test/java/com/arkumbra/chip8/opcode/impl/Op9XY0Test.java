@@ -13,19 +13,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-public class Op5XY0Test {
+public class Op9XY0Test {
 
-  private Op5XY0 sut;
+  private Op9XY0 sut;
   private Machine machineMock;
 
   @Before
   public void setup() {
-    this.sut = new Op5XY0();
+    this.sut = new Op9XY0();
     this.machineMock = TestUtils.mockMachineAndParts();
   }
 
   @Test
-  public void testExecute_whenVXDoesntEqualVY_thenDontSkipNextInstruction() {
+  public void testExecute_whenVXDoesntEqualVY_thenSkipNextInstruction() {
     // B - registerX. D - registerY
     char inputOpCode = 0x5BD0;
 
@@ -47,11 +47,11 @@ public class Op5XY0Test {
 
     verify(mockDataRegisterX, times(1)).get();
     verify(mockDataRegisterY, times(1)).get();
-    verify(machineMock, Mockito.never()).getProgramCounter();
+    verify(machineMock.getProgramCounter(), times(1)).increment();
   }
 
   @Test
-  public void testExecute_whenVXDoesEqualVY_thenSkipNextInstruction() {
+  public void testExecute_whenVXDoesEqualVY_thenDontSkipNextInstruction() {
     // B - registerX. D - registerY
     char inputOpCode = 0x5BD0;
 
@@ -73,7 +73,7 @@ public class Op5XY0Test {
 
     verify(mockDataRegisterX, times(1)).get();
     verify(mockDataRegisterY, times(1)).get();
-    verify(machineMock.getProgramCounter(), times(1)).increment();
+    verify(machineMock, Mockito.never()).getProgramCounter();
   }
 
 }

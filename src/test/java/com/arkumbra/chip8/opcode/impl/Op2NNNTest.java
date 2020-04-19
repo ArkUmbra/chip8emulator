@@ -4,7 +4,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.arkumbra.chip8.Machine;
+import com.arkumbra.chip8.machine.Machine;
 import com.arkumbra.chip8.TestUtils;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
 import org.junit.Before;

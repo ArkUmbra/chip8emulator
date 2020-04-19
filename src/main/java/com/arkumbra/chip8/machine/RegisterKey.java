@@ -1,4 +1,4 @@
-package com.arkumbra.chip8;
+package com.arkumbra.chip8.machine;
 
 import java.util.HashMap;
 import java.util.Map;

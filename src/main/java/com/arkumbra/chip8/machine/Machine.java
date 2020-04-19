@@ -1,4 +1,4 @@
-package com.arkumbra.chip8;
+package com.arkumbra.chip8.machine;
 
 import com.arkumbra.chip8.screen.Screen;
 
@@ -8,5 +8,6 @@ public interface Machine {
   Screen getScreen();
   ProgramCounter getProgramCounter();
   Registers getRegisters();
+  IndexRegister getIndexRegister();
 
 }

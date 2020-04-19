@@ -1,7 +1,7 @@
 package com.arkumbra.chip8.opcode.impl;
 
 
-import com.arkumbra.chip8.Machine;
+import com.arkumbra.chip8.machine.Machine;
 import com.arkumbra.chip8.TestUtils;
 import org.junit.Before;
 import org.junit.Test;

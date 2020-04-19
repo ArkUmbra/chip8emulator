@@ -1,10 +1,8 @@
 package com.arkumbra.chip8.opcode.impl;
 
-import com.arkumbra.chip8.DataRegister;
-import com.arkumbra.chip8.Machine;
-import com.arkumbra.chip8.ProgramCounter;
-import com.arkumbra.chip8.RegisterKey;
-import com.arkumbra.chip8.RoutineRunner;
+import com.arkumbra.chip8.machine.DataRegister;
+import com.arkumbra.chip8.machine.Machine;
+import com.arkumbra.chip8.machine.RegisterKey;
 import com.arkumbra.chip8.bitmask.BitMask;
 import com.arkumbra.chip8.bitmask.BitMasks;
 import com.arkumbra.chip8.opcode.OpCode;
