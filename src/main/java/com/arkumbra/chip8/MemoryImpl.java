@@ -1,5 +1,6 @@
 package com.arkumbra.chip8;
 
+import java.nio.ByteBuffer;
 import org.apache.commons.codec.binary.Hex;
 
 public class MemoryImpl implements Memory {
@@ -13,6 +14,7 @@ public class MemoryImpl implements Memory {
 
   @Override
   public char readRawOpCode(ProgramCounter programCounter) {
+//    return 0;
     return memory[programCounter.getPosition()];
   }
 
@@ -22,11 +24,15 @@ public class MemoryImpl implements Memory {
 
     for (char c : memory) {
       // Can't find a method to do char -> hex directly, so split the char into two bytes
-      String hex = RadixUtils.charToHex(c);
-      sb.append(hex);
+      sb.append(RadixUtils.asHexAndBinary(c));
+//      sb.append(Integer.toUnsignedString((c & 0xFFFF), 16));
+//      sb.append(Integer.toHexString((c & 0xFFFF)));
       sb.append(System.lineSeparator());
     }
 
     return sb.toString();
+//    Arrays.
+
+//    return Hex.enc(memory);
   }
 }

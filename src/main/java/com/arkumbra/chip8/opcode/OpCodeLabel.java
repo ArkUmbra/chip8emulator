@@ -13,6 +13,9 @@ public enum OpCodeLabel {
   Op7XNNAdd,
   Op8XY0CopyRegister,
   Op8XY1BitwiseOr,
-  Op8XY2BitwiseAnd, Op8XY3BitwiseXOR, Op8XY4AddCarry,
+  Op8XY2BitwiseAnd,
+  Op8XY3BitwiseXOR,
+  Op8XY4AddCarry,
+  Op8XY5MinusBorrow,
 
 }

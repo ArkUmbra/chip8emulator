@@ -16,7 +16,14 @@ public class RadixUtils {
     String hex = charToHex(value);
 
     System.out.println(hex + " : " + binary + " : " + (int)value);
+  }
 
+  public static String asHexAndBinary(char value) {
+    String binary = Integer.toBinaryString(value);
+    String asHex = Integer.toHexString(value);
+    String hex = charToHex(value);
+
+    return hex + " : " + asHex + " : " +binary + " : " + (int)value + " : " + value;
   }
 
 }

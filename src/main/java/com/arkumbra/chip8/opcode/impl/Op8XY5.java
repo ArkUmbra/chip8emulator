@@ -9,7 +9,7 @@ import com.arkumbra.chip8.bitmask.BitMasks;
 import com.arkumbra.chip8.opcode.OpCode;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
 
-public class Op8XY4 implements OpCode {
+public class Op8XY5 implements OpCode {
 
   private static final char ZERO = (char)0;
   private static final char ONE = (char)1;
@@ -21,7 +21,7 @@ public class Op8XY4 implements OpCode {
 
   @Override
   public OpCodeLabel getOpCodeLabel() {
-    return OpCodeLabel.Op8XY4AddCarry;
+    return OpCodeLabel.Op8XY5MinusBorrow;
   }
 
   @Override
@@ -34,12 +34,12 @@ public class Op8XY4 implements OpCode {
     DataRegister dataRegisterY = registers.getRegister(RegisterKey.toKey(dataRegisterYRaw));
     DataRegister dataRegisterFCarryFlag = registers.getRegister(RegisterKey.VF);
 
-    char addResult = (char) (dataRegisterX.get() + dataRegisterY.get());
-    char carryFlag = (addResult > 255) ? ONE : ZERO;
+    int minusResult = dataRegisterX.get() - dataRegisterY.get();
+    char carryFlag = (minusResult < 0) ? ZERO : ONE;
     dataRegisterFCarryFlag.set(carryFlag);
 
     // No unsigned byte in java, so mask the result up to 256
-    dataRegisterX.set((char)(addResult & 0xFF));
+    dataRegisterX.set((char)(minusResult & 0xFF));
   }
 
 }

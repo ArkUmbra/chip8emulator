@@ -44,7 +44,7 @@ public class Op8XY4Test {
   }
 
   @Test
-  public void testExecute_addVYtoVY_givenCarryThenSetVF() {
+  public void testExecute_addVYtoVY_givenCarryThenSetVFToOne() {
     // B - registerX. D - registerY
     char inputOpCode = 0x8BD4;
 
@@ -77,7 +77,7 @@ public class Op8XY4Test {
   }
 
   @Test
-  public void testExecute_addVYtoVY_givenCarryThenSetVF_differentValues() {
+  public void testExecute_addVYtoVY_givenCarryThenSetVFToOne_differentValues() {
     // B - registerX. D - registerY
     char inputOpCode = 0x8BD4;
 
@@ -110,7 +110,7 @@ public class Op8XY4Test {
   }
 
   @Test
-  public void testExecute_addVYtoVY_givenNoCarryThenDontSetVF() {
+  public void testExecute_addVYtoVY_givenNoCarryThenSetVFToZero() {
     // B - registerX. D - registerY
     char inputOpCode = 0x8BD4;
 
@@ -118,6 +118,7 @@ public class Op8XY4Test {
     char valueInRegisterB = (char)10;
     char valueInRegisterD = (char)245;
     char expectedSet = 255; // 255 should roll over to 0 (255 + 1 becomes 0 if you mask with 0xFF)
+    char expectedCarryFlag = 0;
 
     DataRegister mockDataRegisterB = mock(DataRegister.class);
     DataRegister mockDataRegisterD = mock(DataRegister.class);
@@ -136,7 +137,7 @@ public class Op8XY4Test {
     verify(mockDataRegisterB, times(1)).get();
     verify(mockDataRegisterD, times(1)).get();
     verify(mockDataRegisterB, times(1)).set(expectedSet);
-    verify(mockDataRegisterF, never()).set(anyChar());
+    verify(mockDataRegisterF, times(1)).set(expectedCarryFlag);
 
     verifyNoMoreInteractions(mockDataRegisterB, mockDataRegisterD, mockDataRegisterF);
   }

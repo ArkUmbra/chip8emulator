@@ -8,6 +8,8 @@ public class GameLoaderTest {
 
   @Test
   public void test() throws IOException {
+//    System.out.println(Integer.toHexString());
+
     String relativePath = "src/main/resources/15 Puzzle [Roger Ivie].ch8";
     String absolutePath = new File(relativePath).getAbsolutePath();
 
