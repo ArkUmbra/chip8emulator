@@ -20,7 +20,7 @@ public class OpANNNTest {
   }
 
   @Test
-  public void testExecute_whenVXDoesntEqualVY_thenSkipNextInstruction() {
+  public void testExecute_setMemoryRegisterIToNNN() {
     char inputOpCode = 0xABCD;
     char expectedSetValue = 0xBCD;
 

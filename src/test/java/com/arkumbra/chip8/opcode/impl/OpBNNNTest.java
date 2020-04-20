@@ -24,8 +24,8 @@ public class OpBNNNTest {
   }
 
   @Test
-  public void testExecute_whenVXDoesntEqualVY_thenSkipNextInstruction() {
-    char inputOpCode = 0xABCD;
+  public void testExecute_setPointerToNNNPlusV0() {
+    char inputOpCode = 0xBBCD;
 
     char v0RegisterValue = 0xFFF;
     int expectedSetValue = 0xBCD + v0RegisterValue;
