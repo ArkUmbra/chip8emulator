@@ -18,6 +18,12 @@ public class MemoryImpl implements Memory {
   }
 
   @Override
+  public byte[] readBytes(ProgramCounter programCounter, int bytesToRead) {
+    // TODO
+    return new byte[0];
+  }
+
+  @Override
   public String dumpMemoryToHex() {
     StringBuilder sb = new StringBuilder();
 

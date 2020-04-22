@@ -4,7 +4,7 @@ import com.arkumbra.chip8.bitmask.BitMask;
 import com.arkumbra.chip8.bitmask.BitMasks;
 import com.arkumbra.chip8.machine.DataRegister;
 import com.arkumbra.chip8.machine.Machine;
-import com.arkumbra.chip8.machine.RegisterKey;
+import com.arkumbra.chip8.machine.RegisterLabel;
 import com.arkumbra.chip8.opcode.OpCode;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
 import java.util.Random;
@@ -24,7 +24,7 @@ public class OpCXNN implements OpCode {
 
   @Override
   public OpCodeLabel getOpCodeLabel() {
-    return OpCodeLabel.OpBNNNJump;
+    return OpCodeLabel.OpCXNNRand;
   }
 
   @Override
@@ -32,7 +32,7 @@ public class OpCXNN implements OpCode {
     char registerXRaw = (char)((memoryAddress & 0xF00) >> 8);
     char valueNNRaw = (char)(memoryAddress & 0xFF);
 
-    DataRegister vXRegister = machine.getRegisters().getRegister(RegisterKey.toKey(registerXRaw));
+    DataRegister vXRegister = machine.getRegisters().getRegister(RegisterLabel.toKey(registerXRaw));
 
     char randomValue = (char)random.nextInt(255);
     int newSetValue = (char)(randomValue & valueNNRaw);

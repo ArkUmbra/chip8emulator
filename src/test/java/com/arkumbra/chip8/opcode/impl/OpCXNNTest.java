@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 import com.arkumbra.chip8.TestUtils;
 import com.arkumbra.chip8.machine.DataRegister;
 import com.arkumbra.chip8.machine.Machine;
-import com.arkumbra.chip8.machine.RegisterKey;
+import com.arkumbra.chip8.machine.RegisterLabel;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -31,7 +31,7 @@ public class OpCXNNTest {
     char inputOpCode = 0xC40F;
 
     DataRegister mockDataRegisterV4 = mock(DataRegister.class);
-    when(machineMock.getRegisters().getRegister(RegisterKey.V4))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.V4))
         .thenReturn(mockDataRegisterV4);
 
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);

@@ -10,7 +10,7 @@ import static org.mockito.Mockito.when;
 import com.arkumbra.chip8.machine.DataRegister;
 import com.arkumbra.chip8.machine.Machine;
 import com.arkumbra.chip8.RadixUtils;
-import com.arkumbra.chip8.machine.RegisterKey;
+import com.arkumbra.chip8.machine.RegisterLabel;
 import com.arkumbra.chip8.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,11 +57,11 @@ public class Op8XY4Test {
     DataRegister mockDataRegisterF = mock(DataRegister.class);
     when(mockDataRegisterB.get()).thenReturn(valueInRegisterB);
     when(mockDataRegisterD.get()).thenReturn(valueInRegisterD);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VB))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VB))
         .thenReturn(mockDataRegisterB);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VD))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VD))
         .thenReturn(mockDataRegisterD);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VF))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VF))
         .thenReturn(mockDataRegisterF);
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
     sut.execute(opCodeData, machineMock);
@@ -90,11 +90,11 @@ public class Op8XY4Test {
     DataRegister mockDataRegisterF = mock(DataRegister.class);
     when(mockDataRegisterB.get()).thenReturn(valueInRegisterB);
     when(mockDataRegisterD.get()).thenReturn(valueInRegisterD);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VB))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VB))
         .thenReturn(mockDataRegisterB);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VD))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VD))
         .thenReturn(mockDataRegisterD);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VF))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VF))
         .thenReturn(mockDataRegisterF);
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
     sut.execute(opCodeData, machineMock);
@@ -123,11 +123,11 @@ public class Op8XY4Test {
     DataRegister mockDataRegisterF = mock(DataRegister.class);
     when(mockDataRegisterB.get()).thenReturn(valueInRegisterB);
     when(mockDataRegisterD.get()).thenReturn(valueInRegisterD);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VB))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VB))
         .thenReturn(mockDataRegisterB);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VD))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VD))
         .thenReturn(mockDataRegisterD);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VF))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VF))
         .thenReturn(mockDataRegisterF);
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
     sut.execute(opCodeData, machineMock);

@@ -8,6 +8,13 @@ public interface IndexRegister {
    */
   void set(int value);
 
+  /**
+   *
+   * @param value
+   * @return true if add causes index register to overflow (I+value>0xFFF)
+   */
+  boolean add(int value);
+
   int get();
 
 }

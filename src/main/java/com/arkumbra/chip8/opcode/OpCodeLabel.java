@@ -16,6 +16,15 @@ public enum OpCodeLabel {
   Op8XY2BitwiseAnd,
   Op8XY3BitwiseXOR,
   Op8XY4AddCarry,
-  Op8XY5MinusBorrow, Op9XY0Skip, OpANNNSetI, OpBNNNJump,
+  Op8XY5MinusBorrow,
+  Op9XY0Skip,
+  OpANNNSetI,
+  OpBNNNJump,
+  OpCXNNRand,
+  OpDXYNDraw,
+  OpEX9EKeySkip,
+  OpEXA1KeySkip,
+  OpFX07GetDelayTimer,
+  OpFX0AWaitForKey, OpFX15SetDelayTimer, OpFX18SetSoundTimer, OpFX1EAddVxToI,
 
 }

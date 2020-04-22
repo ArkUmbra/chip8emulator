@@ -3,7 +3,7 @@ package com.arkumbra.chip8.machine;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum RegisterKey {
+public enum RegisterLabel {
   V0((char)0x0),
   V1((char)0x1),
   V2((char)0x2),
@@ -21,20 +21,20 @@ public enum RegisterKey {
   VE((char)0xE),
   VF((char)0xF);
 
-  static Map<Character, RegisterKey> cache = new HashMap<>();
+  static Map<Character, RegisterLabel> cache = new HashMap<>();
   static {
-    for (RegisterKey key : RegisterKey.values()) {
-      cache.put(key.key, key);
+    for (RegisterLabel label : RegisterLabel.values()) {
+      cache.put(label.label, label);
     }
   }
 
-  private char key;
+  private char label;
 
-  RegisterKey(char key) {
-    this.key = key;
+  RegisterLabel(char label) {
+    this.label = label;
   }
 
-  public static RegisterKey toKey(char val) {
-    return cache.get(val);
+  public static RegisterLabel toKey(char label) {
+    return cache.get(label);
   }
 }

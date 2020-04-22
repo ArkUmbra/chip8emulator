@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 
 import com.arkumbra.chip8.machine.DataRegister;
 import com.arkumbra.chip8.machine.Machine;
-import com.arkumbra.chip8.machine.RegisterKey;
+import com.arkumbra.chip8.machine.RegisterLabel;
 import com.arkumbra.chip8.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class Op3XNNTest {
 
     DataRegister mockDataRegister = mock(DataRegister.class);
     when(mockDataRegister.get()).thenReturn(valueInRegister);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VF))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VF))
         .thenReturn(mockDataRegister);
 
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
@@ -54,7 +54,7 @@ public class Op3XNNTest {
 
     DataRegister mockDataRegister = mock(DataRegister.class);
     when(mockDataRegister.get()).thenReturn(valueInRegister);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VF))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VF))
         .thenReturn(mockDataRegister);
 
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
@@ -62,7 +62,7 @@ public class Op3XNNTest {
 
     verify(mockDataRegister, times(1)).get();
     verify(machineMock, times(1)).getProgramCounter();
-    verify(machineMock.getProgramCounter(), times(1)).increment();
+    verify(machineMock.getProgramCounter(), times(1)).skipNextInstruction();
   }
 
 }

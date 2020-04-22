@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 
 import com.arkumbra.chip8.machine.DataRegister;
 import com.arkumbra.chip8.machine.Machine;
-import com.arkumbra.chip8.machine.RegisterKey;
+import com.arkumbra.chip8.machine.RegisterLabel;
 import com.arkumbra.chip8.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,9 +38,9 @@ public class Op8XY2Test {
     DataRegister mockDataRegisterY = mock(DataRegister.class);
     when(mockDataRegisterX.get()).thenReturn(valueInRegisterX);
     when(mockDataRegisterY.get()).thenReturn(valueInRegisterY);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VB))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VB))
         .thenReturn(mockDataRegisterX);
-    when(machineMock.getRegisters().getRegister(RegisterKey.VD))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VD))
         .thenReturn(mockDataRegisterY);
 
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);

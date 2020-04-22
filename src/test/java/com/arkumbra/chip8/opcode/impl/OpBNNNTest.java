@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 import com.arkumbra.chip8.TestUtils;
 import com.arkumbra.chip8.machine.DataRegister;
 import com.arkumbra.chip8.machine.Machine;
-import com.arkumbra.chip8.machine.RegisterKey;
+import com.arkumbra.chip8.machine.RegisterLabel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +32,7 @@ public class OpBNNNTest {
 
     DataRegister mockDataRegisterV0 = mock(DataRegister.class);
     when(mockDataRegisterV0.get()).thenReturn(v0RegisterValue);
-    when(machineMock.getRegisters().getRegister(RegisterKey.V0))
+    when(machineMock.getRegisters().getRegister(RegisterLabel.V0))
         .thenReturn(mockDataRegisterV0);
 
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);

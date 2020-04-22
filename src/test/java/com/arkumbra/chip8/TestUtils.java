@@ -4,11 +4,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.arkumbra.chip8.machine.IndexRegister;
+import com.arkumbra.chip8.machine.Keys;
 import com.arkumbra.chip8.machine.Machine;
 import com.arkumbra.chip8.machine.ProgramCounter;
 import com.arkumbra.chip8.machine.Registers;
 import com.arkumbra.chip8.machine.RoutineRunner;
-import com.arkumbra.chip8.screen.Screen;
+import com.arkumbra.chip8.machine.Screen;
+import com.arkumbra.chip8.machine.Timers;
 
 public class TestUtils {
 
@@ -20,12 +22,18 @@ public class TestUtils {
     Screen screen = mock(Screen.class);
     Registers registers = mock(Registers.class);
     IndexRegister indexRegister = mock(IndexRegister.class);
+    Memory memory = mock(Memory.class);
+    Keys keys = mock(Keys.class);
+    Timers timers = mock(Timers.class);
 
     when(machineMock.getProgramCounter()).thenReturn(pc);
     when(machineMock.getRoutineRunner()).thenReturn(rr);
     when(machineMock.getScreen()).thenReturn(screen);
     when(machineMock.getRegisters()).thenReturn(registers);
     when(machineMock.getIndexRegister()).thenReturn(indexRegister);
+    when(machineMock.getMemory()).thenReturn(memory);
+    when(machineMock.getKeys()).thenReturn(keys);
+    when(machineMock.getTimers()).thenReturn(timers);
 
     return machineMock;
   }

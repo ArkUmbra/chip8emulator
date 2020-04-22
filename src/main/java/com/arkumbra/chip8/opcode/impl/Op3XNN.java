@@ -2,7 +2,7 @@ package com.arkumbra.chip8.opcode.impl;
 
 import com.arkumbra.chip8.machine.DataRegister;
 import com.arkumbra.chip8.machine.Machine;
-import com.arkumbra.chip8.machine.RegisterKey;
+import com.arkumbra.chip8.machine.RegisterLabel;
 import com.arkumbra.chip8.bitmask.BitMask;
 import com.arkumbra.chip8.bitmask.BitMasks;
 import com.arkumbra.chip8.opcode.OpCode;
@@ -25,13 +25,13 @@ public class Op3XNN implements OpCode {
     char dataRegisterRaw = (char)(dataRegisterAndData >> 8);
     char data = BitMasks.TWO_COL.applyMask(dataRegisterAndData);
 
-    RegisterKey registerKey = RegisterKey.toKey(dataRegisterRaw);
-    DataRegister dataRegister = machine.getRegisters().getRegister(registerKey);
+    RegisterLabel registerLabel = RegisterLabel.toKey(dataRegisterRaw);
+    DataRegister dataRegister = machine.getRegisters().getRegister(registerLabel);
 
     char valueInRegister = dataRegister.get();
 
     if (data == valueInRegister) {
-      machine.getProgramCounter().increment();
+      machine.getProgramCounter().skipNextInstruction();
     }
   }
 

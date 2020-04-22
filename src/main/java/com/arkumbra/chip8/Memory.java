@@ -8,5 +8,7 @@ public interface Memory {
 
   char readRawOpCode(ProgramCounter programCounter);
 
+  byte[] readBytes(ProgramCounter programCounter, int bytesToRead);
+
   String dumpMemoryToHex();
 }
