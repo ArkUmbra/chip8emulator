@@ -1,21 +1,35 @@
 package com.arkumbra.chip8;
 
+import com.arkumbra.chip8.machine.Dumpable;
 import com.arkumbra.chip8.machine.Machine;
+import com.arkumbra.chip8.machine.MachineImpl;
 import com.arkumbra.chip8.machine.ProgramCounter;
 import com.arkumbra.chip8.machine.RoutineRunner;
 import com.arkumbra.chip8.opcode.OpCode;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
 import com.arkumbra.chip8.opcode.OpCodeLookup;
+import com.arkumbra.chip8.opcode.OpCodeLookupImpl;
+import java.io.IOException;
 
-public class Chip8 implements RoutineRunner {
+public class Chip8 implements RoutineRunner, Dumpable {
 
-  private ProgramCounter programCounter = null;
-  private Memory memory = null;
-  private OpCodeLookup opCodeLookup = null;
+  private MachineImpl machine;
+  private OpCodeLookup opCodeLookup = new OpCodeLookupImpl();
 
-  private Machine machine = null;
+  public Chip8() {
+    this.machine = new MachineImpl(this);
+  }
 
-  public void init() {
+  public void start(String gameFilePath) {
+
+    GameLoader gameLoader = new GameLoader();
+    try {
+      Memory memory = gameLoader.loadGameIntoMemory(gameFilePath);
+      machine.loadIntoMemory(memory);
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
   }
 
@@ -25,7 +39,10 @@ public class Chip8 implements RoutineRunner {
    */
   @Override
   public OpCodeLabel runCycle() {
-    char rawOpCode = memory.readRawOpCode(programCounter);
+    Memory memory = machine.getMemory();
+    ProgramCounter pc = machine.getProgramCounter();
+
+    char rawOpCode = memory.readRawOpCode(pc);
     OpCode opCode = opCodeLookup.lookup(rawOpCode);
     char opData = opCode.getBitMask().applyMask(rawOpCode);
 
@@ -35,7 +52,13 @@ public class Chip8 implements RoutineRunner {
       opCode.execute(opData, machine);
     }
 
+    pc.increment();
+
     return opCodeLabel;
   }
 
+  @Override
+  public String dump() {
+    return machine.dump();
+  }
 }

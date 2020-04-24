@@ -14,7 +14,7 @@ public class GameLoaderTest {
     String absolutePath = new File(relativePath).getAbsolutePath();
 
     Memory memory = new GameLoader().loadGameIntoMemory(absolutePath);
-    System.out.println(memory.dumpMemoryToHex());
+    System.out.println(memory.dump());
   }
 
 }

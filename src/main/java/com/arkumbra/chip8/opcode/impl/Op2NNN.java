@@ -30,6 +30,7 @@ public class Op2NNN implements OpCode {
 
     // Loop until we hit a return
     OpCodeLabel lastCode;
+    System.out.println("Starting sub routine at address" + (int)subroutineAddress);
     do {
       lastCode = routineRunner.runCycle();
     } while (lastCode != OpCodeLabel.Op00EEReturn);

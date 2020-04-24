@@ -3,7 +3,7 @@ package com.arkumbra.chip8.opcode.impl;
 import com.arkumbra.chip8.machine.DataRegister;
 import com.arkumbra.chip8.machine.Machine;
 import com.arkumbra.chip8.machine.RegisterLabel;
-import com.arkumbra.chip8.machine.Registers;
+import com.arkumbra.chip8.machine.DataRegisters;
 import com.arkumbra.chip8.bitmask.BitMask;
 import com.arkumbra.chip8.bitmask.BitMasks;
 import com.arkumbra.chip8.opcode.OpCode;
@@ -26,7 +26,7 @@ public class Op8XY2 implements OpCode {
     char dataRegisterXRaw = (char)(dataRegisters >> 8); // get left byte
     char dataRegisterYRaw = (char)((dataRegisters & 0x0F0) >> 4);
 
-    Registers registers = machine.getRegisters();
+    DataRegisters registers = machine.getRegisters();
     DataRegister dataRegisterX = registers.getRegister(RegisterLabel.toKey(dataRegisterXRaw));
     DataRegister dataRegisterY = registers.getRegister(RegisterLabel.toKey(dataRegisterYRaw));
 

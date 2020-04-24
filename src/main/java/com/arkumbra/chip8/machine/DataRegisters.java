@@ -1,6 +1,6 @@
 package com.arkumbra.chip8.machine;
 
-public interface Registers {
+public interface DataRegisters {
 
   DataRegister getRegister(RegisterLabel registerLabel);
 

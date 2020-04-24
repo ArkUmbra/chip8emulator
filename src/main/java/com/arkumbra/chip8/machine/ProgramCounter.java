@@ -9,6 +9,6 @@ public interface ProgramCounter {
   void goTo(char position);
 
   void push(char val);
-  char pop();
+  void pop();
 
 }

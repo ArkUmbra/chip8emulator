@@ -27,7 +27,7 @@ public class OpFX18 implements OpCode {
 
     DataRegister registerX = machine.getRegisters().getRegister(RegisterLabel.toKey(registerXKeyRaw));
 
-    Timer soundTimer = machine.getTimers().getSoundTimer();
+    Timer soundTimer = machine.getSoundTimer();
     soundTimer.set(registerX.get());
   }
 

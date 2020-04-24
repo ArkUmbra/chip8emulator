@@ -7,10 +7,13 @@ public interface Machine extends TickUpdateable {
   RoutineRunner getRoutineRunner();
   Screen getScreen();
   ProgramCounter getProgramCounter();
-  Registers getRegisters();
+  DataRegisters getRegisters();
   IndexRegister getIndexRegister();
   Memory getMemory();
   Keys getKeys();
-  Timers getTimers();
+  Timer getDelayTimer();
+  Timer getSoundTimer();
+
+  void loadIntoMemory(Memory memory);
 
 }

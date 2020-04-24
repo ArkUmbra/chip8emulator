@@ -32,7 +32,7 @@ public class OpFX07Test {
     Timer delayTimer = mock(Timer.class);
     when(delayTimer.getCurrentValue())
         .thenReturn(delayTimerValue);
-    when(machineMock.getTimers().getDelayTimer())
+    when(machineMock.getDelayTimer())
         .thenReturn(delayTimer);
     DataRegister register1 = mock(DataRegister.class);
     when(machineMock.getRegisters().getRegister(RegisterLabel.V1))
@@ -42,7 +42,6 @@ public class OpFX07Test {
     // Execute
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
     sut.execute(opCodeData, machineMock);
-
 
     verify(register1, times(1))
         .set(delayTimerValue);

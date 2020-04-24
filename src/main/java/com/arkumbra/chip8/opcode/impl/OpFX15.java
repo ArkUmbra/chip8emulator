@@ -27,7 +27,7 @@ public class OpFX15 implements OpCode {
 
     DataRegister registerX = machine.getRegisters().getRegister(RegisterLabel.toKey(registerXKeyRaw));
 
-    Timer delayTimer = machine.getTimers().getDelayTimer();
+    Timer delayTimer = machine.getDelayTimer();
     delayTimer.set(registerX.get());
   }
 

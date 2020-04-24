@@ -35,7 +35,7 @@ public class OpFX18Test {
     when(machineMock.getRegisters().getRegister(RegisterLabel.VE))
         .thenReturn(dataRegisterE);
     Timer soundTimer = mock(Timer.class);
-    when(machineMock.getTimers().getSoundTimer())
+    when(machineMock.getSoundTimer())
         .thenReturn(soundTimer);
 
 

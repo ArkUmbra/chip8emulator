@@ -3,32 +3,26 @@ package com.arkumbra.chip8;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import org.apache.commons.codec.binary.Hex;
 
 public class GameLoader {
 
   public Memory loadGameIntoMemory(String filePath) throws IOException {
     byte[] bytes = Files.readAllBytes(Path.of(filePath));
 
-    char[] opcodes = new char[bytes.length / 2];
-    int cCounter = 0;
-
-
-    for (int i = 0; i < bytes.length; i += 2) {
-      byte byteLeft = bytes[i];
-      byte byteRight = bytes[i + 1];
-//      char opCode = (char) ((byteLeft << 8) | byteRight);
-      // We need to add the bitmask on the right, to make Java not do weird stuff with widening
-      char opCode = (char) ((byteLeft << 8) | byteRight & 0xFF);
-
-      opcodes[cCounter] = opCode;
-      cCounter++;
-    }
+//    char[] opcodes = new char[bytes.length / 2];
+//    int cCounter = 0;
+//
+//
+//    for (int i = 0; i < bytes.length; i += 2) {
+//      byte byteLeft = bytes[i];
+//      byte byteRight = bytes[i + 1];
+////      char opCode = (char) ((byteLeft << 8) | byteRight);
+//      // We need to add the bitmask on the right, to make Java not do weird stuff with widening
+//      char opCode = (char) ((byteLeft << 8) | byteRight & 0xFF);
+//
+//      opcodes[cCounter] = opCode;
+//      cCounter++;
+//    }
 
 //    short[] opcodes = new short[bytes.length / 2];
 //    int cCounter = 0;
@@ -69,7 +63,7 @@ public class GameLoader {
 //    System.out.println(java.util.Arrays.toString(Hex.encodeHexString(bytes).split("(?<=\\G....)")));
 
     Memory memory = new MemoryImpl();
-    memory.load(opcodes);
+    memory.load(bytes);
 //    memory.load(Hex.encodeHex(bytes));
     return memory;
   }

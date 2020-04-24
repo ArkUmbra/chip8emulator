@@ -1,15 +1,12 @@
 package com.arkumbra.chip8.opcode.impl;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.arkumbra.chip8.TestUtils;
 import com.arkumbra.chip8.machine.DataRegister;
-import com.arkumbra.chip8.machine.Key;
-import com.arkumbra.chip8.machine.KeyLabel;
 import com.arkumbra.chip8.machine.Machine;
 import com.arkumbra.chip8.machine.RegisterLabel;
 import com.arkumbra.chip8.machine.Timer;
@@ -38,7 +35,7 @@ public class OpFX15Test {
     when(machineMock.getRegisters().getRegister(RegisterLabel.VE))
         .thenReturn(dataRegisterE);
     Timer delayTimer = mock(Timer.class);
-    when(machineMock.getTimers().getDelayTimer())
+    when(machineMock.getDelayTimer())
         .thenReturn(delayTimer);
 
 

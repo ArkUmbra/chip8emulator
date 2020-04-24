@@ -27,7 +27,7 @@ public class OpFX07 implements OpCode {
   public void execute(char opData, Machine machine) {
     char registerXRaw = (char)((opData & 0xF00) >> 8);
 
-    Timer delayTimer = machine.getTimers().getDelayTimer();
+    Timer delayTimer = machine.getDelayTimer();
     DataRegister registerX = machine.getRegisters().getRegister(RegisterLabel.toKey(registerXRaw));
 
     registerX.set(delayTimer.getCurrentValue());
