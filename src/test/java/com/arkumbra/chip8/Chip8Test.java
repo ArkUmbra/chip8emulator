@@ -8,9 +8,9 @@ import org.junit.Test;
 
 public class Chip8Test {
 
-  @Ignore
+//  @Ignore
   @Test
-  public void test() throws IOException {
+  public void test() {
     String relativePath = "src/main/resources/15 Puzzle [Roger Ivie].ch8";
     String absolutePath = new File(relativePath).getAbsolutePath();
 
@@ -24,7 +24,6 @@ public class Chip8Test {
       }
     } catch (Exception e) {
       e.printStackTrace();
-//      chip8.dump();
     }
 
     System.out.println(chip8.dump());

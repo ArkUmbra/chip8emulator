@@ -14,16 +14,17 @@ public class MemoryImpl implements Memory {
   @Override
   public void load(byte[] gameFile) {
     // font data etc..
-    byte[] combinedMemory = new byte[RESERVED + gameFile.length];
-
-    System.arraycopy(gameFile, 0,
-        combinedMemory, RESERVED, gameFile.length);
-    this.memory = combinedMemory;
+//    byte[] combinedMemory = new byte[RESERVED + gameFile.length];
+//
+//    System.arraycopy(gameFile, 0,
+//        combinedMemory, RESERVED, gameFile.length);
+//    this.memory = combinedMemory;
+    this.memory = gameFile;
   }
 
   @Override
   public char readRawOpCode(ProgramCounter programCounter) {
-    int pos = programCounter.getPosition();
+    int pos = programCounter.getPosition() - RESERVED;
 
     byte byteLeft = memory[pos];
     byte byteRight = memory[pos + 1];
