@@ -10,11 +10,16 @@ import com.arkumbra.chip8.opcode.OpCodeLabel;
 import com.arkumbra.chip8.opcode.OpCodeLookup;
 import com.arkumbra.chip8.opcode.OpCodeLookupImpl;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Chip8 implements RoutineRunner, Dumpable {
 
   private MachineImpl machine;
   private OpCodeLookup opCodeLookup = new OpCodeLookupImpl();
+
+  private LinkedList<String> commandExecutionOrder = new LinkedList<>();
 
   public Chip8() {
     this.machine = new MachineImpl(this);
@@ -43,8 +48,13 @@ public class Chip8 implements RoutineRunner, Dumpable {
     ProgramCounter pc = machine.getProgramCounter();
 
     char rawOpCode = memory.readRawOpCode(pc);
+
+    commandExecutionOrder.addLast(Integer.toHexString(rawOpCode) + " - ");
+
     OpCode opCode = opCodeLookup.lookup(rawOpCode);
     char opData = opCode.getBitMask().applyMask(rawOpCode);
+
+    commandExecutionOrder.addLast(commandExecutionOrder.removeLast()  + opCode.getOpCodeLabel() + " - " + Integer.toHexString(opData));
 
     // if op code for 'return' then don't execute
     OpCodeLabel opCodeLabel = opCode.getOpCodeLabel();
@@ -59,6 +69,11 @@ public class Chip8 implements RoutineRunner, Dumpable {
 
   @Override
   public String dump() {
-    return machine.dump();
+    StringBuilder sb = new StringBuilder();
+    sb.append("--- Commands ---");
+    sb.append(System.lineSeparator());
+    sb.append(String.join(System.lineSeparator(), commandExecutionOrder));
+    sb.append(machine.dump());
+    return sb.toString();
   }
 }

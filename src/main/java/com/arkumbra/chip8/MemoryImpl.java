@@ -76,7 +76,7 @@ public class MemoryImpl implements Memory {
       sb.append(Hex.encodeHex(new byte[]{memory[i], memory[i+1]}));
       sb.append(" ");
 
-      if (i != 0 && i % 10 == 0) {
+      if ((i + 1) % 8 == 0) {
         sb.append(System.lineSeparator());
       }
     }

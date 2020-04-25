@@ -23,7 +23,8 @@ public class OpFX29 implements OpCode {
   public void execute(char opData, Machine machine) {
     char fontCharacterXKeyRaw = (char)((opData & 0xF00) >> 8);
 
-    int addressOfFontInMemory = machine.getFont().getAddress(FontLabel.toKey(fontCharacterXKeyRaw));
+    FontLabel fontLabel = FontLabel.toKey(fontCharacterXKeyRaw);
+    int addressOfFontInMemory = machine.getFont().getAddress(fontLabel);
 
     machine.getProgramCounter().goTo(addressOfFontInMemory);
   }
