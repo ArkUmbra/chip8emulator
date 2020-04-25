@@ -24,7 +24,7 @@ public class OpBNNN implements OpCode {
   public void execute(char memoryAddress, Machine machine) {
     DataRegister v0Register = machine.getRegisters().getRegister(RegisterLabel.V0);
     int newSetValue = memoryAddress + v0Register.get();
-    machine.getIndexRegister().set(newSetValue);
+    machine.getProgramCounter().goTo(newSetValue);
   }
 
 }

@@ -25,7 +25,7 @@ public class MachineImpl implements Machine, KeyPressListener, Dumpable {
     this.keys = new KeysImpl();
     this.delayTimer = new DelayTimer();
     // TODO
-    this.soundTimer = new SoundTimer(null);
+    this.soundTimer = new SoundTimer(new SoundOutputter());
     this.font = new FontImpl();
   }
 

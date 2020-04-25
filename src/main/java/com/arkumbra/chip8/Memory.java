@@ -12,7 +12,7 @@ public interface Memory extends Dumpable {
 
   char readRawOpCode(ProgramCounter programCounter);
 
-  void write(ProgramCounter programCounter, byte[] toWrite);
+  void write(int fromIndex, byte[] toWrite);
 
   byte[] readBytes(ProgramCounter programCounter, int bytesToRead);
 

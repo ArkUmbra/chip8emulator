@@ -45,7 +45,7 @@ public class OpFX55Test {
     verify(machineMock.getRegisters(), times(expectedNumberOfRegistersToDump))
         .getRegister(any());
     verify(machineMock.getMemory(), times(1))
-        .write(machineMock.getProgramCounter(), new byte[]{1, 1, 1, 1, 1, 1, 1, 1});
+        .write(machineMock.getIndexRegister().get(), new byte[]{1, 1, 1, 1, 1, 1, 1, 1});
   }
 
 }

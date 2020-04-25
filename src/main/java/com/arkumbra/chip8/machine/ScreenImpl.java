@@ -23,7 +23,7 @@ public class ScreenImpl implements Screen, ScreenMemory, Dumpable {
     for (int i = 0; i < 8; i++) {
       boolean bit = getBitAsBoolean(bitFlagsToDraw, (7 - i));
       boolean flipped = writeBitToScreen(bit, fromX + i, y);
-      atLeastOnePixelFlipped = !atLeastOnePixelFlipped && flipped;
+      atLeastOnePixelFlipped = atLeastOnePixelFlipped || flipped;
     }
 
     return atLeastOnePixelFlipped;

@@ -49,14 +49,14 @@ public class MemoryImpl implements Memory {
     // We need to add the bitmask on the right, to make Java not do weird stuff with widening
     char opCode = (char) ((byteLeft << 8) | byteRight & 0xFF);
 
-    System.out.println("Reading op code " + Hex.encodeHexString(new byte[]{byteLeft, byteRight}));
+//    System.out.println("Reading op code " + Hex.encodeHexString(new byte[]{byteLeft, byteRight}));
     return opCode;
   }
 
   @Override
-  public void write(ProgramCounter programCounter, byte[] toWrite) {
+  public void write(int indexFrom, byte[] toWrite) {
     for (int offset = 0; offset < toWrite.length; offset++) {
-      memory[programCounter.getPosition() + offset] = toWrite[offset];
+      memory[indexFrom + offset] = toWrite[offset];
     }
   }
 

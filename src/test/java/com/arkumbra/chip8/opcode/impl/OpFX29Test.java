@@ -34,8 +34,8 @@ public class OpFX29Test {
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
     sut.execute(opCodeData, machineMock);
 
-    verify(machineMock.getProgramCounter(), times(1))
-        .goTo(addressOfFont);
+    verify(machineMock.getIndexRegister(), times(1))
+        .set(addressOfFont);
   }
 
 }

@@ -46,7 +46,7 @@ public class OpFX33 implements OpCode {
     byte tens = (byte)((regValue / 10) % 10);
     byte ones = (byte)((regValue % 100) % 10);
 
-    machine.getMemory().write(machine.getProgramCounter(), new byte[]{hundreds, tens, ones});
+    machine.getMemory().write(machine.getIndexRegister().get(), new byte[]{hundreds, tens, ones});
   }
 
 }

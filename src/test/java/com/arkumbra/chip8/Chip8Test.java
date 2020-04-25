@@ -9,18 +9,21 @@ public class Chip8Test {
 //  @Ignore
   @Test
   public void test() {
-//    String relativePath = "src/main/resources/15 Puzzle [Roger Ivie].ch8";
     String relativePath = "src/main/resources/Airplane.ch8";
+//    String relativePath = "src/main/resources/15 Puzzle [Roger Ivie].ch8";
+//    String relativePath = "src/main/resources/BLINKY.ch8";
     String absolutePath = new File(relativePath).getAbsolutePath();
 
     Chip8 chip8 = new Chip8();
     chip8.start(absolutePath);
 
     try {
-      for (int i = 0; i < 10; i++) {
-        OpCodeLabel opCodeLabel = chip8.runCycle();
-        System.out.println(i + " " + opCodeLabel);
-      }
+      OpCodeLabel lastCode;
+       do {
+         lastCode = chip8.runCycle();
+//        System.out.println(i + " " + lastCode);
+      } while (lastCode != OpCodeLabel.Op00EEReturn);
+
     } catch (Exception e) {
       e.printStackTrace();
     }

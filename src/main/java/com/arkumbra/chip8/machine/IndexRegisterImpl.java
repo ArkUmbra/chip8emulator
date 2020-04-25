@@ -7,15 +7,25 @@ public class IndexRegisterImpl implements IndexRegister {
 
   @Override
   public void set(int value) {
-    this.indexValue = (value & 0xFFF);
+//    this.indexValue = value;
+//    this.indexValue = (value & 0xFFF);
+
+    int capped = (value % 4095);
+    this.indexValue = capped;
+
+    System.out.println("Input value " + value + ", actually set to " + capped);
   }
 
   @Override
   public boolean add(int value) {
-    int capped = (this.indexValue + value & 0xFFF);
+//    int capped = (value > 4095) ? 4095
+    int capped = ((this.indexValue + value) % 4095);
+
+    System.out.println("Add value " + value + " current " + indexValue + ", actually set to " + capped);
     this.indexValue = capped;
 
-    return value > capped;
+
+    return value != capped;
   }
 
   @Override

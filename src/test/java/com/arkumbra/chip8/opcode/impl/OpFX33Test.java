@@ -42,7 +42,7 @@ public class OpFX33Test {
 
 
     verify(machineMock.getMemory(), times(1))
-        .write(machineMock.getProgramCounter(), new byte[]{1, 2, 3});
+        .write(machineMock.getIndexRegister().get(), new byte[]{1, 2, 3});
   }
 
 }

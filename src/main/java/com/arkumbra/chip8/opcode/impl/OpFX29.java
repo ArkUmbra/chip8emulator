@@ -26,7 +26,7 @@ public class OpFX29 implements OpCode {
     FontLabel fontLabel = FontLabel.toKey(fontCharacterXKeyRaw);
     int addressOfFontInMemory = machine.getFont().getAddress(fontLabel);
 
-    machine.getProgramCounter().goTo(addressOfFontInMemory);
+    machine.getIndexRegister().set(addressOfFontInMemory);
   }
 
 }

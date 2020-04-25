@@ -1,5 +1,7 @@
 package com.arkumbra.chip8;
 
+import com.arkumbra.chip8.external.JPanelOutputter;
+import com.arkumbra.chip8.external.ScreenOutputter;
 import com.arkumbra.chip8.machine.Dumpable;
 import com.arkumbra.chip8.machine.Machine;
 import com.arkumbra.chip8.machine.MachineImpl;
@@ -18,6 +20,7 @@ public class Chip8 implements RoutineRunner, Dumpable {
 
   private MachineImpl machine;
   private OpCodeLookup opCodeLookup = new OpCodeLookupImpl();
+  private ScreenOutputter screenOutputter = new JPanelOutputter();
 
   private LinkedList<String> commandExecutionOrder = new LinkedList<>();
 
@@ -49,7 +52,7 @@ public class Chip8 implements RoutineRunner, Dumpable {
 
     char rawOpCode = memory.readRawOpCode(pc);
 
-    commandExecutionOrder.addLast(Integer.toHexString(rawOpCode) + " - ");
+    commandExecutionOrder.addLast(Integer.toHexString(rawOpCode) + " - " + pc.getPosition() + " - ");
 
     OpCode opCode = opCodeLookup.lookup(rawOpCode);
     char opData = opCode.getBitMask().applyMask(rawOpCode);
@@ -62,7 +65,15 @@ public class Chip8 implements RoutineRunner, Dumpable {
       opCode.execute(opData, machine);
     }
 
+    machine.tick();
     pc.increment();
+    screenOutputter.drawFrame(machine.getScreenMemoryHandle());
+
+    try {
+      Thread.sleep(30);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
 
     return opCodeLabel;
   }
@@ -73,6 +84,7 @@ public class Chip8 implements RoutineRunner, Dumpable {
     sb.append("--- Commands ---");
     sb.append(System.lineSeparator());
     sb.append(String.join(System.lineSeparator(), commandExecutionOrder));
+    sb.append(System.lineSeparator());
     sb.append(machine.dump());
     return sb.toString();
   }

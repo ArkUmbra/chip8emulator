@@ -33,7 +33,7 @@ public class OpFX55 implements OpCode {
       dumped[i] = (byte)registerX.get(); //??
     }
 
-    machine.getMemory().write(machine.getProgramCounter(), dumped);
+    machine.getMemory().write(machine.getIndexRegister().get(), dumped);
   }
 
 }

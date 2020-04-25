@@ -38,7 +38,7 @@ public class Op8XY4 implements OpCode {
     char carryFlag = (addResult > 255) ? ONE : ZERO;
     dataRegisterFCarryFlag.set(carryFlag);
 
-    // No unsigned byte in java, so mask the result up to 256
+    // No unsigned byte in java, so mask the result up to 255
     dataRegisterX.set((char)(addResult & 0xFF));
   }
 

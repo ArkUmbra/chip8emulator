@@ -39,6 +39,7 @@ public class KeysImpl implements Keys, KeyPressListener {
 
   @Override
   public KeyLabel waitForNextKeyPress() {
+    throw new RuntimeException("Not yet implemented");
 
 //    while (true) {
 //      synchronized (something) {
@@ -54,7 +55,7 @@ public class KeysImpl implements Keys, KeyPressListener {
 //    long timeOfLastKeyPressAtStartOfWait =
 
     // TODO...
-    return null;
+//    return null;
   }
 
   @Override
