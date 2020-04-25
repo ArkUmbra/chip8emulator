@@ -13,6 +13,7 @@ public interface Machine extends TickUpdateable {
   Keys getKeys();
   Timer getDelayTimer();
   Timer getSoundTimer();
+  Font getFont();
 
   void loadIntoMemory(Memory memory);
 

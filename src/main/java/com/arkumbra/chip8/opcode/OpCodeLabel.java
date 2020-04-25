@@ -25,6 +25,6 @@ public enum OpCodeLabel {
   OpEX9EKeySkip,
   OpEXA1KeySkip,
   OpFX07GetDelayTimer,
-  OpFX0AWaitForKey, OpFX15SetDelayTimer, OpFX18SetSoundTimer, OpFX1EAddVxToI,
+  OpFX0AWaitForKey, OpFX15SetDelayTimer, OpFX18SetSoundTimer, OpFX1EAddVxToI, OpFX29GoToFont, OpFX33BCD, OpFX55RegDump, OpFX65RegLoad,
 
 }

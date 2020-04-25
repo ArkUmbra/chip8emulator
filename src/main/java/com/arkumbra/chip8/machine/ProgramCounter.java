@@ -6,9 +6,9 @@ public interface ProgramCounter {
   void skipNextInstruction();
 
   int getPosition();
-  void goTo(char position);
+  void goTo(int position);
 
-  void push(char val);
+  void push(int val);
   void pop();
 
 }

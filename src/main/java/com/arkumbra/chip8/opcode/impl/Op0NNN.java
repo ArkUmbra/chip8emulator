@@ -20,7 +20,7 @@ public class Op0NNN implements OpCode {
 
     @Override
     public void execute(char postMaskOpData, Machine machine) {
-        System.err.println("Not enabled. Skipping...");
-//        throw new UnsupportedOperationException("Raw case. Not implemented yet...");
+//        System.err.println("Not enabled. Skipping...");
+        throw new UnsupportedOperationException("Raw case. Not implemented yet...");
     }
 }

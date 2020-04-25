@@ -31,6 +31,10 @@ import com.arkumbra.chip8.opcode.impl.OpFX0A;
 import com.arkumbra.chip8.opcode.impl.OpFX15;
 import com.arkumbra.chip8.opcode.impl.OpFX18;
 import com.arkumbra.chip8.opcode.impl.OpFX1E;
+import com.arkumbra.chip8.opcode.impl.OpFX29;
+import com.arkumbra.chip8.opcode.impl.OpFX33;
+import com.arkumbra.chip8.opcode.impl.OpFX55;
+import com.arkumbra.chip8.opcode.impl.OpFX65;
 
 public class OpCodeLookupImpl implements OpCodeLookup {
 
@@ -65,6 +69,10 @@ public class OpCodeLookupImpl implements OpCodeLookup {
   private OpCode opFX15 = new OpFX15();
   private OpCode opFX18 = new OpFX18();
   private OpCode opFX1E = new OpFX1E();
+  private OpCode opFX29 = new OpFX29();
+  private OpCode opFX33 = new OpFX33();
+  private OpCode opFX55 = new OpFX55();
+  private OpCode opFX65 = new OpFX65();
 
 
 
@@ -115,12 +123,16 @@ public class OpCodeLookupImpl implements OpCodeLookup {
           default: throw new UnknownOpCodeException(rawOpCode);
         }
       case 0xF000:
-        switch (rawOpCode & 0x000F) {
-          case 0x0007: return opFX07;
-          case 0x000A: return opFX0A;
-          case 0x0005: return opFX15;
-          case 0x0008: return opFX18;
-          case 0x000E: return opFX1E;
+        switch (rawOpCode & 0xFF) {
+          case 0x07: return opFX07;
+          case 0x0A: return opFX0A;
+          case 0x15: return opFX15;
+          case 0x18: return opFX18;
+          case 0x1E: return opFX1E;
+          case 0x29: return opFX29;
+          case 0x33: return opFX33;
+          case 0x55: return opFX55;
+          case 0x65: return opFX65;
           default: throw new UnknownOpCodeException(rawOpCode);
         }
       default: throw new UnknownOpCodeException(rawOpCode);
@@ -129,7 +141,7 @@ public class OpCodeLookupImpl implements OpCodeLookup {
 }
 
 class UnknownOpCodeException extends RuntimeException {
-  public UnknownOpCodeException(char rawOpCode) {
+  UnknownOpCodeException(char rawOpCode) {
     super("No OpCode implementation found for rawOpCode " + Integer.toHexString(rawOpCode));
   }
 }

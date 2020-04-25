@@ -3,6 +3,7 @@ package com.arkumbra.chip8;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.arkumbra.chip8.machine.Font;
 import com.arkumbra.chip8.machine.IndexRegister;
 import com.arkumbra.chip8.machine.Keys;
 import com.arkumbra.chip8.machine.Machine;
@@ -27,6 +28,7 @@ public class TestUtils {
     Keys keys = mock(Keys.class);
     Timer delayTimer = mock(Timer.class);
     Timer soundTimer = mock(Timer.class);
+    Font font = mock(Font.class);
 
     when(machineMock.getProgramCounter()).thenReturn(pc);
     when(machineMock.getRoutineRunner()).thenReturn(rr);
@@ -37,6 +39,7 @@ public class TestUtils {
     when(machineMock.getKeys()).thenReturn(keys);
     when(machineMock.getDelayTimer()).thenReturn(delayTimer);
     when(machineMock.getSoundTimer()).thenReturn(soundTimer);
+    when(machineMock.getFont()).thenReturn(font);
 
     return machineMock;
   }

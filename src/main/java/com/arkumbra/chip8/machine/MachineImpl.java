@@ -12,7 +12,9 @@ public class MachineImpl implements Machine, KeyPressListener, Dumpable {
   private final KeysImpl keys;
   private final Timer delayTimer;
   private final Timer soundTimer;
+  private final Font font;
   private Memory memory;
+
 
   public MachineImpl(RoutineRunner routineRunner) {
     this.routineRunner = routineRunner;
@@ -24,10 +26,12 @@ public class MachineImpl implements Machine, KeyPressListener, Dumpable {
     this.delayTimer = new DelayTimer();
     // TODO
     this.soundTimer = new SoundTimer(null);
+    this.font = new FontImpl();
   }
 
   @Override
   public void loadIntoMemory(Memory memory) {
+    memory.load(font);
     this.memory = memory;
   }
 
@@ -78,6 +82,11 @@ public class MachineImpl implements Machine, KeyPressListener, Dumpable {
   @Override
   public Timer getSoundTimer() {
     return soundTimer;
+  }
+
+  @Override
+  public Font getFont() {
+    return font;
   }
 
   @Override
