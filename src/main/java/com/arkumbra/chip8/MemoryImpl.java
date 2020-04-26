@@ -32,11 +32,14 @@ public class MemoryImpl implements Memory {
   @Override
   public void load(byte[] gameRom) {
     // font data etc..
-    byte[] combinedMemory = new byte[RESERVED + gameRom.length];
+//    byte[] combinedMemory = new byte[RESERVED + gameRom.length];
+    byte[] combinedMemory = new byte[RESERVED + gameRom.length + 1];
 
     System.arraycopy(gameRom, 0,
         combinedMemory, RESERVED, gameRom.length);
     this.memory = combinedMemory;
+
+    System.out.println("Game rom of " + gameRom.length + ", total memory size " + memory.length);
   }
 
   @Override
@@ -57,6 +60,9 @@ public class MemoryImpl implements Memory {
   public void write(int indexFrom, byte[] toWrite) {
     for (int offset = 0; offset < toWrite.length; offset++) {
       memory[indexFrom + offset] = toWrite[offset];
+
+//      int wrappedPosition = (indexFrom + offset) % memory.length;
+//      memory[wrappedPosition] = toWrite[offset];
     }
   }
 
@@ -72,15 +78,15 @@ public class MemoryImpl implements Memory {
     sb.append("---- Memory ----");
     sb.append(System.lineSeparator());
 
-    for (int i = 0; i < memory.length - 1; i++) {
+    for (int i = 0; i < memory.length - 1; i=i+2) {
       sb.append(Hex.encodeHex(new byte[]{memory[i], memory[i+1]}));
       sb.append(" ");
 
-      if ((i + 1) % 8 == 0) {
+      if ((i + 2) % 16 == 0) {
         sb.append(System.lineSeparator());
       }
     }
-
+    sb.append(System.lineSeparator());
     return sb.toString();
   }
 }

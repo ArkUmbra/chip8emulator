@@ -28,8 +28,9 @@ public class DataRegistersImpl implements DataRegisters, Dumpable {
       sb.append(label.name())
           .append(" - ")
           .append(Integer.toHexString(registers.get(label).get()))
-          .append(System.lineSeparator());
+          .append("; ");
     }
+    sb.append(System.lineSeparator());
 
     return sb.toString();
   }

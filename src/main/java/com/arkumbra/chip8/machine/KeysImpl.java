@@ -39,19 +39,25 @@ public class KeysImpl implements Keys, KeyPressListener {
 
   @Override
   public KeyLabel waitForNextKeyPress() {
-    throw new RuntimeException("Not yet implemented");
 
-//    while (true) {
+
+
+    while (true) {
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
 //      synchronized (something) {
-        // check
-        // if key pressed
-        // then return key label
+//         check
+//         if key pressed
+//         then return key label
 //      }
-
-      // sleep. tick.wait() or something??... maybe simple sleep is fine...
-
-//    }
-
+//
+//       sleep. tick.wait() or something??... maybe simple sleep is fine...
+//
+    }
+//
 //    long timeOfLastKeyPressAtStartOfWait =
 
     // TODO...
@@ -62,6 +68,11 @@ public class KeysImpl implements Keys, KeyPressListener {
   public void keyPressed(KeyLabel keyLabel) {
     // TODO what about off?
     keys.get(keyLabel).press(true);
+  }
+
+  @Override
+  public void keyReleased(KeyLabel keyLabel) {
+    keys.get(keyLabel).press(false);
   }
 
 }

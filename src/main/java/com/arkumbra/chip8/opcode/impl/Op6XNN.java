@@ -26,8 +26,8 @@ public class Op6XNN implements OpCode {
     char dataRegisterRaw = (char)(dataRegisterAndData >> 8); // get left byte
     char dataRaw = (char)(dataRegisterAndData & 0x0FF); // get right byte
 
-    DataRegisters registers = machine.getRegisters();
-    DataRegister dataRegister = registers.getRegister(RegisterLabel.toKey(dataRegisterRaw));
+    RegisterLabel registerLabel = RegisterLabel.toKey(dataRegisterRaw);
+    DataRegister dataRegister = machine.getRegisters().getRegister(registerLabel);
     dataRegister.set(dataRaw);
   }
 

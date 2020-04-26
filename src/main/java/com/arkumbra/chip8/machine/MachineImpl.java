@@ -7,7 +7,7 @@ public class MachineImpl implements Machine, KeyPressListener, Dumpable {
   private final RoutineRunner routineRunner;
   private final ScreenImpl screen;
   private final ProgramCounterImpl programCounter;
-  private final DataRegisters registers;
+  private final DataRegistersImpl registers;
   private final IndexRegister indexRegister;
   private final KeysImpl keys;
   private final Timer delayTimer;
@@ -101,11 +101,17 @@ public class MachineImpl implements Machine, KeyPressListener, Dumpable {
   }
 
   @Override
+  public void keyReleased(KeyLabel keyLabel) {
+    keys.keyReleased(keyLabel);
+  }
+
+  @Override
   public String dump() {
     StringBuilder sb = new StringBuilder();
 
     sb.append(screen.dump());
     sb.append(memory.dump());
+    sb.append(registers.dump());
     return sb.toString();
   }
 }

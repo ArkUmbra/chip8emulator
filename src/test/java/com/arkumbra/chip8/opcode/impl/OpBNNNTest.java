@@ -38,8 +38,8 @@ public class OpBNNNTest {
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
     sut.execute(opCodeData, machineMock);
 
-    verify(machineMock.getIndexRegister(), times(1))
-        .set(expectedSetValue);
+    verify(machineMock.getProgramCounter(), times(1))
+        .goTo(expectedSetValue);
   }
 
 }

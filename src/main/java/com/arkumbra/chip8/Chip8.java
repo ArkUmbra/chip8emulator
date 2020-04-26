@@ -18,14 +18,16 @@ import java.util.List;
 
 public class Chip8 implements RoutineRunner, Dumpable {
 
+  private static final OpCodeLookup opCodeLookup = new OpCodeLookupImpl();
+
   private MachineImpl machine;
-  private OpCodeLookup opCodeLookup = new OpCodeLookupImpl();
-  private ScreenOutputter screenOutputter = new JPanelOutputter();
+  private ScreenOutputter screenOutputter;
 
   private LinkedList<String> commandExecutionOrder = new LinkedList<>();
 
   public Chip8() {
     this.machine = new MachineImpl(this);
+    this.screenOutputter = new JPanelOutputter(machine);
   }
 
   public void start(String gameFilePath) {
@@ -39,6 +41,7 @@ public class Chip8 implements RoutineRunner, Dumpable {
       e.printStackTrace();
     }
 
+    System.out.println(dump());
   }
 
   /**
@@ -53,17 +56,17 @@ public class Chip8 implements RoutineRunner, Dumpable {
     char rawOpCode = memory.readRawOpCode(pc);
 
     commandExecutionOrder.addLast(Integer.toHexString(rawOpCode) + " - " + pc.getPosition() + " - ");
-
     OpCode opCode = opCodeLookup.lookup(rawOpCode);
     char opData = opCode.getBitMask().applyMask(rawOpCode);
-
     commandExecutionOrder.addLast(commandExecutionOrder.removeLast()  + opCode.getOpCodeLabel() + " - " + Integer.toHexString(opData));
 
     // if op code for 'return' then don't execute
     OpCodeLabel opCodeLabel = opCode.getOpCodeLabel();
-    if (opCodeLabel != OpCodeLabel.Op00EEReturn) {
-      opCode.execute(opData, machine);
+    if (opCodeLabel == OpCodeLabel.Op00EEReturn) {
+      return opCodeLabel;
     }
+
+    opCode.execute(opData, machine);
 
     machine.tick();
     pc.increment();
@@ -87,5 +90,9 @@ public class Chip8 implements RoutineRunner, Dumpable {
     sb.append(System.lineSeparator());
     sb.append(machine.dump());
     return sb.toString();
+  }
+
+  public Machine getMachine() {
+    return machine;
   }
 }
