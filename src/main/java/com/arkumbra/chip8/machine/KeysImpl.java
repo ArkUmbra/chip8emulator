@@ -25,6 +25,8 @@ public class KeysImpl implements Keys, KeyPressListener {
   private KeyLabel lastKeyPressed = null;
   private Long lastKeyPressTime = 0L;
 
+  private final Boolean LOCK = true;
+
 
   public KeysImpl() {
     for (KeyLabel keyLabel : KeyLabel.values()) {
@@ -40,34 +42,40 @@ public class KeysImpl implements Keys, KeyPressListener {
   @Override
   public KeyLabel waitForNextKeyPress() {
 
-
+    long lastKeyPressAtCheckStart;
+    synchronized (LOCK) {
+      lastKeyPressAtCheckStart = lastKeyPressTime;
+    }
 
     while (true) {
-      try {
-        Thread.sleep(100);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-//      synchronized (something) {
-//         check
-//         if key pressed
-//         then return key label
-//      }
-//
-//       sleep. tick.wait() or something??... maybe simple sleep is fine...
-//
-    }
-//
-//    long timeOfLastKeyPressAtStartOfWait =
 
-    // TODO...
-//    return null;
+      boolean keyPressed;
+      KeyLabel lastPressed;
+      synchronized (LOCK) {
+        keyPressed = lastKeyPressTime != lastKeyPressAtCheckStart;
+        lastPressed = lastKeyPressed;
+      }
+
+      if (keyPressed) {
+        return lastPressed;
+      } else {
+        try {
+          Thread.sleep(100);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    }
   }
 
   @Override
   public void keyPressed(KeyLabel keyLabel) {
-    // TODO what about off?
     keys.get(keyLabel).press(true);
+
+    synchronized (LOCK) {
+      lastKeyPressTime = System.currentTimeMillis();
+      lastKeyPressed = keyLabel;
+    }
   }
 
   @Override

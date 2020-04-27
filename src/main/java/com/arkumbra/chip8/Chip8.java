@@ -41,7 +41,7 @@ public class Chip8 implements RoutineRunner, Dumpable {
       e.printStackTrace();
     }
 
-    System.out.println(dump());
+    Logger.debug(dump());
   }
 
   /**
@@ -54,6 +54,7 @@ public class Chip8 implements RoutineRunner, Dumpable {
     ProgramCounter pc = machine.getProgramCounter();
 
     char rawOpCode = memory.readRawOpCode(pc);
+    pc.increment();
 
     commandExecutionOrder.addLast(Integer.toHexString(rawOpCode) + " - " + pc.getPosition() + " - ");
     OpCode opCode = opCodeLookup.lookup(rawOpCode);
@@ -69,7 +70,7 @@ public class Chip8 implements RoutineRunner, Dumpable {
     opCode.execute(opData, machine);
 
     machine.tick();
-    pc.increment();
+
     screenOutputter.drawFrame(machine.getScreenMemoryHandle());
 
     try {

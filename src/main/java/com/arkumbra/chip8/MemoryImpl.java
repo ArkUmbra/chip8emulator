@@ -8,6 +8,7 @@ import org.apache.commons.codec.binary.Hex;
 
 public class MemoryImpl implements Memory {
 
+  private static final int CAPACITY = 0x1000;
   // first 512 bytes are reserved. Add game memory in after that
   public static final int RESERVED = 512;
 
@@ -25,21 +26,20 @@ public class MemoryImpl implements Memory {
     // DEBUG
     for (FontLabel fontLabel : FontLabel.values()) {
       int address = font.getAddress(fontLabel);
-      System.out.println("Font character " + fontLabel.name() + " stored at " + address);
+      Logger.debug("Font character " + fontLabel.name() + " stored at " + address);
     }
   }
 
   @Override
   public void load(byte[] gameRom) {
-    // font data etc..
-//    byte[] combinedMemory = new byte[RESERVED + gameRom.length];
-    byte[] combinedMemory = new byte[RESERVED + gameRom.length + 1];
+    Logger.debug("Game length in bytes " + gameRom.length);
+    byte[] combinedMemory = new byte[CAPACITY];
 
     System.arraycopy(gameRom, 0,
         combinedMemory, RESERVED, gameRom.length);
     this.memory = combinedMemory;
 
-    System.out.println("Game rom of " + gameRom.length + ", total memory size " + memory.length);
+    Logger.debug("Game rom of " + gameRom.length + ", total memory size " + memory.length);
   }
 
   @Override

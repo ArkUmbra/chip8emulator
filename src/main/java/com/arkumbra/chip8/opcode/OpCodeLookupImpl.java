@@ -1,5 +1,6 @@
 package com.arkumbra.chip8.opcode;
 
+import com.arkumbra.chip8.Logger;
 import com.arkumbra.chip8.opcode.impl.Op00E0;
 import com.arkumbra.chip8.opcode.impl.Op00EE;
 import com.arkumbra.chip8.opcode.impl.Op0NNN;
@@ -79,7 +80,9 @@ public class OpCodeLookupImpl implements OpCodeLookup {
   @Override
   public OpCode lookup(char rawOpCode) {
     OpCode foundOpCode = doLookup(rawOpCode);
-    System.out.println("For rawOpCode " + Integer.toHexString(rawOpCode) + " found op " + foundOpCode.getOpCodeLabel());
+    Logger.opcodePerCycle(
+        "For rawOpCode " + Integer.toHexString(rawOpCode) + " found op " + foundOpCode
+            .getOpCodeLabel());
     return foundOpCode;
   }
 

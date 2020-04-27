@@ -1,5 +1,7 @@
 package com.arkumbra.chip8.machine;
 
+import com.arkumbra.chip8.Logger;
+
 public class IndexRegisterImpl implements IndexRegister {
 
   // up to 4095
@@ -13,7 +15,7 @@ public class IndexRegisterImpl implements IndexRegister {
     int capped = (value % 4096);
     this.indexValue = capped;
 
-    System.out.println("Input value " + value + ", actually set to " + capped);
+    Logger.debug("Input value " + value + ", actually set to " + capped);
   }
 
   @Override
@@ -21,7 +23,7 @@ public class IndexRegisterImpl implements IndexRegister {
 //    int capped = (value > 4095) ? 4095
     int capped = ((this.indexValue + value) % 4096);
 
-    System.out.println("Add value " + value + " current " + indexValue + ", actually set to " + capped);
+    Logger.debug("Add value " + value + " current " + indexValue + ", actually set to " + capped);
     this.indexValue = capped;
 
 

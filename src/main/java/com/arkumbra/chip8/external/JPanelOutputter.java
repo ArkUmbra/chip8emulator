@@ -73,14 +73,20 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
   @Override
   public void keyPressed(KeyEvent e) {
     char keyChar = e.getKeyChar();
-    KeyLabel keyLabel = KeyLabel.toKey(keyChar);
-    keyPressListener.keyPressed(keyLabel);
+    KeyLabel keyLabel = InputToKeyLabelMapper.fromKeyboardButton(keyChar);
+
+    if (keyLabel != null) {
+      keyPressListener.keyPressed(keyLabel);
+    }
   }
 
   @Override
   public void keyReleased(KeyEvent e) {
     char keyChar = e.getKeyChar();
-    KeyLabel keyLabel = KeyLabel.toKey(keyChar);
-    keyPressListener.keyReleased(keyLabel);
+    KeyLabel keyLabel = InputToKeyLabelMapper.fromKeyboardButton(keyChar);
+
+    if (keyLabel != null) {
+      keyPressListener.keyReleased(keyLabel);
+    }
   }
 }

@@ -1,5 +1,6 @@
 package com.arkumbra.chip8.opcode.impl;
 
+import com.arkumbra.chip8.Logger;
 import com.arkumbra.chip8.machine.Machine;
 import com.arkumbra.chip8.machine.ProgramCounter;
 import com.arkumbra.chip8.machine.RoutineRunner;
@@ -30,11 +31,11 @@ public class Op2NNN implements OpCode {
 
     // Loop until we hit a return
     OpCodeLabel lastCode;
-    System.out.println("--- Starting sub routine at address" + (int)subroutineAddress);
+    Logger.debug("--- Starting sub routine at address" + (int)subroutineAddress);
     do {
       lastCode = routineRunner.runCycle();
     } while (lastCode != OpCodeLabel.Op00EEReturn);
-    System.out.println("--- Exited sub routine");
+    Logger.debug("--- Exited sub routine");
 
     // Clean our subroutine pointer off the stack
     programCounter.pop();
