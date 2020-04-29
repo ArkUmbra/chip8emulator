@@ -10,6 +10,7 @@ import com.arkumbra.chip8.opcode.OpCode;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
 
 public class Op2NNN implements OpCode {
+  private final Logger logger = new Logger(getClass());
 
   @Override
   public BitMask getBitMask() {
@@ -31,11 +32,11 @@ public class Op2NNN implements OpCode {
 
     // Loop until we hit a return
     OpCodeLabel lastCode;
-    Logger.debug("--- Starting sub routine at address" + (int)subroutineAddress);
+    logger.debug("--- Starting sub routine at address" + (int)subroutineAddress);
     do {
       lastCode = routineRunner.runCycle();
     } while (lastCode != OpCodeLabel.Op00EEReturn);
-    Logger.debug("--- Exited sub routine");
+    logger.debug("--- Exited sub routine");
 
     // Clean our subroutine pointer off the stack
     programCounter.pop();

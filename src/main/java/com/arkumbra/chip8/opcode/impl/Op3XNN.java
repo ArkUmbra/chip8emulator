@@ -23,7 +23,7 @@ public class Op3XNN implements OpCode {
   @Override
   public void execute(char dataRegisterAndData, Machine machine) {
     char dataRegisterRaw = (char)(dataRegisterAndData >> 8);
-    char data = BitMasks.TWO_COL.applyMask(dataRegisterAndData);
+    char data = (char)(dataRegisterAndData & 0xFF);
 
     RegisterLabel registerLabel = RegisterLabel.toKey(dataRegisterRaw);
     DataRegister dataRegister = machine.getRegisters().getRegister(registerLabel);

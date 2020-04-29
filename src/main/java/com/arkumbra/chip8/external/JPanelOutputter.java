@@ -4,6 +4,7 @@ import com.arkumbra.chip8.machine.KeyLabel;
 import com.arkumbra.chip8.machine.KeyPressListener;
 import com.arkumbra.chip8.machine.ScreenMemory;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -18,27 +19,19 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
 
   private ScreenMemory screenMemory;
   private KeyPressListener keyPressListener;
-  private static final Boolean LOCK = Boolean.FALSE;
 
   public JPanelOutputter(KeyPressListener keyPressListener) {
     this.keyPressListener = keyPressListener;
 
-    JFrame frame = new JFrame("Oval Sample");
+    JFrame frame = new JFrame("Chip 8 Emulator");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.add(this);
     frame.setSize(WIDTH, HEIGHT);
     frame.setVisible(true);
     frame.addKeyListener(this);
+    frame.pack();
   }
 
-  @Override
-  public void drawFrame(ScreenMemory screenMemory) {
-//    synchronized (LOCK) {
-      this.screenMemory = screenMemory;
-//    }
-
-    repaint();
-  }
 
   int counter;
   @Override
@@ -47,7 +40,6 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
     g.fillRect(0, 0, WIDTH, HEIGHT);
 
     g.setColor(Color.green);
-//    g.drawOval(0, 0, width, height);
 
     String counterNumber = "" + counter;
     g.drawString(counterNumber, 30, 30);
@@ -89,4 +81,23 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
       keyPressListener.keyReleased(keyLabel);
     }
   }
+
+  @Override
+  public void init(ScreenMemory screenMemory) {
+    this.screenMemory = screenMemory;
+
+    new Thread(new DrawRunner(this)).start();
+  }
+
+  @Override
+  public void drawFrame() {
+    repaint();
+  }
+
+  @Override
+  public Dimension getPreferredSize() {
+    return new Dimension(WIDTH, HEIGHT);
+  }
 }
+
+

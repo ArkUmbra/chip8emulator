@@ -38,6 +38,7 @@ import com.arkumbra.chip8.opcode.impl.OpFX55;
 import com.arkumbra.chip8.opcode.impl.OpFX65;
 
 public class OpCodeLookupImpl implements OpCodeLookup {
+  private final Logger logger = new Logger(getClass());
 
   private OpCode op0NNN = new Op0NNN();
   private OpCode op00E0 = new Op00E0();
@@ -80,7 +81,7 @@ public class OpCodeLookupImpl implements OpCodeLookup {
   @Override
   public OpCode lookup(char rawOpCode) {
     OpCode foundOpCode = doLookup(rawOpCode);
-    Logger.opcodePerCycle(
+    logger.opcodePerCycle(
         "For rawOpCode " + Integer.toHexString(rawOpCode) + " found op " + foundOpCode
             .getOpCodeLabel());
     return foundOpCode;

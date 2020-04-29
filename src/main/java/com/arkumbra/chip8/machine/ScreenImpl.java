@@ -1,8 +1,13 @@
 package com.arkumbra.chip8.machine;
 
 
+import com.arkumbra.chip8.Logger;
+import org.apache.commons.codec.binary.Hex;
+
 public class ScreenImpl implements Screen, ScreenMemory, Dumpable {
+  private final Logger logger = new Logger(getClass());
   private static final int WIDTH = 64;
+//  private static final int OVERFLOW = WIDTH + 4;
   private static final int HEIGHT = 32;
 
   private boolean[][] pixels = new boolean[WIDTH][HEIGHT];
@@ -23,13 +28,13 @@ public class ScreenImpl implements Screen, ScreenMemory, Dumpable {
     for (int i = 0; i < 8; i++) {
       boolean bit = getBitAsBoolean(bitFlagsToDraw, (7 - i));
       boolean flipped = writeBitToScreen(bit, fromX + i, y);
+      logger.debug("Was flipped " + flipped);
       atLeastOnePixelFlipped = atLeastOnePixelFlipped || flipped;
+//      atLeastOnePixelFlipped = atLeastOnePixelFlipped || !bit;
+
     }
 
     return atLeastOnePixelFlipped;
-
-    // TODO rather than asking the screen outputter to draw here, should probably do in reverse
-    //  i.e. get screen outputter to ask screen for memory and output on timer
   }
 
   /**
@@ -40,7 +45,11 @@ public class ScreenImpl implements Screen, ScreenMemory, Dumpable {
    * @return true if screen bit was unset due to this
    */
   private boolean writeBitToScreen(boolean bit, int x, int y) {
-    x = x % WIDTH; // wrap if over width
+//    if (x > WIDTH) return false; // TODO this seems to fix certain things, but not sure...
+
+
+    x %= WIDTH; // wrap if over width
+    y %= HEIGHT;
 
     // unset when pixel was previously on, and this write would turn it off
     boolean unset = pixels[x][y] && !bit;
@@ -49,7 +58,9 @@ public class ScreenImpl implements Screen, ScreenMemory, Dumpable {
     return unset;
   }
 
-  private boolean getBitAsBoolean(byte flags, int pos) {
+  public boolean getBitAsBoolean(byte flags, int pos) {
+//    flags = (byte)(flags & 0b11111111);
+//    logger.debug(Integer.toHexString(flags) + ":" + Integer.toBinaryString(flags));
     int bitFlag = (flags >> pos) & 1;
     return bitFlag > 0;
   }

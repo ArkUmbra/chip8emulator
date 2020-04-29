@@ -27,7 +27,7 @@ public class OpFX65 implements OpCode {
     char regValueToLoadUpTo = (char)((opData & 0xF00) >> 8);
 
     byte[] loaded = machine.getMemory().readBytes(
-        machine.getProgramCounter(), regValueToLoadUpTo + 1);
+        machine.getIndexRegister(), regValueToLoadUpTo + 1);
 
 
     DataRegisters registers = machine.getRegisters();

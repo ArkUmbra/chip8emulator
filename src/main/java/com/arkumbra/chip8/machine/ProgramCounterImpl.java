@@ -8,6 +8,7 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
   private Stack<Counter> stack = new Stack<>();
 
   private boolean skipNextInstruction = false;
+  private boolean setGotoPosition = false;
 
   public ProgramCounterImpl() {
     Counter counter = new Counter();
@@ -16,6 +17,10 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
 
   @Override
   public void increment() {
+    if (setGotoPosition) {
+      setGotoPosition = false;
+      return;
+    }
     Counter counter = stack.peek();
 
     counter.position += (counter.skipNextInstruction) ? 4 : 2;
@@ -38,6 +43,7 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
   @Override
   public void goTo(int position) {
     stack.peek().position = position;
+    this.setGotoPosition = true;
   }
 
   @Override

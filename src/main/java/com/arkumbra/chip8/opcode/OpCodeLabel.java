@@ -17,6 +17,8 @@ public enum OpCodeLabel {
   Op8XY3BitwiseXOR,
   Op8XY4AddCarry,
   Op8XY5MinusBorrow,
+  Op8XY6LeastSigBitInF,
+  Op8XYEMostSigBitInF,
   Op9XY0Skip,
   OpANNNSetI,
   OpBNNNJump,

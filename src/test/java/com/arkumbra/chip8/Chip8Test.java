@@ -27,12 +27,13 @@ public class Chip8Test {
        lastCode = chip8.runCycle();
 //        System.out.println(i++ + " " + lastCode);
       } while (lastCode != OpCodeLabel.Op00EEReturn);
-
+//      } while (lastCode != OpCodeLabel.OpDXYNDraw);
+//
     } catch (Exception e) {
       e.printStackTrace();
     }
 
-    System.out.println(chip8.dump());
+//    System.out.println(chip8.dump());
   }
 
   @Test

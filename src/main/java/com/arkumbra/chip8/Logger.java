@@ -1,13 +1,30 @@
 package com.arkumbra.chip8;
 
-public class Logger {
+import com.arkumbra.chip8.machine.IndexRegisterImpl;
+import com.arkumbra.chip8.machine.ScreenImpl;
+import java.util.Set;
 
-  public static void opcodePerCycle(String msg) {
-    System.out.println(msg);
+public class Logger {
+  private static final Set<Class> disabled = Set.of(IndexRegisterImpl.class, ScreenImpl.class);
+
+  private final Class clazz;
+
+  public Logger(Class clazz) {
+    this.clazz = clazz;
   }
 
-  public static void debug(String msg) {
-//    System.out.println(msg);
+  public void opcodePerCycle(String msg) {
+    print(msg);
+  }
+
+  public void debug(String msg) {
+    if (! disabled.contains(clazz)) {
+      print(msg);
+    }
+  }
+
+  private void print(String msg) {
+    System.out.println(clazz.getName() + " - " + msg);
   }
 
 }

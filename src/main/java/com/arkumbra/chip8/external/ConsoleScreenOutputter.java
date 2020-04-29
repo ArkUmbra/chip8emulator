@@ -9,8 +9,16 @@ public class ConsoleScreenOutputter implements ScreenOutputter {
 
   private static final ProcessBuilder clearProcess = new ProcessBuilder("cmd", "/c", "cls").inheritIO();
 
+  private ScreenMemory screenMemory;
+
   @Override
-  public void drawFrame(ScreenMemory screenMemory) {
+  public void init(ScreenMemory screenMemory) {
+    this.screenMemory = screenMemory;
+
+  }
+
+  @Override
+  public void drawFrame() {
     boolean[][] pixelsToSet = screenMemory.getPixels();
     StringBuffer sb = new StringBuffer();
 
@@ -34,5 +42,6 @@ public class ConsoleScreenOutputter implements ScreenOutputter {
       e.printStackTrace();
     }
   }
+
 
 }
