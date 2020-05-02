@@ -51,7 +51,10 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
     for (int y = 0; y < pixels[0].length; y++) {
       for (int x = 0; x < pixels.length; x++) {
         if (pixels[x][y]) {
+          g.setColor(Color.green);
           g.fillRect(x*PIXELSIZE, y*PIXELSIZE, PIXELSIZE, PIXELSIZE);
+          g.setColor(Color.blue);
+          g.drawString("" + x, x*PIXELSIZE, y*PIXELSIZE);
         }
       }
     }

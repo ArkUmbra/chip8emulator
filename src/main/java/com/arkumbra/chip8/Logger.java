@@ -2,10 +2,15 @@ package com.arkumbra.chip8;
 
 import com.arkumbra.chip8.machine.IndexRegisterImpl;
 import com.arkumbra.chip8.machine.ScreenImpl;
+import com.arkumbra.chip8.opcode.impl.Op2NNN;
 import java.util.Set;
 
 public class Logger {
-  private static final Set<Class> disabled = Set.of(IndexRegisterImpl.class, ScreenImpl.class);
+  private static final Set<Class> disabled = Set.of(
+      IndexRegisterImpl.class,
+      ScreenImpl.class,
+      Op2NNN.class
+  );
 
   private final Class clazz;
 
@@ -14,7 +19,7 @@ public class Logger {
   }
 
   public void opcodePerCycle(String msg) {
-    print(msg);
+//    print(msg);
   }
 
   public void debug(String msg) {

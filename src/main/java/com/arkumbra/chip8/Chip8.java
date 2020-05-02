@@ -85,8 +85,6 @@ public class Chip8 implements RoutineRunner, Dumpable {
 
     pc.increment();
     machine.tick();
-    // TODD Need to stick this on a separate thread, being called too much here...
-//    screenOutputter.drawFrame(machine.getScreenMemoryHandle());
 
     try {
       Thread.sleep(1);
