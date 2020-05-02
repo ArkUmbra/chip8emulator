@@ -23,6 +23,22 @@ public class InputToKeyLabelMapper {
   public static KeyLabel fromKeyboardButton(char inputButton) {
     switch (inputButton) {
       case 'w': return KeyLabel.K1;
+      case 'e': return KeyLabel.K2;
+      case 'r': return KeyLabel.K3;
+      case 's': return KeyLabel.K4;
+      case 'd': return KeyLabel.K5;
+      case 'f': return KeyLabel.K6;
+      case 'x': return KeyLabel.K7;
+      case 'c': return KeyLabel.K8;
+      case 'v': return KeyLabel.K9;
+      case 'z': return KeyLabel.K0;
+
+      case 'y': return KeyLabel.KA;
+      case 'u': return KeyLabel.KB;
+      case 'i': return KeyLabel.KC;
+      case 'h': return KeyLabel.KD;
+      case 'j': return KeyLabel.KE;
+      case 'k': return KeyLabel.KF;
     }
 
     return null;

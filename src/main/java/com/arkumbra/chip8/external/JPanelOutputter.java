@@ -14,8 +14,14 @@ import javax.swing.JPanel;
 public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListener {
 
   private static final int PIXELSIZE = 10;
-  private static final int WIDTH = 64 * PIXELSIZE;
-  private static final int HEIGHT = 32 * PIXELSIZE;
+  private static final int GAME_WIDTH = 64 * PIXELSIZE;
+  private static final int GAME_HEIGHT = 32 * PIXELSIZE;
+
+  private static final int KEY_PRESS_PANEL_WIDTH = 80;
+
+  private static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH + KEY_PRESS_PANEL_WIDTH, GAME_HEIGHT);
+
+
 
   private ScreenMemory screenMemory;
   private KeyPressListener keyPressListener;
@@ -26,7 +32,7 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
     JFrame frame = new JFrame("Chip 8 Emulator");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.add(this);
-    frame.setSize(WIDTH, HEIGHT);
+    frame.setSize(SCREEN_SIZE);
     frame.setVisible(true);
     frame.addKeyListener(this);
     frame.pack();
@@ -37,7 +43,7 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
   @Override
   public void paintComponent(Graphics g) {
     g.setColor(Color.black);
-    g.fillRect(0, 0, WIDTH, HEIGHT);
+    g.fillRect(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height);
 
     g.setColor(Color.green);
 
@@ -53,9 +59,44 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
         if (pixels[x][y]) {
           g.setColor(Color.green);
           g.fillRect(x*PIXELSIZE, y*PIXELSIZE, PIXELSIZE, PIXELSIZE);
-          g.setColor(Color.blue);
-          g.drawString("" + x, x*PIXELSIZE, y*PIXELSIZE);
+//          g.setColor(Color.blue);
+//          g.drawString("" + x, x*PIXELSIZE, y*PIXELSIZE);
         }
+      }
+    }
+
+    drawPressedKeys(g);
+  }
+
+  private void drawPressedKeys(Graphics g) {
+    int i = 0;
+    int col = 0;
+    int row = 0;
+    int startX = GAME_WIDTH + 20;
+    int startY = 10;
+    int columnWidth = 30;
+    int columnHeight = 30;
+    int boxSize = 20;
+
+    for (KeyLabel keyLabel : KeyLabel.values()) {
+      boolean isPressed = keyPressListener.isPressed(keyLabel);
+
+      int xPos = startX + (col * columnWidth);
+      int yPos = startY + (row * columnHeight);
+
+      g.setColor(Color.blue);
+      g.drawRect(xPos, yPos, boxSize, boxSize);
+      g.setColor((isPressed) ? Color.green : Color.black);
+      g.fillRect(xPos + 1, yPos + 1, boxSize - 2, boxSize - 2);
+
+      g.setColor((isPressed) ? Color.black : Color.blue);
+      g.drawString(keyLabel.getKeyName(), xPos + 8, yPos + 15);
+
+      i++;
+      row++;
+      if (i == 7) {
+        row = 0;
+        col = 1;
       }
     }
   }
@@ -99,7 +140,7 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
 
   @Override
   public Dimension getPreferredSize() {
-    return new Dimension(WIDTH, HEIGHT);
+    return SCREEN_SIZE;
   }
 }
 

@@ -68,10 +68,12 @@ public class ScreenImpl implements Screen, ScreenMemory, Dumpable {
     x %= WIDTH; // wrap if over width
 //    y %= HEIGHT;
 
+    boolean set = pixels[x][y] != bit;
 
     // unset when pixel was previously on, and this write would turn it off
-    boolean unset = pixels[x][y] && !bit;
-    pixels[x][y] = bit;
+//    boolean unset = pixels[x][y] && !bit;
+    boolean unset = pixels[x][y] && !set;
+    pixels[x][y] = set;
 
 //    return bit;
     return unset;

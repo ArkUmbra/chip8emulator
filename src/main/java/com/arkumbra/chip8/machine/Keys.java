@@ -1,6 +1,6 @@
 package com.arkumbra.chip8.machine;
 
-public interface Keys {
+public interface Keys extends KeyPressListener {
 
   public Key getKey(KeyLabel keyLabel);
 

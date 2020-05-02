@@ -27,5 +27,7 @@ public class DataRegisterImpl implements DataRegister {
 //    while (registerContents > 255) {
 //      this.registerContents = (char) -255;
 //    }
+
+    this.registerContents %= 255;
   }
 }

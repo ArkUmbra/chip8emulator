@@ -31,7 +31,7 @@ public class Chip8 implements RoutineRunner, Dumpable {
 
   public Chip8() {
     this.machine = new MachineImpl(this);
-    this.screenOutputter = new JPanelOutputter(machine);
+    this.screenOutputter = new JPanelOutputter(machine.getKeys());
   }
 
   public void start(String gameFilePath) {

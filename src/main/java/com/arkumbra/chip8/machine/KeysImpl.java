@@ -17,7 +17,7 @@ import java.util.Map;
  *  Z X C V
  *
  **/
-public class KeysImpl implements Keys, KeyPressListener {
+public class KeysImpl implements Keys {
 
   private final Map<KeyLabel, KeyImpl> keys = new HashMap<>();
 
@@ -66,6 +66,11 @@ public class KeysImpl implements Keys, KeyPressListener {
         }
       }
     }
+  }
+
+  @Override
+  public boolean isPressed(KeyLabel keyLabel) {
+    return getKey(keyLabel).isPressed();
   }
 
   @Override

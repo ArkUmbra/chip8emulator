@@ -2,7 +2,7 @@ package com.arkumbra.chip8.machine;
 
 import com.arkumbra.chip8.Memory;
 
-public class MachineImpl implements Machine, KeyPressListener, Dumpable {
+public class MachineImpl implements Machine, Dumpable {
 
   private final RoutineRunner routineRunner;
   private final ScreenImpl screen;
@@ -93,16 +93,6 @@ public class MachineImpl implements Machine, KeyPressListener, Dumpable {
   public void tick() {
     delayTimer.tick();
     soundTimer.tick();
-  }
-
-  @Override
-  public void keyPressed(KeyLabel keyLabel) {
-    keys.keyPressed(keyLabel);
-  }
-
-  @Override
-  public void keyReleased(KeyLabel keyLabel) {
-    keys.keyReleased(keyLabel);
   }
 
   @Override
