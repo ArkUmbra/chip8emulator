@@ -35,7 +35,7 @@ public class OpDXYNTest {
 
     when(machineMock.getProgramCounter().getPosition())
         .thenReturn(currentMemoryLocation);
-    when(machineMock.getMemory().readBytes(machineMock.getProgramCounter(), 1))
+    when(machineMock.getMemory().readBytes(machineMock.getIndexRegister(), 1))
         .thenReturn(new byte[]{memoryContentAtI});
 
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
@@ -56,7 +56,7 @@ public class OpDXYNTest {
 
     when(machineMock.getProgramCounter().getPosition())
         .thenReturn(currentMemoryLocation);
-    when(machineMock.getMemory().readBytes(machineMock.getProgramCounter(), 2))
+    when(machineMock.getMemory().readBytes(machineMock.getIndexRegister(), 2))
         .thenReturn(new byte[]{memoryContentAtIRow1, memoryContentAtIRow2});
 
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);

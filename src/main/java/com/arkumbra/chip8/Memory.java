@@ -2,6 +2,7 @@ package com.arkumbra.chip8;
 
 import com.arkumbra.chip8.machine.Dumpable;
 import com.arkumbra.chip8.machine.Font;
+import com.arkumbra.chip8.machine.IndexRegister;
 import com.arkumbra.chip8.machine.ProgramCounter;
 
 public interface Memory extends Dumpable {
@@ -14,6 +15,6 @@ public interface Memory extends Dumpable {
 
   void write(int fromIndex, byte[] toWrite);
 
-  byte[] readBytes(ProgramCounter programCounter, int bytesToRead);
+  byte[] readBytes(IndexRegister indexRegister, int bytesToRead);
 
 }

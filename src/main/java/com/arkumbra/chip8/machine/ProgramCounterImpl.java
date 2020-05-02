@@ -8,6 +8,7 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
   private Stack<Counter> stack = new Stack<>();
 
   private boolean skipNextInstruction = false;
+  private boolean setGotoPosition = false;
 
   public ProgramCounterImpl() {
     Counter counter = new Counter();
@@ -16,17 +17,21 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
 
   @Override
   public void increment() {
-    Counter counter = stack.peek();
+    if (setGotoPosition) {
+      setGotoPosition = false;
+      return;
+    }
 
-    counter.position += (counter.skipNextInstruction) ? 4 : 2;
+    Counter counter = stack.peek();
+    counter.position += (this.skipNextInstruction) ? 4 : 2;
 //    counter.position += (this.skipNextInstruction) ? 4 : 2;
 //    this.skipNextInstruction = false;
-    counter.skipNextInstruction = false;
+    this.skipNextInstruction = false;
   }
 
   @Override
   public void skipNextInstruction() {
-    stack.peek().skipNextInstruction = true;
+    this.skipNextInstruction = true;
 //    this.skipNextInstruction = true;
   }
 
@@ -38,6 +43,7 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
   @Override
   public void goTo(int position) {
     stack.peek().position = position;
+    this.setGotoPosition = true;
   }
 
   @Override
@@ -59,7 +65,7 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
 
   class Counter {
     public int position = MemoryImpl.RESERVED;
-    public boolean skipNextInstruction = false;
+//    public boolean skipNextInstruction = false;
 
     @Override
     public String toString() {

@@ -2,12 +2,14 @@ package com.arkumbra.chip8;
 
 import com.arkumbra.chip8.machine.Font;
 import com.arkumbra.chip8.machine.FontLabel;
+import com.arkumbra.chip8.machine.IndexRegister;
 import com.arkumbra.chip8.machine.ProgramCounter;
 import java.util.Arrays;
 import org.apache.commons.codec.binary.Hex;
 
 public class MemoryImpl implements Memory {
-
+  private final Logger logger = new Logger(getClass());
+  private static final int CAPACITY = 0x1000;
   // first 512 bytes are reserved. Add game memory in after that
   public static final int RESERVED = 512;
 
@@ -23,23 +25,22 @@ public class MemoryImpl implements Memory {
     }
 
     // DEBUG
-    for (FontLabel fontLabel : FontLabel.values()) {
-      int address = font.getAddress(fontLabel);
-      System.out.println("Font character " + fontLabel.name() + " stored at " + address);
-    }
+//    for (FontLabel fontLabel : FontLabel.values()) {
+//      int address = font.getAddress(fontLabel);
+//      logger.debug("Font character " + fontLabel.name() + " stored at " + address);
+//    }
   }
 
   @Override
   public void load(byte[] gameRom) {
-    // font data etc..
-//    byte[] combinedMemory = new byte[RESERVED + gameRom.length];
-    byte[] combinedMemory = new byte[RESERVED + gameRom.length + 1];
+    logger.debug("Game length in bytes " + gameRom.length);
+    byte[] combinedMemory = new byte[CAPACITY];
 
     System.arraycopy(gameRom, 0,
         combinedMemory, RESERVED, gameRom.length);
     this.memory = combinedMemory;
 
-    System.out.println("Game rom of " + gameRom.length + ", total memory size " + memory.length);
+    logger.debug("Game rom of " + gameRom.length + ", total memory size " + memory.length);
   }
 
   @Override
@@ -67,8 +68,8 @@ public class MemoryImpl implements Memory {
   }
 
   @Override
-  public byte[] readBytes(ProgramCounter programCounter, int bytesToRead) {
-    int start = programCounter.getPosition();
+  public byte[] readBytes(IndexRegister indexRegister, int bytesToRead) {
+    int start = indexRegister.get();
     return Arrays.copyOfRange(memory, start, start + bytesToRead);
   }
 

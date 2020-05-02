@@ -1,31 +1,26 @@
 package com.arkumbra.chip8.machine;
 
+import com.arkumbra.chip8.Logger;
+
 public class IndexRegisterImpl implements IndexRegister {
+  private final Logger logger = new Logger(getClass());
 
   // up to 4095
   private int indexValue;
 
   @Override
   public void set(int value) {
-//    this.indexValue = value;
-//    this.indexValue = (value & 0xFFF);
+    this.indexValue = (value % 4096);
 
-    int capped = (value % 4096);
-    this.indexValue = capped;
-
-    System.out.println("Input value " + value + ", actually set to " + capped);
+    logger.debug("Input value " + value + ", actually set to " + indexValue);
   }
 
   @Override
   public boolean add(int value) {
-//    int capped = (value > 4095) ? 4095
-    int capped = ((this.indexValue + value) % 4096);
+    this.indexValue = ((this.indexValue + value) % 4096);
+    logger.debug("Add value " + value + " actually set to " + indexValue);
 
-    System.out.println("Add value " + value + " current " + indexValue + ", actually set to " + capped);
-    this.indexValue = capped;
-
-
-    return value != capped;
+    return indexValue != value;
   }
 
   @Override
