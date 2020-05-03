@@ -19,12 +19,12 @@ public class Logger {
   }
 
   public void opcodePerCycle(String msg) {
-//    print(msg);
+    print(msg);
   }
 
   public void debug(String msg) {
     if (! disabled.contains(clazz)) {
-      print(msg);
+//      print(msg);
     }
   }
 

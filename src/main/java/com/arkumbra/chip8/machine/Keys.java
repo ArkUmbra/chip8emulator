@@ -2,7 +2,7 @@ package com.arkumbra.chip8.machine;
 
 public interface Keys extends KeyPressListener {
 
-  public Key getKey(KeyLabel keyLabel);
+  Key getKey(KeyLabel keyLabel);
 
   /**
    * Blocks until next key is pressed

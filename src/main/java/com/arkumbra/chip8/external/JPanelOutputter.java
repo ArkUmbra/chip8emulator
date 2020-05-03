@@ -18,6 +18,11 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
   private static final int GAME_HEIGHT = 32 * PIXELSIZE;
 
   private static final int KEY_PRESS_PANEL_WIDTH = 80;
+  private static final int KEYPRESS_AREA_STARTX = GAME_WIDTH + 20;
+  private static final int KEYPRESS_AREA_STARTY = 10;
+  private static final int KEYPRESS_AREA_START_COLUMN_WIDTH = 30;
+  private static final int KEYPRESS_AREA_START_COLUMN_HEIGHT = 30;
+  private static final int KEYPRESS_AREA_START_BOX_SIZE = 20;
 
   private static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH + KEY_PRESS_PANEL_WIDTH, GAME_HEIGHT);
 
@@ -38,56 +43,44 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
     frame.pack();
   }
 
-
-  int counter;
+  
   @Override
   public void paintComponent(Graphics g) {
     g.setColor(Color.black);
     g.fillRect(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height);
 
-    g.setColor(Color.green);
+    drawGameArea(g);
+    drawPressedKeysArea(g);
+  }
 
-    String counterNumber = "" + counter;
-    g.drawString(counterNumber, 30, 30);
-    counter++;
-
-
+  private void drawGameArea(Graphics g) {
     boolean[][] pixels = screenMemory.getPixels();
 
+    g.setColor(Color.green);
     for (int y = 0; y < pixels[0].length; y++) {
       for (int x = 0; x < pixels.length; x++) {
         if (pixels[x][y]) {
-          g.setColor(Color.green);
           g.fillRect(x*PIXELSIZE, y*PIXELSIZE, PIXELSIZE, PIXELSIZE);
-//          g.setColor(Color.blue);
-//          g.drawString("" + x, x*PIXELSIZE, y*PIXELSIZE);
         }
       }
     }
-
-    drawPressedKeys(g);
   }
 
-  private void drawPressedKeys(Graphics g) {
+  private void drawPressedKeysArea(Graphics g) {
     int i = 0;
-    int col = 0;
-    int row = 0;
-    int startX = GAME_WIDTH + 20;
-    int startY = 10;
-    int columnWidth = 30;
-    int columnHeight = 30;
-    int boxSize = 20;
-
+    int col = 0, row = 0;
+    
     for (KeyLabel keyLabel : KeyLabel.values()) {
       boolean isPressed = keyPressListener.isPressed(keyLabel);
 
-      int xPos = startX + (col * columnWidth);
-      int yPos = startY + (row * columnHeight);
+      int xPos = KEYPRESS_AREA_STARTX + (col * KEYPRESS_AREA_START_COLUMN_WIDTH);
+      int yPos = KEYPRESS_AREA_STARTY + (row * KEYPRESS_AREA_START_COLUMN_HEIGHT);
 
       g.setColor(Color.blue);
-      g.drawRect(xPos, yPos, boxSize, boxSize);
+      g.drawRect(xPos, yPos, KEYPRESS_AREA_START_BOX_SIZE, KEYPRESS_AREA_START_BOX_SIZE);
       g.setColor((isPressed) ? Color.green : Color.black);
-      g.fillRect(xPos + 1, yPos + 1, boxSize - 2, boxSize - 2);
+      g.fillRect(xPos + 1, yPos + 1, KEYPRESS_AREA_START_BOX_SIZE - 2, KEYPRESS_AREA_START_BOX_SIZE
+          - 2);
 
       g.setColor((isPressed) ? Color.black : Color.blue);
       g.drawString(keyLabel.getKeyName(), xPos + 8, yPos + 15);

@@ -15,7 +15,6 @@ public class ScreenImpl implements Screen, ScreenMemory, Dumpable {
   private static final List<int[]> breakpointPixels = List.of(
       new int[]{0, 1}
       ,new int[]{0, 2}
-//      ,new int[]{60, 1}
   );
 
   private boolean[][] pixels = new boolean[WIDTH][HEIGHT];
@@ -48,7 +47,6 @@ public class ScreenImpl implements Screen, ScreenMemory, Dumpable {
       boolean flipped = writeBitToScreen(bit, fromX + i, y);
       logger.debug("Was flipped " + flipped);
       atLeastOnePixelFlipped = atLeastOnePixelFlipped || flipped;
-//      atLeastOnePixelFlipped = atLeastOnePixelFlipped || !bit;
     }
 
     return atLeastOnePixelFlipped;
@@ -62,26 +60,24 @@ public class ScreenImpl implements Screen, ScreenMemory, Dumpable {
    * @return true if screen bit was unset due to this
    */
   private boolean writeBitToScreen(boolean bit, int x, int y) {
-    //if (x > WIDTH) return false; // TODO this seems to fix certain things, but not sure...
-
-
     x %= WIDTH; // wrap if over width
-//    y %= HEIGHT;
+    y %= HEIGHT;
 
+    boolean startState = pixels[x][y];
+
+    // XOR
     boolean set = pixels[x][y] != bit;
 
-    // unset when pixel was previously on, and this write would turn it off
 //    boolean unset = pixels[x][y] && !bit;
-    boolean unset = pixels[x][y] && !set;
+//    boolean unset = pixels[x][y] && !set;
     pixels[x][y] = set;
 
 //    return bit;
-    return unset;
+    return startState && !set;
+//    return unset;
   }
 
   public boolean getBitAsBoolean(byte flags, int pos) {
-//    flags = (byte)(flags & 0b11111111);
-//    logger.debug(Integer.toHexString(flags) + ":" + Integer.toBinaryString(flags));
     int bitFlag = (flags >> pos) & 1;
     return bitFlag > 0;
   }
