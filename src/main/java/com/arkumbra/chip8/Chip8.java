@@ -1,5 +1,6 @@
 package com.arkumbra.chip8;
 
+import com.arkumbra.chip8.external.DebugPanel;
 import com.arkumbra.chip8.external.JPanelOutputter;
 import com.arkumbra.chip8.external.ScreenOutputter;
 import com.arkumbra.chip8.machine.Dumpable;
@@ -26,12 +27,20 @@ public class Chip8 implements RoutineRunner, Dumpable {
 
   private MachineImpl machine;
   private ScreenOutputter screenOutputter;
+  private DebugPanel debugPanel;
 
   private LinkedList<String> commandExecutionOrder = new LinkedList<>();
 
   public Chip8() {
     this.machine = new MachineImpl(this);
     this.screenOutputter = new JPanelOutputter(machine.getKeys());
+
+    this.debugPanel = new DebugPanel(
+        machine.getRegisters(),
+        machine.getProgramCounter(),
+        machine.getSoundTimer(),
+        machine.getDelayTimer()
+    );
   }
 
   public void start(String gameFilePath) {
@@ -81,10 +90,13 @@ public class Chip8 implements RoutineRunner, Dumpable {
 //      System.out.println(dump());
 //    }
 
+//    pc.increment();
+
     opCode.execute(opData, machine);
 
     pc.increment();
     machine.tick();
+    debugPanel.tick();
 
     try {
       Thread.sleep(1);

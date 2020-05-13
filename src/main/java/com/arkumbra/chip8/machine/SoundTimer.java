@@ -1,10 +1,7 @@
 package com.arkumbra.chip8.machine;
 
-import java.awt.Toolkit;
 
-public class SoundTimer implements Timer, TickUpdateable {
-
-  private char value = 0;
+public class SoundTimer extends BaseTimer {
 
   private SoundOutputter soundOutputter;
 
@@ -13,20 +10,9 @@ public class SoundTimer implements Timer, TickUpdateable {
   }
 
   @Override
-  public char getCurrentValue() {
-    return value;
-  }
-
-  @Override
-  public void set(char value) {
-    this.value = value;
-  }
-
-  @Override
   public void tick() {
-    if (value > 0) {
+    if (getCurrentValue() > 0) {
       soundOutputter.beep();
-      value--;
     }
   }
 

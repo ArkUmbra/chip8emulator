@@ -11,4 +11,8 @@ public interface ProgramCounter {
   void push(int val);
   void pop();
 
+  // for debugger
+  void toggleFreezeExecution();
+  void step();
+
 }

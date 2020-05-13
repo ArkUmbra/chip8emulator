@@ -12,10 +12,11 @@ public class Chip8Test {
   public void test() {
 //    String relativePath = "src/main/resources/INVADERS.ch8";
 //    String relativePath = "src/main/resources/Airplane.ch8";
-    String relativePath = "src/main/resources/15 Puzzle [Roger Ivie].ch8";
-//    String relativePath = "src/main/resources/BLINKY.ch8";
+//    String relativePath = "src/main/resources/15 Puzzle [Roger Ivie].ch8";
+    String relativePath = "src/main/resources/BLINKY.ch8";
 //    String relativePath = "src/main/resources/Deflection [John Fort].ch8";
 //    String relativePath = "src/main/resources/Hi-Lo [Jef Winsor, 1978].ch8";
+//    String relativePath = "src/main/resources/TANK.ch8";
     String absolutePath = new File(relativePath).getAbsolutePath();
 
     Chip8 chip8 = new Chip8();

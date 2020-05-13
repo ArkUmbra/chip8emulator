@@ -7,8 +7,10 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
 
   private Stack<Counter> stack = new Stack<>();
 
+  private Breakpoint breakpoint = new Breakpoint();
   private boolean skipNextInstruction = false;
   private boolean setGotoPosition = false;
+  private boolean doSingleStep = false;
 
   public ProgramCounterImpl() {
     Counter counter = new Counter();
@@ -17,6 +19,10 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
 
   @Override
   public void increment() {
+    if (breakpoint.isBreakpointActive()) {
+      breakpoint.blockUntilBreakpointUnset();
+    }
+
     if (setGotoPosition) {
       setGotoPosition = false;
       return;
@@ -24,9 +30,11 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
 
     Counter counter = stack.peek();
     counter.position += (this.skipNextInstruction) ? 4 : 2;
-//    counter.position += (this.skipNextInstruction) ? 4 : 2;
-//    this.skipNextInstruction = false;
     this.skipNextInstruction = false;
+
+    if (isDoSingleStep()) {
+      breakpoint.freeze();
+    }
   }
 
   @Override
@@ -59,13 +67,39 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
   }
 
   @Override
+  public void toggleFreezeExecution() {
+    breakpoint.toggleFreeze();
+  }
+
+
+  @Override
+  public void step() {
+    synchronized (this) {
+      this.doSingleStep = true;
+    }
+  }
+
+  private void disableSingleStep() {
+    synchronized (this) {
+      this.doSingleStep = false;
+    }
+  }
+
+  private boolean isDoSingleStep() {
+    synchronized (this) {
+      return doSingleStep;
+    }
+  }
+
+
+
+  @Override
   public String dump() {
     return stack.toString();
   }
 
   class Counter {
-    public int position = MemoryImpl.RESERVED;
-//    public boolean skipNextInstruction = false;
+    private int position = MemoryImpl.RESERVED;
 
     @Override
     public String toString() {
@@ -74,6 +108,49 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
       sb.append(", skipNextInstruction=").append(skipNextInstruction);
       sb.append('}');
       return sb.toString();
+    }
+  }
+
+  class Breakpoint {
+    private boolean pauseExecution = false;
+
+    void toggleFreeze() {
+      synchronized (this) {
+        this.pauseExecution = !pauseExecution;
+      }
+    }
+
+    void freeze() {
+      synchronized (this) {
+        this.pauseExecution = true;
+      }
+    }
+
+    void unfreeze() {
+      synchronized (this) {
+        this.pauseExecution = false;
+      }
+    }
+
+    boolean isBreakpointActive() {
+      return pauseExecution;
+    }
+
+    void blockUntilBreakpointUnset() {
+
+      while (true) {
+        synchronized (this) {
+          if (! pauseExecution) {
+            break;
+          }
+        }
+
+        try {
+          Thread.sleep(100);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
     }
   }
 }
