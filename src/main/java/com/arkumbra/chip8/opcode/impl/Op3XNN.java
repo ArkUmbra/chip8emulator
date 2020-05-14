@@ -30,6 +30,17 @@ public class Op3XNN implements OpCode {
 
     char valueInRegister = dataRegister.get();
 
+
+    String sDataRegisterRaw = Integer.toHexString(dataRegisterRaw);
+    String sDataRaw = Integer.toHexString(data);
+    String sInput = Integer.toHexString(dataRegisterAndData);
+    String sData = Integer.toHexString(valueInRegister);
+
+    if (dataRegisterAndData == 0xd0a) {
+      System.out.println(sData);
+    }
+
+
     if (data == valueInRegister) {
       machine.getProgramCounter().skipNextInstruction();
     }

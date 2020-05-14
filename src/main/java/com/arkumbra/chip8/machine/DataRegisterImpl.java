@@ -23,6 +23,6 @@ public class DataRegisterImpl implements DataRegister {
 
   private void capValue() {
     // Make sure the contents stay capped within the expected 8 bits of the original Chip8 register
-    this.registerContents %= 255;
+    this.registerContents %= 256;
   }
 }

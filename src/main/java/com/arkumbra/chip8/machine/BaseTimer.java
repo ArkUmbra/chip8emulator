@@ -1,7 +1,7 @@
 package com.arkumbra.chip8.machine;
 
 public class BaseTimer implements Timer {
-  private final int COUNT_RATE_HERTZ = 60;
+  private final int COUNT_RATE_HERTZ = 30;
   private final int MS_PER_COUNT = 1000 / COUNT_RATE_HERTZ;
 
   private char inputTimerValue;

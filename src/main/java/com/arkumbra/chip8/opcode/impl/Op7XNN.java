@@ -25,6 +25,10 @@ public class Op7XNN implements OpCode {
   public void execute(char dataRegisterAndData, Machine machine) {
     char dataRegisterRaw = (char)(dataRegisterAndData >> 8); // get left byte
     char dataRaw = (char)(dataRegisterAndData & 0x0FF); // get right byte
+    String sDataRegisterRaw = Integer.toHexString(dataRegisterRaw);
+    String sDataRaw = Integer.toHexString(dataRaw);
+    String sInput = Integer.toHexString(dataRegisterAndData);
+
 
     DataRegisters registers = machine.getRegisters();
     DataRegister dataRegister = registers.getRegister(RegisterLabel.toKey(dataRegisterRaw));
