@@ -31,9 +31,9 @@ public class Chip8 implements RoutineRunner, Dumpable {
 
   private LinkedList<String> commandExecutionOrder = new LinkedList<>();
 
-  public Chip8() {
+  public Chip8(ScreenOutputter screenOutputter) {
     this.machine = new MachineImpl(this);
-    this.screenOutputter = new JPanelOutputter(machine.getKeys());
+    this.screenOutputter = screenOutputter;
 
     this.debugPanel = new DebugPanel(
         machine.getRegisters(),
@@ -55,7 +55,7 @@ public class Chip8 implements RoutineRunner, Dumpable {
     }
 
 //    logger.debug(dump());
-    screenOutputter.init(machine.getScreenMemoryHandle());
+    screenOutputter.init(machine.getScreenMemoryHandle(), machine.getKeys());
   }
 
   /**

@@ -1,5 +1,6 @@
 package com.arkumbra.chip8.external;
 
+import com.arkumbra.chip8.machine.KeyPressListener;
 import com.arkumbra.chip8.machine.ScreenMemory;
 import java.io.IOException;
 
@@ -12,7 +13,7 @@ public class ConsoleScreenOutputter implements ScreenOutputter {
   private ScreenMemory screenMemory;
 
   @Override
-  public void init(ScreenMemory screenMemory) {
+  public void init(ScreenMemory screenMemory, KeyPressListener keyPressListener) {
     this.screenMemory = screenMemory;
 
   }

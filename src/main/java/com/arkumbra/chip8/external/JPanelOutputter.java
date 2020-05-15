@@ -31,9 +31,7 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
   private ScreenMemory screenMemory;
   private KeyPressListener keyPressListener;
 
-  public JPanelOutputter(KeyPressListener keyPressListener) {
-    this.keyPressListener = keyPressListener;
-
+  public JPanelOutputter() {
     JFrame frame = new JFrame("Chip 8 Emulator");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.add(this);
@@ -120,8 +118,9 @@ public class JPanelOutputter extends JPanel implements ScreenOutputter, KeyListe
   }
 
   @Override
-  public void init(ScreenMemory screenMemory) {
+  public void init(ScreenMemory screenMemory, KeyPressListener keyPressListener) {
     this.screenMemory = screenMemory;
+    this.keyPressListener = keyPressListener;
 
     new Thread(new DrawRunner(this)).start();
   }

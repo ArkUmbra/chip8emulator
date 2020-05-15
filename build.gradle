@@ -15,6 +15,9 @@ repositories {
 dependencies {
     compile 'commons-codec:commons-codec:1.14'
 
+//    implementation 'com.raylib.jaylib:raylibj:v3.0.0-rc5'
+    implementation files('libs/jaylib.jar')
+
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
 
