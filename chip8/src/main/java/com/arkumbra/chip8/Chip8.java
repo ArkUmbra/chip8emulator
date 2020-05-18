@@ -43,7 +43,7 @@ public class Chip8 implements RoutineRunner, Dumpable {
     );
   }
 
-  public void start(String gameFilePath) {
+  public void loadGame(String gameFilePath) {
 
     GameLoader gameLoader = new GameLoader();
     try {
@@ -58,12 +58,31 @@ public class Chip8 implements RoutineRunner, Dumpable {
     screenOutputter.init(machine.getScreenMemoryHandle(), machine.getKeys());
   }
 
+  public void runAsync() {
+    Runnable gameRunner = new Runnable() {
+      @Override
+      public void run() {
+        try {
+          OpCodeLabel lastCode;
+          do {
+            lastCode = runSingleCycle();
+          } while (lastCode != OpCodeLabel.Op00EEReturn);
+
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    };
+
+    new Thread(gameRunner).start();
+  }
+
   /**
    *
    * @return Executed opcode
    */
   @Override
-  public OpCodeLabel runCycle() {
+  public OpCodeLabel runSingleCycle() {
     Memory memory = machine.getMemory();
     ProgramCounter pc = machine.getProgramCounter();
 

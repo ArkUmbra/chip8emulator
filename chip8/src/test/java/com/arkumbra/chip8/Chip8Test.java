@@ -1,11 +1,9 @@
 package com.arkumbra.chip8;
 
 import com.arkumbra.chip8.external.JPanelOutputter;
-import com.arkumbra.chip8.external.RaylibOuputter;
 import com.arkumbra.chip8.external.ScreenOutputter;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
 import java.io.File;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class Chip8Test {
@@ -26,13 +24,13 @@ public class Chip8Test {
     ScreenOutputter outputter = new JPanelOutputter();
 //    RaylibOuputter outputter = new RaylibOuputter();
     Chip8 chip8 = new Chip8(outputter);
-    chip8.start(absolutePath);
+    chip8.loadGame(absolutePath);
 
     try {
       OpCodeLabel lastCode;
       int i = 0;
       do {
-       lastCode = chip8.runCycle();
+       lastCode = chip8.runSingleCycle();
 //        System.out.println(i++ + " " + lastCode);
       } while (lastCode != OpCodeLabel.Op00EEReturn);
 //      } while (lastCode != OpCodeLabel.OpDXYNDraw);

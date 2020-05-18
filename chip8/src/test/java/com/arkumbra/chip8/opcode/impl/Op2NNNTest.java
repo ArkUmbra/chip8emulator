@@ -26,7 +26,7 @@ public class Op2NNNTest {
     char inputOpCode = 0xABCD;
     char expectedPushAddress = 0xBCD;
 
-    when(machineMock.getRoutineRunner().runCycle())
+    when(machineMock.getRoutineRunner().runSingleCycle())
         .thenReturn(OpCodeLabel.Op00EEReturn);
 
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
@@ -34,7 +34,7 @@ public class Op2NNNTest {
 
     verify(machineMock.getProgramCounter(), times(1)).push(expectedPushAddress);
     verify(machineMock.getProgramCounter(), times(1)).pop();
-    verify(machineMock.getRoutineRunner(), times(1)).runCycle();
+    verify(machineMock.getRoutineRunner(), times(1)).runSingleCycle();
   }
 
 }

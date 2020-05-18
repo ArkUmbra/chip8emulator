@@ -9,8 +9,7 @@ import org.apache.commons.codec.binary.Hex;
 
 public class ScreenImpl implements Screen, ScreenMemory, Dumpable {
   private final Logger logger = new Logger(getClass());
-  private static final int WIDTH = 64;
-  private static final int HEIGHT = 32;
+
 
   private static final List<int[]> breakpointPixels = List.of(
       new int[]{0, 1}

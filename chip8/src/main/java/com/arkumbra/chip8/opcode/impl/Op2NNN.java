@@ -34,7 +34,7 @@ public class Op2NNN implements OpCode {
     OpCodeLabel lastCode;
     logger.debug("--- Starting sub routine at address" + (int)subroutineAddress);
     do {
-      lastCode = routineRunner.runCycle();
+      lastCode = routineRunner.runSingleCycle();
     } while (lastCode != OpCodeLabel.Op00EEReturn);
     logger.debug("--- Exited sub routine");
 
