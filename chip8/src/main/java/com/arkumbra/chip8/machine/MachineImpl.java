@@ -16,7 +16,7 @@ public class MachineImpl implements Machine, Dumpable {
   private Memory memory;
 
 
-  public MachineImpl(RoutineRunner routineRunner) {
+  public MachineImpl(RoutineRunner routineRunner, SoundOutputter soundOutputter) {
     this.routineRunner = routineRunner;
     this.screen = new ScreenImpl();
     this.programCounter = new ProgramCounterImpl();
@@ -25,7 +25,7 @@ public class MachineImpl implements Machine, Dumpable {
     this.keys = new KeysImpl();
     this.delayTimer = new DelayTimer();
     // TODO
-    this.soundTimer = new SoundTimer(new SoundOutputter());
+    this.soundTimer = new SoundTimer(soundOutputter);
     this.font = new FontImpl();
   }
 

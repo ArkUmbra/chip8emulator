@@ -2,6 +2,7 @@ package com.arkumbra.startchip8.gdx;
 
 import com.arkumbra.chip8.machine.KeyLabel;
 import com.arkumbra.chip8.machine.KeyPressListener;
+import com.arkumbra.startchip8.gdx.chip8.GdxInputToKeyLabelMapper;
 import com.badlogic.gdx.InputAdapter;
 
 public class GdxInputProcessor extends InputAdapter {

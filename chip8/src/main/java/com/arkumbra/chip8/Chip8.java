@@ -8,6 +8,7 @@ import com.arkumbra.chip8.machine.Machine;
 import com.arkumbra.chip8.machine.MachineImpl;
 import com.arkumbra.chip8.machine.ProgramCounter;
 import com.arkumbra.chip8.machine.RoutineRunner;
+import com.arkumbra.chip8.machine.SoundOutputter;
 import com.arkumbra.chip8.opcode.OpCode;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
 import com.arkumbra.chip8.opcode.OpCodeLookup;
@@ -31,8 +32,8 @@ public class Chip8 implements RoutineRunner, Dumpable {
 
   private LinkedList<String> commandExecutionOrder = new LinkedList<>();
 
-  public Chip8(ScreenOutputter screenOutputter) {
-    this.machine = new MachineImpl(this);
+  public Chip8(ScreenOutputter screenOutputter, SoundOutputter soundOutputter) {
+    this.machine = new MachineImpl(this, soundOutputter);
     this.screenOutputter = screenOutputter;
 
     this.debugPanel = new DebugPanel(

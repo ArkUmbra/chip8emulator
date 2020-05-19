@@ -1,4 +1,4 @@
-package com.arkumbra.startchip8.gdx;
+package com.arkumbra.startchip8.gdx.chip8;
 
 import com.arkumbra.chip8.machine.KeyLabel;
 import com.badlogic.gdx.Input.Keys;

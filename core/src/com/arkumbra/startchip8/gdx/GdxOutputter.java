@@ -5,6 +5,8 @@ import com.arkumbra.chip8.Chip8;
 import com.arkumbra.chip8.external.ScreenOutputter;
 import com.arkumbra.chip8.machine.KeyPressListener;
 import com.arkumbra.chip8.machine.ScreenMemory;
+import com.arkumbra.chip8.machine.SoundOutputter;
+import com.arkumbra.startchip8.gdx.chip8.GdxSoundOutputter;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -55,7 +57,7 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 		cam.position.set(ScreenMemory.WIDTH / 2, ScreenMemory.HEIGHT / 2, -30f);
 		cam.lookAt(ScreenMemory.WIDTH / 2,ScreenMemory.HEIGHT / 2,0);
 		cam.near = 1f;
-		cam.far = 300f;
+		cam.far = 50f;
 		cam.rotate(180, 0, 0, -1);
 		cam.update();
 
@@ -63,10 +65,13 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 		createBoxPerPixel();
 
 
-		String relativePath = "chip8/src/main/resources/BLINKY.ch8";
+		String relativePath = "chip8/src/main/resources/BLINKY.ch8"; // TODO Add file loader
+//		String relativePath = "chip8/src/main/resources/TANK.ch8"; // TODO Add file loader
 		String absolutePath = new File(relativePath).getAbsolutePath();
 
-		Chip8 chip8 = new Chip8(this);
+		SoundOutputter soundOutputter = new GdxSoundOutputter();
+
+		Chip8 chip8 = new Chip8(this, soundOutputter);
 		chip8.loadGame(absolutePath);
 		chip8.runAsync();
 	}
@@ -79,20 +84,21 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 		Material material = new Material(emissive, diffuse, ambient, reflective);
 
 		ModelBuilder modelBuilder = new ModelBuilder();
-		Model model = modelBuilder.createBox(0.9f, 0.9f, 0.5f,
+//		Model model = modelBuilder.createBox(0.9f, 0.9f, 0.5f,
+		Model model = modelBuilder.createBox(1f, 1f, 0.5f,
 				material,
 				Usage.Position | Usage.Normal | Usage.TextureCoordinates);
 
 		for (int y = 0; y < pixelInstances[0].length; y++) {
 			for (int x = 0; x < pixelInstances.length; x++) {
-				ModelInstance modelInstance = createInstanceAndTransform(model, x, y);
+				ModelInstance modelInstance = createModelInstancePerPixelAndTransformToLocation(model, x, y);
 				pixelInstances[x][y] = modelInstance;
 				modelInstances.add(modelInstance);
 			}
 		}
 	}
 
-	private ModelInstance createInstanceAndTransform(Model model, int x, int y) {
+	private ModelInstance createModelInstancePerPixelAndTransformToLocation(Model model, int x, int y) {
 		ModelInstance instance = new ModelInstance(model);
 		instance.transform.translate(
 				x,
