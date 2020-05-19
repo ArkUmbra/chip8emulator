@@ -23,9 +23,11 @@ import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
 
@@ -67,16 +69,19 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+//		environment.add(new DirectionalLight().set(1f, 1f, 1f, 1f, 1f, 0.5f)); // Decent
+		environment.add(new PointLight().set(Color.valueOf("CCAACC"), new Vector3(32, 16, 10), 500f));
 
 
 		modelBatch = new ModelBatch();
 
-		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		cam.position.set(10f, 10f, 10f);
-		cam.lookAt(0,0,0);
+		// Set up camera to look at the game screen face on
+		cam = new PerspectiveCamera(80, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam.position.set(ScreenMemory.WIDTH / 2, ScreenMemory.HEIGHT / 2, -30f);
+		cam.lookAt(ScreenMemory.WIDTH / 2,ScreenMemory.HEIGHT / 2,0);
 		cam.near = 1f;
 		cam.far = 300f;
+		cam.rotate(180, 0, 0, -1);
 		cam.update();
 
 		camController = new CameraInputController(cam);
@@ -129,8 +134,11 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 	}
 
 	private void createBoxPerPixel() {
-		ColorAttribute materialColour = new ColorAttribute(ColorAttribute.Emissive, Color.RED);
-		Material material = new Material(materialColour);
+//		ColorAttribute materialColour = new ColorAttribute(ColorAttribute.Emissive, Color.GREEN);
+		ColorAttribute diffuse = new ColorAttribute(ColorAttribute.Diffuse, Color.valueOf("22CB43"));
+		ColorAttribute ambient = new ColorAttribute(ColorAttribute.Ambient, Color.valueOf("AA66CC"));
+		Material material = new Material(diffuse, ambient);
+//		Material material = new Material(diffuse);
 
 		ModelBuilder modelBuilder = new ModelBuilder();
 		Model model = modelBuilder.createBox(1f, 1f, 1f,
