@@ -7,66 +7,41 @@ import com.arkumbra.chip8.machine.KeyPressListener;
 import com.arkumbra.chip8.machine.ScreenMemory;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.Renderable;
-import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
-import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.graphics.g3d.utils.RenderContext;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
 
 public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter {
 
-	SpriteBatch batch;
-	Texture img;
-
-	TextureAttribute diffuseTextureAttribute;
-	TextureAttribute emissiveTextureAttribute;
-	ColorAttribute emissiveColorAttribute;
-	BlendingAttribute blendingAttribute;
-
 	private Environment environment;
 
 	private PerspectiveCamera cam;
 	private CameraInputController camController;
+	private InputProcessor inputProcessor;
 
 	private ModelBatch modelBatch;
-	private Model model;
-	private ModelInstance instance;
-
-//	public Shader shader;
-	public RenderContext renderContext;
-	public Renderable renderable;
 
 	private ScreenMemory screenMemory;
-	private KeyPressListener keyPressListener;
 
 	private ModelInstance[][] pixelInstances = new ModelInstance[ScreenMemory.WIDTH][ScreenMemory.HEIGHT];
 	private Array<ModelInstance> modelInstances = new Array<>();
 	
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-//		emissiveTexture = new Texture(Gdx.files.internal("data/particle-star.png"), true);
-
-
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
 //		environment.add(new DirectionalLight().set(1f, 1f, 1f, 1f, 1f, 0.5f)); // Decent
@@ -84,43 +59,6 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 		cam.rotate(180, 0, 0, -1);
 		cam.update();
 
-		camController = new CameraInputController(cam);
-		Gdx.input.setInputProcessor(camController);
-
-
-		// Create material attributes. Each material can contain x-number of attributes.
-//		diffuseTextureAttribute = new TextureAttribute(TextureAttribute.Diffuse, img);
-//		emissiveTextureAttribute = new TextureAttribute(TextureAttribute.Emissive, img);
-		emissiveColorAttribute = new ColorAttribute(ColorAttribute.Emissive, Color.ORANGE);
-		blendingAttribute = new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
-//		Material material = new Material(diffuseTextureAttribute, emissiveTextureAttribute, emissiveColorAttribute);
-		Material material = new Material(emissiveColorAttribute);
-
-
-
-		ModelBuilder modelBuilder = new ModelBuilder();
-		model = modelBuilder.createBox(5f, 5f, 5f,
-//				new Material(ColorAttribute.createDiffuse(Color.GREEN), TextureAttribute.createReflection(img)),
-//				new Material(TextureAttribute.createReflection(img)),
-				material,
-				Usage.Position | Usage.Normal | Usage.TextureCoordinates);
-		model.manageDisposable(img);
-		instance = new ModelInstance(model);
-//		instance.transform.translate()
-//		NodePart blockPart = instance.nodes.get(0).parts.get(0);
-//
-//		renderable = new Renderable();
-//		renderable.meshPart.primitiveType = GL20.GL_POINTS;
-//
-//		blockPart.setRenderable(renderable);
-//		renderable.environment = environment;
-//		renderable.worldTransform.idt();
-
-
-//		renderContext = new RenderContext(new DefaultTextureBinder(DefaultTextureBinder.WEIGHTED, 1));
-//		shader = new DefaultShader(renderable);
-//		shader.init();
 
 		createBoxPerPixel();
 
@@ -134,14 +72,14 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 	}
 
 	private void createBoxPerPixel() {
-//		ColorAttribute materialColour = new ColorAttribute(ColorAttribute.Emissive, Color.GREEN);
+		ColorAttribute emissive = new ColorAttribute(ColorAttribute.Emissive, Color.valueOf("001100"));
 		ColorAttribute diffuse = new ColorAttribute(ColorAttribute.Diffuse, Color.valueOf("22CB43"));
 		ColorAttribute ambient = new ColorAttribute(ColorAttribute.Ambient, Color.valueOf("AA66CC"));
-		Material material = new Material(diffuse, ambient);
-//		Material material = new Material(diffuse);
+		ColorAttribute reflective = new ColorAttribute(ColorAttribute.Reflection, Color.valueOf("00CCAA"));
+		Material material = new Material(emissive, diffuse, ambient, reflective);
 
 		ModelBuilder modelBuilder = new ModelBuilder();
-		Model model = modelBuilder.createBox(1f, 1f, 1f,
+		Model model = modelBuilder.createBox(0.9f, 0.9f, 0.5f,
 				material,
 				Usage.Position | Usage.Normal | Usage.TextureCoordinates);
 
@@ -152,9 +90,6 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 				modelInstances.add(modelInstance);
 			}
 		}
-
-		model.manageDisposable(img);
-		instance = new ModelInstance(model);
 	}
 
 	private ModelInstance createInstanceAndTransform(Model model, int x, int y) {
@@ -170,9 +105,6 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 
 	@Override
 	public void render () {
-		camController.update();
-		blendingAttribute.opacity = 0.25f + Math.abs(0.5f);
-
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
@@ -187,29 +119,21 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 		}
 
 		modelBatch.begin(cam);
-
-
-//		modelBatch.render(instance, environment);
 		modelBatch.render(modelInstancesForFrame, environment);
-//
-//		shader.begin(cam, renderContext);
-//		shader.render(renderable);
-//		shader.end();
-
 		modelBatch.end();
 	}
 	
 	@Override
 	public void dispose () {
-//		shader.dispose();
-		model.dispose();
 		modelBatch.dispose();
 	}
 
 	@Override
 	public void init(ScreenMemory screenMemory, KeyPressListener keyPressListener) {
 		this.screenMemory = screenMemory;
-		this.keyPressListener = keyPressListener;
+
+		inputProcessor = new GdxInputProcessor(keyPressListener);
+		Gdx.input.setInputProcessor(inputProcessor);
 	}
 
 }
