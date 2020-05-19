@@ -1,21 +1,106 @@
-plugins {
-    id 'java'
-    id 'jacoco'
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'org.wisepersist:gwt-gradle-plugin:1.0.9'
+    }
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.11
+//plugins {
+//    id 'java'
+//    id 'jacoco'
+//}
 
-repositories {
-    mavenCentral()
+//group 'org.example'
+//version '1.0-SNAPSHOT'
+
+//sourceCompatibility = 1.8
+
+
+allprojects {
+    apply plugin: "eclipse"
+
+    version = '1.0'
+    ext {
+        appName = "starchip8-gdx"
+        gdxVersion = '1.9.10'
+        roboVMVersion = '2.3.8'
+        box2DLightsVersion = '1.4'
+        ashleyVersion = '1.7.0'
+        aiVersion = '1.8.0'
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+        google()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    }
 }
 
-dependencies {
-    compile 'commons-codec:commons-codec:1.14'
+//
+//
+//project(":chip8") {
+//
+//}
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+project(":desktop") {
+    apply plugin: "java-library"
 
+    dependencies {
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+//        api "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
+//        api "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+    }
 }
+
+project(":html") {
+    apply plugin: "java-library"
+    apply plugin: "gwt"
+    apply plugin: "war"
+
+
+    dependencies {
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-box2d-gwt:$gdxVersion:sources"
+//        api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion:sources"
+//        api "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
+//        api "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
+        api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion:sources"
+    }
+}
+
+
+project(":core") {
+    apply plugin: "java-library"
+
+
+    dependencies {
+        compile project(':chip8')
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+//        api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+
+    }
+}
+
+
+

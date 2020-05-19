@@ -1,2 +1,4 @@
-rootProject.name = 'Chip8Emulator'
+rootProject.name = 'starchip8'
+
+include 'chip8', 'desktop', 'core', 'html'
 

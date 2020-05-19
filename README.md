@@ -1,6 +1,9 @@
 # chip8emulator
 A Java-based interpreter for the CHIP-8 system
 
+![Screenshot of the game Blinky](screenshots/blinky.png?raw=true)
+
+
 # What is CHIP-8? 
 From Wikipedia - "CHIP-8 is an interpreted programming language, developed by Joseph Weisbecker. It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers in the mid-1970s. CHIP-8 programs are run on a CHIP-8 virtual machine. It was made to allow video games to be more easily programmed for these computers. "
 https://en.wikipedia.org/wiki/CHIP-8
