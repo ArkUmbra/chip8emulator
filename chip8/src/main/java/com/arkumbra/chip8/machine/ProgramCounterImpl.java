@@ -58,11 +58,13 @@ public class ProgramCounterImpl implements ProgramCounter, SerializableData, Dum
     Counter counter = new Counter();
     counter.position = val;
     stack.push(counter);
+    this.setGotoPosition = true;
   }
 
   @Override
   public void pop() {
     stack.pop();
+    this.setGotoPosition = false;
   }
 
   @Override
