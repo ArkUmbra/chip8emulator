@@ -2,6 +2,7 @@ package com.arkumbra.chip8;
 
 import com.arkumbra.chip8.external.JPanelOutputter;
 import com.arkumbra.chip8.external.ScreenOutputter;
+import com.arkumbra.chip8.machine.DefaultSoundOutputter;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
 import java.io.File;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class Chip8Test {
 
     ScreenOutputter outputter = new JPanelOutputter();
 //    RaylibOuputter outputter = new RaylibOuputter();
-    Chip8 chip8 = new Chip8(outputter);
+    Chip8 chip8 = new Chip8(outputter, new DefaultSoundOutputter());
     chip8.loadGame(absolutePath);
 
     try {

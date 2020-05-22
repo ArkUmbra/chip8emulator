@@ -1,7 +1,11 @@
 package com.arkumbra.chip8.machine;
 
+import java.nio.ByteBuffer;
+
 // Needs work probably
 public class BaseTimer implements Timer {
+
+  public static final int SERIALIZED_LENGTH = Character.BYTES + Long.BYTES;
 
   private final int COUNT_RATE_HERTZ = 60;
   private final int MS_PER_COUNT = 1000 / COUNT_RATE_HERTZ;
@@ -36,5 +40,20 @@ public class BaseTimer implements Timer {
   @Override
   public void tick() {
     // override as required
+  }
+
+  @Override
+  public byte[] serialize() {
+    ByteBuffer byteBuffer = ByteBuffer.allocate(SERIALIZED_LENGTH);
+    byteBuffer.putChar(inputTimerValue);
+    byteBuffer.putLong(timeAtSet);
+    return byteBuffer.array();
+  }
+
+  @Override
+  public void deserialize(byte[] data) {
+    ByteBuffer byteBuffer = ByteBuffer.wrap(data);
+    inputTimerValue = byteBuffer.getChar();
+    timeAtSet = byteBuffer.getLong();
   }
 }

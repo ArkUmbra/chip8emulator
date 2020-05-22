@@ -2,6 +2,7 @@ package com.arkumbra.startchip8.gdx;
 
 
 import com.arkumbra.chip8.Chip8;
+import com.arkumbra.chip8.SaveStateHandler;
 import com.arkumbra.chip8.external.ScreenOutputter;
 import com.arkumbra.chip8.machine.KeyPressListener;
 import com.arkumbra.chip8.machine.ScreenMemory;
@@ -41,7 +42,15 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 
 	private ModelInstance[][] pixelInstances = new ModelInstance[ScreenMemory.WIDTH][ScreenMemory.HEIGHT];
 	private Array<ModelInstance> modelInstances = new Array<>();
-	
+
+	private SaveStateHandler saveStateHandler;
+
+	private final SaveStateFileManager saveStateFileManager;
+
+	public GdxOutputter(SaveStateFileManager saveStateFileManager) {
+		this.saveStateFileManager = saveStateFileManager;
+	}
+
 	@Override
 	public void create () {
 		environment = new Environment();
@@ -72,6 +81,9 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 		SoundOutputter soundOutputter = new GdxSoundOutputter();
 
 		Chip8 chip8 = new Chip8(this, soundOutputter);
+		this.saveStateHandler = chip8;
+
+		// final step
 		chip8.loadGame(absolutePath);
 		chip8.runAsync();
 	}
@@ -138,7 +150,7 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 	public void init(ScreenMemory screenMemory, KeyPressListener keyPressListener) {
 		this.screenMemory = screenMemory;
 
-		inputProcessor = new GdxInputProcessor(keyPressListener);
+		inputProcessor = new GdxInputProcessor(keyPressListener, saveStateHandler, saveStateFileManager);
 		Gdx.input.setInputProcessor(inputProcessor);
 	}
 

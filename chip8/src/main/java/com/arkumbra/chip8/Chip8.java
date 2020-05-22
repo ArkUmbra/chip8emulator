@@ -1,7 +1,6 @@
 package com.arkumbra.chip8;
 
 import com.arkumbra.chip8.external.DebugPanel;
-import com.arkumbra.chip8.external.JPanelOutputter;
 import com.arkumbra.chip8.external.ScreenOutputter;
 import com.arkumbra.chip8.machine.Dumpable;
 import com.arkumbra.chip8.machine.Machine;
@@ -15,22 +14,21 @@ import com.arkumbra.chip8.opcode.OpCodeLookup;
 import com.arkumbra.chip8.opcode.OpCodeLookupImpl;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
-public class Chip8 implements RoutineRunner, Dumpable {
+public class Chip8 implements RoutineRunner, SaveStateHandler, Dumpable {
   private final Logger logger = new Logger(getClass());
-
-  private static final Set<OpCodeLabel> DEBUG_DUMP_BEFORE_EXECUTE = Set.of(OpCodeLabel.OpDXYNDraw);
-  private static final Set<OpCodeLabel> DEBUG_DUMP_AFTER_EXECUTE = Set.of(OpCodeLabel.OpDXYNDraw);
-
 
   private static final OpCodeLookup opCodeLookup = new OpCodeLookupImpl();
 
   private MachineImpl machine;
+  private SoundOutputter soundOutputter;
   private ScreenOutputter screenOutputter;
   private DebugPanel debugPanel;
 
   private LinkedList<String> commandExecutionOrder = new LinkedList<>();
+
+  private Thread gameThread;
 
   public Chip8(ScreenOutputter screenOutputter, SoundOutputter soundOutputter) {
     this.machine = new MachineImpl(this, soundOutputter);
@@ -55,7 +53,6 @@ public class Chip8 implements RoutineRunner, Dumpable {
       e.printStackTrace();
     }
 
-//    logger.debug(dump());
     screenOutputter.init(machine.getScreenMemoryHandle(), machine.getKeys());
   }
 
@@ -69,13 +66,15 @@ public class Chip8 implements RoutineRunner, Dumpable {
             lastCode = runSingleCycle();
           } while (lastCode != OpCodeLabel.Op00EEReturn);
 
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
+          System.err.println("Game thread was terminated. Exiting");
           e.printStackTrace();
         }
       }
     };
 
-    new Thread(gameRunner).start();
+    gameThread = new Thread(gameRunner);
+    gameThread.start();
   }
 
   /**
@@ -83,7 +82,7 @@ public class Chip8 implements RoutineRunner, Dumpable {
    * @return Executed opcode
    */
   @Override
-  public OpCodeLabel runSingleCycle() {
+  public OpCodeLabel runSingleCycle() throws InterruptedException {
     Memory memory = machine.getMemory();
     ProgramCounter pc = machine.getProgramCounter();
 
@@ -93,11 +92,6 @@ public class Chip8 implements RoutineRunner, Dumpable {
     OpCode opCode = opCodeLookup.lookup(rawOpCode);
     OpCodeLabel opCodeLabel = opCode.getOpCodeLabel();
 
-//    if (DEBUG_DUMP_AFTER_EXECUTE.contains(opCodeLabel)) {
-//      System.out.println(dump());
-//    }
-
-
     char opData = opCode.getBitMask().applyMask(rawOpCode);
     commandExecutionOrder.addLast(commandExecutionOrder.removeLast()  + opCode.getOpCodeLabel() + " - " + Integer.toHexString(opData));
 
@@ -106,23 +100,14 @@ public class Chip8 implements RoutineRunner, Dumpable {
       return opCodeLabel;
     }
 
-//    if (DEBUG_DUMP_AFTER_EXECUTE.contains(opCodeLabel)) {
-//      System.out.println(dump());
-//    }
-
-//    pc.increment();
-
     opCode.execute(opData, machine);
 
     pc.increment();
     machine.tick();
     debugPanel.tick();
 
-    try {
-      Thread.sleep(1);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+    // TODO add better clock speed control
+    Thread.sleep(1);
 
     return opCodeLabel;
   }
@@ -140,5 +125,35 @@ public class Chip8 implements RoutineRunner, Dumpable {
 
   public Machine getMachine() {
     return machine;
+  }
+
+  @Override
+  public byte[] createSaveState() {
+//    gameThread.interrupt(); // TODO
+    // firstly, freeze the machine
+    machine.getProgramCounter().freeze();
+
+    byte[] saveState = machine.createSaveState();
+
+//    runAsync();
+    machine.getProgramCounter().unfreeze();
+    return saveState;
+  }
+
+  @Override
+  public void loadFromSaveState(byte[] state) {
+    machine.getProgramCounter().freeze();
+//    gameThread.interrupt();
+//    try {
+//      TimeUnit.SECONDS.sleep(1);
+//    } catch (InterruptedException e) {
+//      e.printStackTrace();
+//    }
+//    machine.getProgramCounter().freeze();
+//    this.machine = new MachineImpl(this, soundOutputter);
+    machine.loadFromSaveState(state);
+//    runAsync();
+    machine.getProgramCounter().unfreeze();
+//    machine.getProgramCounter().unfreeze();
   }
 }

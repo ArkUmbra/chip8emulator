@@ -40,7 +40,7 @@ public class KeysImpl implements Keys {
   }
 
   @Override
-  public KeyLabel waitForNextKeyPress() {
+  public KeyLabel waitForNextKeyPress() throws InterruptedException {
 
     long lastKeyPressAtCheckStart;
     synchronized (LOCK) {
@@ -59,11 +59,7 @@ public class KeysImpl implements Keys {
       if (keyPressed) {
         return lastPressed;
       } else {
-        try {
-          Thread.sleep(100);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+        Thread.sleep(100);
       }
     }
   }

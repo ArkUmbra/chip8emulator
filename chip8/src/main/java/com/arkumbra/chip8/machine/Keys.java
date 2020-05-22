@@ -8,6 +8,6 @@ public interface Keys extends KeyPressListener {
    * Blocks until next key is pressed
    * @return label of whichever key was pressed
    */
-  KeyLabel waitForNextKeyPress();
+  KeyLabel waitForNextKeyPress() throws InterruptedException;
 
 }

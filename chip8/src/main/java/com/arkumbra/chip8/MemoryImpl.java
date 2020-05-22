@@ -10,7 +10,9 @@ import org.apache.commons.codec.binary.Hex;
 public class MemoryImpl implements Memory {
   private final Logger logger = new Logger(getClass());
   private static final int CAPACITY = 0x1000;
-  // first 512 bytes are reserved. Add game memory in after that
+  public static final int SERIALIZED_LENGTH = CAPACITY;
+
+  // first 512 bytes are reserved. Add rom into memory in after that, followed by ram
   public static final int RESERVED = 512;
 
   private byte[] memory;
@@ -23,12 +25,6 @@ public class MemoryImpl implements Memory {
       System.arraycopy(fontCharacter, 0, memory, currentIndex, fontCharacter.length);
       currentIndex += fontCharacter.length;
     }
-
-    // DEBUG
-//    for (FontLabel fontLabel : FontLabel.values()) {
-//      int address = font.getAddress(fontLabel);
-//      logger.debug("Font character " + fontLabel.name() + " stored at " + address);
-//    }
   }
 
   @Override
@@ -47,6 +43,7 @@ public class MemoryImpl implements Memory {
   public char readRawOpCode(ProgramCounter programCounter) {
     int pos = programCounter.getPosition();
 
+    // combine two bytes to make an opcode
     byte byteLeft = memory[pos];
     byte byteRight = memory[pos + 1];
 
@@ -56,9 +53,7 @@ public class MemoryImpl implements Memory {
 
   @Override
   public void write(int indexFrom, byte[] toWrite) {
-    for (int offset = 0; offset < toWrite.length; offset++) {
-      memory[indexFrom + offset] = toWrite[offset];
-    }
+    System.arraycopy(toWrite, 0, memory, indexFrom, toWrite.length);
   }
 
   @Override
@@ -83,5 +78,15 @@ public class MemoryImpl implements Memory {
     }
     sb.append(System.lineSeparator());
     return sb.toString();
+  }
+
+  @Override
+  public byte[] serialize() {
+    return memory;
+  }
+
+  @Override
+  public void deserialize(byte[] data) {
+    this.memory = data;
   }
 }

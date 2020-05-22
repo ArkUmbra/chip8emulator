@@ -24,7 +24,7 @@ public class OpFX0A implements OpCode {
   }
 
   @Override
-  public void execute(char opData, Machine machine) {
+  public void execute(char opData, Machine machine) throws InterruptedException {
     char registerXraw = (char)((opData & 0xF00) >> 8);
 
     KeyLabel pressedKey = machine.getKeys().waitForNextKeyPress();

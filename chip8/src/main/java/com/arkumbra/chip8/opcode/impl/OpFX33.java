@@ -3,12 +3,10 @@ package com.arkumbra.chip8.opcode.impl;
 import com.arkumbra.chip8.bitmask.BitMask;
 import com.arkumbra.chip8.bitmask.BitMasks;
 import com.arkumbra.chip8.machine.DataRegister;
-import com.arkumbra.chip8.machine.FontLabel;
 import com.arkumbra.chip8.machine.Machine;
 import com.arkumbra.chip8.machine.RegisterLabel;
 import com.arkumbra.chip8.opcode.OpCode;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
-import com.arkumbra.chip8.util.BcdConverter;
 
 public class OpFX33 implements OpCode {
 
@@ -46,20 +44,6 @@ public class OpFX33 implements OpCode {
     byte hundreds = (byte)(regValue / 100);
     byte tens = (byte)((regValue / 10) % 10);
     byte ones = (byte)((regValue % 100) % 10);
-
-//    // SEEMINGLY have to skip any leading zeros, hence this spaghetti here
-//    // I have not seen this documented anywhere, but there we go...
-//    byte[] bcdValue;
-//
-//    if (hundreds == 0 ) {
-//      if (tens == 0) {
-//        bcdValue = new byte[]{ones};
-//      } else {
-//        bcdValue = new byte[]{tens, ones};
-//      }
-//    } else {
-//      bcdValue = new byte[]{hundreds, tens, ones};
-//    }
 
     machine.getMemory().write(machine.getIndexRegister().get(), new byte[]{hundreds, tens, ones});
   }

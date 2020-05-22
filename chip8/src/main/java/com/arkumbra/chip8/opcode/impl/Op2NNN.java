@@ -23,7 +23,7 @@ public class Op2NNN implements OpCode {
   }
 
   @Override
-  public void execute(char subroutineAddress, Machine machine) {
+  public void execute(char subroutineAddress, Machine machine) throws InterruptedException {
     ProgramCounter programCounter = machine.getProgramCounter();
     RoutineRunner routineRunner = machine.getRoutineRunner();
 

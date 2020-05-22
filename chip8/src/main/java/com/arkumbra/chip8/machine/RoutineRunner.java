@@ -4,6 +4,6 @@ import com.arkumbra.chip8.opcode.OpCodeLabel;
 
 public interface RoutineRunner {
 
-  OpCodeLabel runSingleCycle();
+  OpCodeLabel runSingleCycle() throws InterruptedException;
 
 }

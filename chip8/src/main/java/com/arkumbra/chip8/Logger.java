@@ -24,12 +24,12 @@ public class Logger {
 
   public void debug(String msg) {
     if (! disabled.contains(clazz)) {
-//      print(msg);
+      print(msg);
     }
   }
 
   private void print(String msg) {
-    System.out.println(clazz.getName() + " - " + msg);
+//    System.out.println(clazz.getName() + " - " + msg);
   }
 
 }

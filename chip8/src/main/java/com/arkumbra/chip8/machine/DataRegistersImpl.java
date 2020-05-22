@@ -1,9 +1,12 @@
 package com.arkumbra.chip8.machine;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataRegistersImpl implements DataRegisters, Dumpable {
+public class DataRegistersImpl implements DataRegisters, SerializableData, Dumpable {
+  // two bytes per register
+  public static final int SERIALIZED_LENGTH = 16 * Character.BYTES;
 
   private final Map<RegisterLabel, DataRegister> registers = new HashMap<>();
 
@@ -33,5 +36,34 @@ public class DataRegistersImpl implements DataRegisters, Dumpable {
     sb.append(System.lineSeparator());
 
     return sb.toString();
+  }
+
+  @Override
+  public byte[] serialize() {
+    ByteBuffer byteBuffer = ByteBuffer.allocate(SERIALIZED_LENGTH);
+
+    // must be in order
+    RegisterLabel[] registerLabels = RegisterLabel.values();
+
+    for (RegisterLabel registerLabel : registerLabels) {
+      DataRegister register = registers.get(registerLabel);
+      byteBuffer.putChar(register.get());
+    }
+
+    return byteBuffer.array();
+  }
+
+  @Override
+  public void deserialize(byte[] data) {
+    ByteBuffer byteBuffer = ByteBuffer.wrap(data);
+
+    // must be in order
+    RegisterLabel[] registerLabels = RegisterLabel.values();
+
+    for (RegisterLabel registerLabel : registerLabels) {
+      DataRegister dataRegister = new DataRegisterImpl();
+      dataRegister.set(byteBuffer.getChar());
+      registers.put(registerLabel, dataRegister);
+    }
   }
 }

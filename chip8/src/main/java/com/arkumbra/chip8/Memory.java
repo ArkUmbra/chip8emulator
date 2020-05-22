@@ -4,8 +4,9 @@ import com.arkumbra.chip8.machine.Dumpable;
 import com.arkumbra.chip8.machine.Font;
 import com.arkumbra.chip8.machine.IndexRegister;
 import com.arkumbra.chip8.machine.ProgramCounter;
+import com.arkumbra.chip8.machine.SerializableData;
 
-public interface Memory extends Dumpable {
+public interface Memory extends Dumpable, SerializableData {
 
   void load(Font font);
 

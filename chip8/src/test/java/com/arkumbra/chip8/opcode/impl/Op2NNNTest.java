@@ -22,7 +22,7 @@ public class Op2NNNTest {
   }
 
   @Test
-  public void testExecute() {
+  public void testExecute() throws InterruptedException {
     char inputOpCode = 0xABCD;
     char expectedPushAddress = 0xBCD;
 

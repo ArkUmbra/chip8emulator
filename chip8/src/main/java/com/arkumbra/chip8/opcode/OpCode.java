@@ -9,5 +9,5 @@ public interface OpCode {
 
     OpCodeLabel getOpCodeLabel();
 
-    void execute(char postMaskOpData, Machine machine);
+    void execute(char postMaskOpData, Machine machine) throws InterruptedException;
 }

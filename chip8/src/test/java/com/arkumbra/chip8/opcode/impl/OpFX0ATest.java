@@ -27,7 +27,7 @@ public class OpFX0ATest {
   }
 
   @Test
-  public void testExecute_waitForAnyKeyPressAndStoreInRegisterX() {
+  public void testExecute_waitForAnyKeyPressAndStoreInRegisterX() throws InterruptedException {
     char inputOpCode = 0xF20A;
     char expectedKeyLabel = 0x01;
 

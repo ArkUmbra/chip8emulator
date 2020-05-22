@@ -13,6 +13,8 @@ public interface ProgramCounter {
 
   // for debugger
   void toggleFreezeExecution();
+  void freeze();
+  void unfreeze();
   void step();
 
 }

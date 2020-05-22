@@ -1,10 +1,10 @@
 package com.arkumbra.chip8.machine;
 
 import com.arkumbra.chip8.MemoryImpl;
+import java.nio.ByteBuffer;
 import java.util.Stack;
 
-public class ProgramCounterImpl implements ProgramCounter, Dumpable {
-
+public class ProgramCounterImpl implements ProgramCounter, SerializableData, Dumpable {
   private Stack<Counter> stack = new Stack<>();
 
   private Breakpoint breakpoint = new Breakpoint();
@@ -40,7 +40,6 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
   @Override
   public void skipNextInstruction() {
     this.skipNextInstruction = true;
-//    this.skipNextInstruction = true;
   }
 
   @Override
@@ -71,6 +70,16 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
     breakpoint.toggleFreeze();
   }
 
+  @Override
+  public void freeze() {
+    breakpoint.freeze();
+  }
+
+  @Override
+  public void unfreeze() {
+    breakpoint.unfreeze();
+  }
+
 
   @Override
   public void step() {
@@ -92,20 +101,67 @@ public class ProgramCounterImpl implements ProgramCounter, Dumpable {
   }
 
 
-
   @Override
   public String dump() {
     return stack.toString();
   }
 
+  @Override
+  public byte[] serialize() {
+    byte skipNext = (byte) (skipNextInstruction ? 1 : 0);
+    byte goToSet = (byte) (setGotoPosition ? 1 : 0);
+    byte stackSize = (byte) stack.size();
+
+    ByteBuffer byteBuffer = ByteBuffer.allocate(1 + 1 + 1 + (stackSize * Integer.BYTES));
+
+    byteBuffer.put(skipNext);
+    byteBuffer.put(goToSet);
+    byteBuffer.put(stackSize);
+
+    // flip the stack around so that they can be deserialised easier / as-is order
+    Stack<Counter> reversed = new Stack<>();
+    for (Counter counter : stack) {
+      reversed.push(counter);
+    }
+
+    for (Counter counter : reversed) {
+      byteBuffer.putInt(counter.position);
+    }
+
+    return byteBuffer.array();
+  }
+
+  @Override
+  public void deserialize(byte[] data) {
+    ByteBuffer byteBuffer = ByteBuffer.wrap(data);
+
+    this.skipNextInstruction = byteBuffer.get() == 1;
+    this.setGotoPosition = byteBuffer.get() == 1;
+
+    Stack<Counter> newStack = new Stack<>();
+    byte stackSize = byteBuffer.get();
+    for (int i = 0; i < stackSize; i++) {
+      newStack.push(new Counter(byteBuffer.getInt()));
+    }
+
+    this.stack = newStack;
+  }
+
   class Counter {
-    private int position = MemoryImpl.RESERVED;
+    private int position;
+
+    public Counter() {
+      this.position  = MemoryImpl.RESERVED;
+    }
+
+    public Counter(int position) {
+      this.position = position;
+    }
 
     @Override
     public String toString() {
       final StringBuilder sb = new StringBuilder("Counter{");
       sb.append("position=").append(position);
-      sb.append(", skipNextInstruction=").append(skipNextInstruction);
       sb.append('}');
       return sb.toString();
     }
