@@ -1,11 +1,18 @@
 package com.arkumbra.chip8.opcode.impl;
 
+import static org.mockito.Matchers.anyByte;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.arkumbra.chip8.TestUtils;
+import com.arkumbra.chip8.machine.DataRegister;
+import com.arkumbra.chip8.machine.DataRegisters;
 import com.arkumbra.chip8.machine.Machine;
+import com.arkumbra.chip8.machine.RegisterLabel;
+import com.arkumbra.chip8.machine.Screen;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,35 +36,31 @@ public class OpDXYNTest {
    */
   @Test
   public void testExecute_drawSpriteAtXYWidth8AndHeightN() {
-    char inputOpCode = 0xD451; // just draw one row of pixels at 4,5
+    char inputOpCode = 0xD451; // just draw one row of pixels, using coordinates in registers 4 & 5
     byte memoryContentAtI = 0b01010101;
     int currentMemoryLocation = 123;
+
+    char xCoordinate = 59;
+    char yCoordinate = 31;
+    boolean pixelsUnsetByDraw = true;
+
+    DataRegisters registers = machineMock.getRegisters();
+    DataRegister xReg = mock(DataRegister.class);
+    when(xReg.get()).thenReturn(xCoordinate);
+    DataRegister yReg = mock(DataRegister.class);
+    when(yReg.get()).thenReturn(yCoordinate);
+    DataRegister fReg = mock(DataRegister.class);
+    when(registers.getRegister(RegisterLabel.V4)).thenReturn(xReg);
+    when(registers.getRegister(RegisterLabel.V5)).thenReturn(yReg);
+    when(registers.getRegister(RegisterLabel.VF)).thenReturn(fReg);
 
     when(machineMock.getProgramCounter().getPosition())
         .thenReturn(currentMemoryLocation);
     when(machineMock.getMemory().readBytes(machineMock.getIndexRegister(), 1))
         .thenReturn(new byte[]{memoryContentAtI});
 
-    char opCodeData = sut.getBitMask().applyMask(inputOpCode);
-
-    // Execute once
-    sut.execute(opCodeData, machineMock);
-
-    verify(machineMock.getScreen(), times(1))
-        .draw(memoryContentAtI, 4, 5);
-  }
-
-  @Test
-  public void testExecute_drawSpriteAtXYWidth8AndHeightNForHeightAbove1() {
-    char inputOpCode = 0xDAF2; // just draw one row of pixels at 4,5
-    byte memoryContentAtIRow1 = 0b01010101;
-    byte memoryContentAtIRow2 = 0b00101010;
-    int currentMemoryLocation = 123;
-
-    when(machineMock.getProgramCounter().getPosition())
-        .thenReturn(currentMemoryLocation);
-    when(machineMock.getMemory().readBytes(machineMock.getIndexRegister(), 2))
-        .thenReturn(new byte[]{memoryContentAtIRow1, memoryContentAtIRow2});
+    Screen screen = machineMock.getScreen();
+    when(screen.draw(anyByte(), anyInt(), anyInt())).thenReturn(pixelsUnsetByDraw);
 
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
 
@@ -65,9 +68,8 @@ public class OpDXYNTest {
     sut.execute(opCodeData, machineMock);
 
     verify(machineMock.getScreen(), times(1))
-        .draw(memoryContentAtIRow1, 0xA, 0xF);
-    verify(machineMock.getScreen(), times(1))
-        .draw(memoryContentAtIRow2, 0xA, 0xF);
+        .draw(memoryContentAtI, xCoordinate, yCoordinate);
+    verify(fReg, times(1)).set((char)1);
   }
 
 }

@@ -18,10 +18,16 @@ public class ProgramCounterTest {
   public void test() {
     sut.goTo(2);
     assertEquals(2, sut.getPosition());
+
+    sut.increment(); // increment gets ignored after a goto (i.e. don't increment for a cycle that ran a GOTO)
+    assertEquals(2, sut.getPosition());
     sut.increment();
     assertEquals(4, sut.getPosition());
 
     sut.push(20);
+    assertEquals(20, sut.getPosition());
+
+    sut.increment(); // increment gets ignored after a push (i.e. don't increment for a cycle that started a subroutine)
     assertEquals(20, sut.getPosition());
     sut.increment();
     assertEquals(22, sut.getPosition());

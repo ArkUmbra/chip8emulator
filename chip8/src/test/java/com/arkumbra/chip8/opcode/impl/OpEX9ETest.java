@@ -7,9 +7,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.arkumbra.chip8.TestUtils;
+import com.arkumbra.chip8.machine.DataRegister;
 import com.arkumbra.chip8.machine.Key;
 import com.arkumbra.chip8.machine.KeyLabel;
 import com.arkumbra.chip8.machine.Machine;
+import com.arkumbra.chip8.machine.RegisterLabel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,11 +31,17 @@ public class OpEX9ETest {
   public void testExecute_skipNextInstructionWhenKeyXIsPressed() {
     char inputOpCode = 0xEA9E;
     boolean isPressed = true;
+    char xRegValue = (char)0xd;
+
+    DataRegister registerX = mock(DataRegister.class);
+    when(registerX.get()).thenReturn(xRegValue);
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VA))
+        .thenReturn(registerX);
 
     Key key = mock(Key.class);
     when(key.isPressed())
         .thenReturn(isPressed);
-    when(machineMock.getKeys().getKey(KeyLabel.KA))
+    when(machineMock.getKeys().getKey(KeyLabel.KD))
         .thenReturn(key);
 
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
@@ -49,11 +57,17 @@ public class OpEX9ETest {
   public void testExecute_dontSkipNextInstructionWhenKeyXIsNotPressed() {
     char inputOpCode = 0xEA9E;
     boolean isPressed = false;
+    char xRegValue = (char)0xd;
+
+    DataRegister registerX = mock(DataRegister.class);
+    when(registerX.get()).thenReturn(xRegValue);
+    when(machineMock.getRegisters().getRegister(RegisterLabel.VA))
+        .thenReturn(registerX);
 
     Key key = mock(Key.class);
     when(key.isPressed())
         .thenReturn(isPressed);
-    when(machineMock.getKeys().getKey(KeyLabel.KA))
+    when(machineMock.getKeys().getKey(KeyLabel.KD))
         .thenReturn(key);
 
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);

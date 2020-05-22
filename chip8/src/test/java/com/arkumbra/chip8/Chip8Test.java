@@ -5,11 +5,12 @@ import com.arkumbra.chip8.external.ScreenOutputter;
 import com.arkumbra.chip8.machine.DefaultSoundOutputter;
 import com.arkumbra.chip8.opcode.OpCodeLabel;
 import java.io.File;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class Chip8Test {
 
-//  @Ignore
+  @Ignore
   @Test
   public void test() {
 //    String relativePath = "src/main/resources/INVADERS.ch8";

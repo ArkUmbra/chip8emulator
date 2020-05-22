@@ -43,7 +43,6 @@ public class OpDXYN implements OpCode {
     }
 
 
-
     boolean pixelsFlipped = false;
     for (int rowOffset = 0; rowOffset < bytesOfPixels.length; rowOffset++) {
       int x = registerX.get();

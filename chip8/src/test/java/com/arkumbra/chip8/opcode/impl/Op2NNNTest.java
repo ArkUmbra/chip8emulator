@@ -1,7 +1,9 @@
 package com.arkumbra.chip8.opcode.impl;
 
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.arkumbra.chip8.machine.Machine;
@@ -26,15 +28,13 @@ public class Op2NNNTest {
     char inputOpCode = 0xABCD;
     char expectedPushAddress = 0xBCD;
 
-    when(machineMock.getRoutineRunner().runSingleCycle())
-        .thenReturn(OpCodeLabel.Op00EEReturn);
 
     char opCodeData = sut.getBitMask().applyMask(inputOpCode);
     sut.execute(opCodeData, machineMock);
 
     verify(machineMock.getProgramCounter(), times(1)).push(expectedPushAddress);
-    verify(machineMock.getProgramCounter(), times(1)).pop();
-    verify(machineMock.getRoutineRunner(), times(1)).runSingleCycle();
+    verify(machineMock.getProgramCounter(), never()).pop();
+    verify(machineMock.getRoutineRunner(), never()).runSingleCycle();
   }
 
 }
