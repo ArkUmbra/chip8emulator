@@ -14,8 +14,6 @@ public class MachineSaveStateTest {
 
   private MachineImpl machine;
 
-//  private RoutineRunner routineRunner;
-//  private SoundOutputter soundOutputter;
   private ScreenImpl screenSpy;
   private ProgramCounterImpl programCounterSpy;
   private DataRegistersImpl registersSpy;
@@ -27,20 +25,16 @@ public class MachineSaveStateTest {
 
   @Before
   public void before() {
-//    this.routineRunner = mock(RoutineRunner.class);
-//    this.soundOutputter = mock(SoundOutputter.class);
-
     this.screenSpy = spy(new ScreenImpl());
     this.programCounterSpy = spy(new ProgramCounterImpl());
     this.registersSpy = spy(new DataRegistersImpl());
     this.indexRegisterSpy = spy(new IndexRegisterImpl());
-//    this.keysSpy = spy(new KeysImpl());
     this.font = new FontImpl();
     this.keys = mock(KeysImpl.class);
     this.delayTimer= new DelayTimer();
     this.soundTimer = new SoundTimer(mock(SoundService.class));
 
-    this.machine = new MachineImpl(routineRunner, screenSpy, programCounterSpy, registersSpy,
+    this.machine = new MachineImpl(screenSpy, programCounterSpy, registersSpy,
         indexRegisterSpy, keys, delayTimer, soundTimer, font);
   }
 
