@@ -5,8 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 
-import com.arkumbra.chip8.Memory;
-import com.arkumbra.chip8.MemoryImpl;
+import com.arkumbra.chip8.external.SoundService;
 import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +14,7 @@ public class MachineSaveStateTest {
 
   private MachineImpl machine;
 
-  private RoutineRunner routineRunner;
+//  private RoutineRunner routineRunner;
 //  private SoundOutputter soundOutputter;
   private ScreenImpl screenSpy;
   private ProgramCounterImpl programCounterSpy;
@@ -28,7 +27,7 @@ public class MachineSaveStateTest {
 
   @Before
   public void before() {
-    this.routineRunner = mock(RoutineRunner.class);
+//    this.routineRunner = mock(RoutineRunner.class);
 //    this.soundOutputter = mock(SoundOutputter.class);
 
     this.screenSpy = spy(new ScreenImpl());
@@ -39,7 +38,7 @@ public class MachineSaveStateTest {
     this.font = new FontImpl();
     this.keys = mock(KeysImpl.class);
     this.delayTimer= new DelayTimer();
-    this.soundTimer = new SoundTimer(mock(SoundOutputter.class));
+    this.soundTimer = new SoundTimer(mock(SoundService.class));
 
     this.machine = new MachineImpl(routineRunner, screenSpy, programCounterSpy, registersSpy,
         indexRegisterSpy, keys, delayTimer, soundTimer, font);
@@ -49,9 +48,9 @@ public class MachineSaveStateTest {
   public void testSaveLoadSaveStateAll() {
     // Load game
     byte[] gameData = generateRandomGameData();
-    Memory memory = new MemoryImpl();
-    memory.load(gameData);
-    machine.loadIntoMemory(memory);
+    Ram ram = new RamImpl();
+    ram.load(gameData);
+    machine.loadIntoMemory(ram);
 
     // Draw some random stuff to screen
     byte bit1 = 0b01011101;
@@ -81,13 +80,13 @@ public class MachineSaveStateTest {
   public void testSaveLoad_memoryOnly() {
     // Load game
     byte[] gameData = generateRandomGameData();
-    Memory memory = new MemoryImpl();
-    memory.load(gameData);
+    Ram ram = new RamImpl();
+    ram.load(gameData);
 
-    byte[] memoryState = memory.serialize();
-    memory.deserialize(memoryState);
+    byte[] memoryState = ram.serialize();
+    ram.deserialize(memoryState);
 
-    assertArrayEquals(memoryState, memory.serialize());
+    assertArrayEquals(memoryState, ram.serialize());
   }
 
   @Test

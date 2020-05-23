@@ -1,8 +1,9 @@
 package com.arkumbra.chip8.machine;
 
+import com.arkumbra.chip8.external.SoundService;
 import java.awt.Toolkit;
 
-public class DefaultSoundOutputter implements SoundOutputter{
+public class DefaultSoundService implements SoundService {
 
   @Override
   public void beep() {

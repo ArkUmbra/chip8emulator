@@ -7,10 +7,8 @@ import static org.mockito.Mockito.when;
 
 import com.arkumbra.chip8.TestUtils;
 import com.arkumbra.chip8.machine.DataRegister;
-import com.arkumbra.chip8.machine.FontLabel;
 import com.arkumbra.chip8.machine.Machine;
 import com.arkumbra.chip8.machine.RegisterLabel;
-import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,7 +39,7 @@ public class OpFX33Test {
     sut.execute(opCodeData, machineMock);
 
 
-    verify(machineMock.getMemory(), times(1))
+    verify(machineMock.getRam(), times(1))
         .write(machineMock.getIndexRegister().get(), new byte[]{1, 2, 3});
   }
 

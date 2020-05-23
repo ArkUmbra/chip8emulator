@@ -1,5 +1,6 @@
 package com.arkumbra.chip8.external;
 
+import com.arkumbra.chip8.debug.Debugger;
 import com.arkumbra.chip8.machine.DataRegisters;
 import com.arkumbra.chip8.machine.DelayTimer;
 import com.arkumbra.chip8.machine.KeyLabel;
@@ -27,19 +28,18 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class DebugPanel extends JPanel implements TickUpdateable {
+// Will be removed in favour of libgdx implementation
+@Deprecated()
+public class DebugPanel extends JPanel {
 
   private static final Dimension SCREEN_SIZE = new Dimension(100, 500);
 
   private final Map<RegisterLabel, Label> dataDisplayLabelsPerRegister = new HashMap<>();
 
-  private final DataRegisters dataRegisters;
-  private final ProgramCounter programCounter;
+  private final Debugger debugger;
 
-  public DebugPanel(DataRegisters dataRegisters, ProgramCounter pc, Timer soundTimer, Timer delayTimer) {
-
-    this.dataRegisters = dataRegisters;
-    this.programCounter = pc;
+  public DebugPanel(Debugger debugger) {
+    this.debugger = debugger;
 
     GridLayout registersLayout = new GridLayout(9, 4);
     this.setLayout(registersLayout);
@@ -56,7 +56,6 @@ public class DebugPanel extends JPanel implements TickUpdateable {
 
 
   private void initUI() {
-
     for (RegisterLabel register : RegisterLabel.values()) {
       Label uiLabel = new Label(register.name());
       add(uiLabel);
@@ -68,7 +67,7 @@ public class DebugPanel extends JPanel implements TickUpdateable {
     }
 
     Button freezeButton = new Button("Pause / Unpause");
-    freezeButton.addActionListener(new BreakpointButtonListener(programCounter));
+    freezeButton.addActionListener(new BreakpointButtonListener());
     add(freezeButton);
   }
 
@@ -79,7 +78,7 @@ public class DebugPanel extends JPanel implements TickUpdateable {
   private void refreshEachRegisterValue() {
     for (RegisterLabel register : RegisterLabel.values()) {
       Label registerData = dataDisplayLabelsPerRegister.get(register);
-      char data = dataRegisters.getRegister(register).get();
+      char data = debugger.getRegisterValue(register);
 
       String hex = Integer.toHexString(data);
       while (hex.length() < 3) {
@@ -94,22 +93,17 @@ public class DebugPanel extends JPanel implements TickUpdateable {
     return SCREEN_SIZE;
   }
 
-  @Override
-  public void tick() {
-    refreshUi();
-  }
+//  @Override
+//  public void tick() {
+//    refreshUi();
+//  }
 
-  static class BreakpointButtonListener implements ActionListener {
-    private final ProgramCounter programCounter;
-
-    public BreakpointButtonListener(ProgramCounter programCounter) {
-      this.programCounter = programCounter;
-    }
+  class BreakpointButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
       System.out.println(e.getActionCommand());
-      programCounter.toggleFreezeExecution();
+      debugger.toggleFreezeExecution();
     }
   }
 

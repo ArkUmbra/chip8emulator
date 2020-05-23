@@ -1,4 +1,4 @@
-package com.arkumbra.chip8;
+package com.arkumbra.chip8.state;
 
 public interface SaveStateHandler {
 

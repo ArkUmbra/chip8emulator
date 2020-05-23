@@ -1,5 +1,6 @@
 package com.arkumbra.chip8.external;
 
+@Deprecated
 public class DrawRunner implements Runnable {
   private static final int FPS = 60;
   private static final int MS_PER_FRAME = 1000 / FPS;

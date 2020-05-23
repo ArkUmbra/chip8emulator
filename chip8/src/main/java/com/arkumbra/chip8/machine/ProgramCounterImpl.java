@@ -1,6 +1,5 @@
 package com.arkumbra.chip8.machine;
 
-import com.arkumbra.chip8.MemoryImpl;
 import java.nio.ByteBuffer;
 import java.util.Stack;
 
@@ -153,7 +152,7 @@ public class ProgramCounterImpl implements ProgramCounter, SerializableData, Dum
     private int position;
 
     public Counter() {
-      this.position  = MemoryImpl.RESERVED;
+      this.position  = RamImpl.RESERVED;
     }
 
     public Counter(int position) {

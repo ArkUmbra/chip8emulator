@@ -11,7 +11,8 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class JPanelOutputter extends JPanel implements JPanelDrawer, ScreenOutputter, KeyListener {
+@Deprecated
+public class JPanelOutputter extends JPanel implements JPanelDrawer, GuiService, KeyListener {
 
   private static final int PIXELSIZE = 10;
   private static final int GAME_WIDTH = 64 * PIXELSIZE;

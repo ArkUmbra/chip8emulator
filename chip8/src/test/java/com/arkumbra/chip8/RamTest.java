@@ -2,20 +2,21 @@ package com.arkumbra.chip8;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
+import com.arkumbra.chip8.machine.Ram;
+import com.arkumbra.chip8.machine.RamImpl;
 import com.arkumbra.chip8.machine.ProgramCounter;
 import com.arkumbra.chip8.machine.ProgramCounterImpl;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MemoryTest {
+public class RamTest {
 
-  private Memory systemUnderTest;
+  private Ram systemUnderTest;
 
   @Before
   public void setUp() {
-    this.systemUnderTest = new MemoryImpl();
+    this.systemUnderTest = new RamImpl();
   }
 
   @Test

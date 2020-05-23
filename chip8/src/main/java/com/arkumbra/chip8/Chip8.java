@@ -1,55 +1,46 @@
 package com.arkumbra.chip8;
 
-import com.arkumbra.chip8.external.DebugPanel;
-import com.arkumbra.chip8.external.ScreenOutputter;
+import com.arkumbra.chip8.external.GuiService;
 import com.arkumbra.chip8.machine.Dumpable;
-import com.arkumbra.chip8.machine.Machine;
 import com.arkumbra.chip8.machine.MachineImpl;
+import com.arkumbra.chip8.machine.Ram;
 import com.arkumbra.chip8.machine.ProgramCounter;
-import com.arkumbra.chip8.machine.RoutineRunner;
-import com.arkumbra.chip8.machine.SoundOutputter;
+import com.arkumbra.chip8.external.SoundService;
 import com.arkumbra.chip8.opcode.OpCode;
-import com.arkumbra.chip8.opcode.OpCodeLabel;
 import com.arkumbra.chip8.opcode.OpCodeLookup;
 import com.arkumbra.chip8.opcode.OpCodeLookupImpl;
+import com.arkumbra.chip8.state.SaveStateHandler;
 import java.io.IOException;
 import java.util.LinkedList;
 
-public class Chip8 implements RoutineRunner, SaveStateHandler, Dumpable {
+public class Chip8 implements Dumpable {
   private final Logger logger = new Logger(getClass());
 
   private static final OpCodeLookup opCodeLookup = new OpCodeLookupImpl();
 
   private MachineImpl machine;
-  private ScreenOutputter screenOutputter;
-  private DebugPanel debugPanel;
+  private GuiService guiService;
+  private SaveStateManager saveStateManager = new SaveStateManager();
+  private Thread gameThread;
 
-  private LinkedList<String> commandExecutionOrder = new LinkedList<>();
 
-  public Chip8(ScreenOutputter screenOutputter, SoundOutputter soundOutputter) {
-    this.machine = new MachineImpl(this, soundOutputter);
-    this.screenOutputter = screenOutputter;
 
-    this.debugPanel = new DebugPanel(
-        machine.getRegisters(),
-        machine.getProgramCounter(),
-        machine.getSoundTimer(),
-        machine.getDelayTimer()
-    );
+  public Chip8(GuiService guiService, SoundService soundService) {
+    this.machine = new MachineImpl(soundService);
+    this.guiService = guiService;
   }
 
   public void loadGame(String gameFilePath) {
-
     GameLoader gameLoader = new GameLoader();
     try {
-      Memory memory = gameLoader.loadGameIntoMemory(gameFilePath);
-      machine.loadIntoMemory(memory);
+      Ram ram = gameLoader.loadGameIntoMemory(gameFilePath);
+      machine.loadIntoMemory(ram);
 
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    screenOutputter.init(machine.getScreenMemoryHandle(), machine.getKeys());
+    guiService.init(machine.getScreenMemoryHandle(), machine.getKeys());
   }
 
   public void runAsync() {
@@ -60,70 +51,85 @@ public class Chip8 implements RoutineRunner, SaveStateHandler, Dumpable {
           }
 
       } catch (InterruptedException e) {
-        System.err.println("Game thread was terminated. Exiting");
-        e.printStackTrace();
+        logger.debug("Game thread was terminated. Possibly due to reloading game state");
+        logger.debug(e.toString());
       }
     };
 
-    Thread gameThread = new Thread(gameRunner);
+    gameThread = new Thread(gameRunner);
     gameThread.start();
   }
 
   /**
    *
-   * @return Executed opcode
    */
-  @Override
-  public OpCodeLabel runSingleCycle() throws InterruptedException {
-    Memory memory = machine.getMemory();
+  private void runSingleCycle() throws InterruptedException {
+    Ram ram = machine.getRam();
     ProgramCounter pc = machine.getProgramCounter();
 
-    char rawOpCode = memory.readRawOpCode(pc);
-
+    char rawOpCode = ram.readRawOpCode(pc);
     OpCode opCode = opCodeLookup.lookup(rawOpCode);
-    OpCodeLabel opCodeLabel = opCode.getOpCodeLabel();
 
     char opData = opCode.getBitMask().applyMask(rawOpCode);
     opCode.execute(opData, machine);
 
     pc.increment();
     machine.tick();
-    debugPanel.tick();
+
+    saveStateManager.recordState();
 
     // TODO add better clock speed control
     Thread.sleep(1);
-
-    return opCodeLabel;
   }
 
   @Override
   public String dump() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("--- Commands ---");
-    sb.append(System.lineSeparator());
-    sb.append(String.join(System.lineSeparator(), commandExecutionOrder));
-    sb.append(System.lineSeparator());
-    sb.append(machine.dump());
-    return sb.toString();
+    return machine.dump();
   }
 
-  public Machine getMachine() {
-    return machine;
+  public SaveStateHandler getSaveStateHandler() {
+    return saveStateManager;
   }
 
-  @Override
-  public byte[] createSaveState() {
-    machine.getProgramCounter().freeze();
-    byte[] saveState = machine.createSaveState();
 
-    machine.getProgramCounter().unfreeze();
-    return saveState;
+
+  // ===============================================================================================
+
+  class SaveStateManager implements SaveStateHandler {
+    private final LinkedList<byte[]> state = new LinkedList<>();
+
+    @Override
+    public byte[] createSaveState() {
+      return state.getLast();
+    }
+
+    @Override
+    public void loadFromSaveState(byte[] state) {
+      this.state.clear();
+      gameThread.interrupt();
+
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+
+      machine.getProgramCounter().freeze();
+      machine.loadFromSaveState(state);
+      machine.getProgramCounter().unfreeze();
+
+      runAsync();
+    }
+
+    public void recordState() {
+      if (state.size() > 1000) {
+        state.removeFirst();
+      }
+
+      state.addLast(machine.createSaveState());
+    }
   }
 
-  @Override
-  public void loadFromSaveState(byte[] state) {
-    machine.getProgramCounter().freeze();
-    machine.loadFromSaveState(state);
-    machine.getProgramCounter().unfreeze();
-  }
 }
+
+

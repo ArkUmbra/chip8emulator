@@ -10,6 +10,8 @@ public class ScreenImpl implements Screen, ScreenMemory, SerializableData, Dumpa
 
   private boolean[][] pixels = new boolean[WIDTH][HEIGHT];
 
+  private boolean blockingReads = false;
+
   @Override
   public void clearScreen() {
     for (int y = 0; y < pixels[0].length; y++) {
@@ -20,7 +22,7 @@ public class ScreenImpl implements Screen, ScreenMemory, SerializableData, Dumpa
   }
 
   @Override
-  public boolean draw(byte bitFlagsToDraw, int fromX, int y) {
+  public synchronized boolean draw(byte bitFlagsToDraw, int fromX, int y) {
     boolean atLeastOnePixelFlipped = false;
 
     for (int i = 0; i < 8; i++) {
@@ -32,6 +34,20 @@ public class ScreenImpl implements Screen, ScreenMemory, SerializableData, Dumpa
 
     return atLeastOnePixelFlipped;
   }
+
+//  private void blockUntilReadAvailable() {
+//
+//  }
+//
+//  @Override
+//  public void blockReads() {
+//
+//  }
+//
+//  @Override
+//  public void unblockReads() {
+//
+//  }
 
   /**
    *
@@ -81,33 +97,45 @@ public class ScreenImpl implements Screen, ScreenMemory, SerializableData, Dumpa
 
   @Override
   public byte[] serialize() {
-    ByteBuffer byteBuffer = ByteBuffer.allocate(SERIALIZED_LENGTH);
-    byte on = 1;
-    byte off = 0;
+    synchronized (this) {
+      ByteBuffer byteBuffer = ByteBuffer.allocate(SERIALIZED_LENGTH);
+      byte on = 1;
+      byte off = 0;
 
-    for (int y = 0; y < pixels[0].length; y++) {
-      for (int x = 0; x < pixels.length; x++) {
-        boolean pixel = pixels[x][y];
-        byteBuffer.put(pixel ? on : off);
+      for (int y = 0; y < pixels[0].length; y++) {
+        for (int x = 0; x < pixels.length; x++) {
+          boolean pixel = pixels[x][y];
+          byteBuffer.put(pixel ? on : off);
+        }
       }
-    }
 
-    return byteBuffer.array();
+      return byteBuffer.array();
+    }
   }
+
+  private boolean[][] last;
 
   @Override
   public void deserialize(byte[] data) {
-    if (data.length != SERIALIZED_LENGTH) {
-      throw new RuntimeException("Not valid length " + data.length);
-    }
-
-    ByteBuffer byteBuffer = ByteBuffer.wrap(data);
-
-    for (int y = 0; y < HEIGHT; y++) {
-      for (int x = 0; x < WIDTH; x++) {
-        byte pixel = byteBuffer.get();
-        pixels[x][y] = pixel == 1;
+    synchronized (this) {
+      if (data.length != SERIALIZED_LENGTH) {
+        throw new RuntimeException("Not valid length " + data.length);
       }
+
+      ByteBuffer byteBuffer = ByteBuffer.wrap(data);
+
+      for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < WIDTH; x++) {
+          byte pixel = byteBuffer.get();
+          pixels[x][y] = pixel == 1;
+        }
+      }
+
+      if (last != null &&  last != this.pixels) {
+        System.out.println("Bad deserialise??");
+      }
+
+      last = this.pixels;
     }
   }
 }

@@ -4,13 +4,11 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.arkumbra.chip8.TestUtils;
 import com.arkumbra.chip8.machine.DataRegister;
 import com.arkumbra.chip8.machine.Machine;
-import com.arkumbra.chip8.machine.RegisterLabel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,7 +42,7 @@ public class OpFX55Test {
 
     verify(machineMock.getRegisters(), times(expectedNumberOfRegistersToDump))
         .getRegister(any());
-    verify(machineMock.getMemory(), times(1))
+    verify(machineMock.getRam(), times(1))
         .write(machineMock.getIndexRegister().get(), new byte[]{1, 1, 1, 1, 1, 1, 1, 1});
   }
 

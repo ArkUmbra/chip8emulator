@@ -2,12 +2,12 @@ package com.arkumbra.startchip8.gdx;
 
 
 import com.arkumbra.chip8.Chip8;
-import com.arkumbra.chip8.SaveStateHandler;
-import com.arkumbra.chip8.external.ScreenOutputter;
+import com.arkumbra.chip8.state.SaveStateHandler;
+import com.arkumbra.chip8.external.GuiService;
 import com.arkumbra.chip8.machine.KeyPressListener;
 import com.arkumbra.chip8.machine.ScreenMemory;
-import com.arkumbra.chip8.machine.SoundOutputter;
-import com.arkumbra.startchip8.gdx.chip8.GdxSoundOutputter;
+import com.arkumbra.chip8.external.SoundService;
+import com.arkumbra.startchip8.gdx.chip8.GdxSoundService;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -22,18 +22,16 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
-import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
 
-public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter {
+public class GdxOutputter extends ApplicationAdapter implements GuiService {
 
 	private Environment environment;
 
 	private PerspectiveCamera cam;
-	private CameraInputController camController;
 	private InputProcessor inputProcessor;
 
 	private ModelBatch modelBatch;
@@ -55,7 +53,6 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 	public void create () {
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-//		environment.add(new DirectionalLight().set(1f, 1f, 1f, 1f, 1f, 0.5f)); // Decent
 		environment.add(new PointLight().set(Color.valueOf("CCAACC"), new Vector3(32, 16, 10), 500f));
 
 
@@ -78,10 +75,10 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 //		String relativePath = "chip8/src/main/resources/TANK.ch8"; // TODO Add file loader
 		String absolutePath = new File(relativePath).getAbsolutePath();
 
-		SoundOutputter soundOutputter = new GdxSoundOutputter();
+		SoundService soundService = new GdxSoundService();
 
-		Chip8 chip8 = new Chip8(this, soundOutputter);
-		this.saveStateHandler = chip8;
+		Chip8 chip8 = new Chip8(this, soundService);
+		this.saveStateHandler = chip8.getSaveStateHandler();
 
 		// final step
 		chip8.loadGame(absolutePath);
@@ -96,7 +93,6 @@ public class GdxOutputter extends ApplicationAdapter implements ScreenOutputter 
 		Material material = new Material(emissive, diffuse, ambient, reflective);
 
 		ModelBuilder modelBuilder = new ModelBuilder();
-//		Model model = modelBuilder.createBox(0.9f, 0.9f, 0.5f,
 		Model model = modelBuilder.createBox(1f, 1f, 0.5f,
 				material,
 				Usage.Position | Usage.Normal | Usage.TextureCoordinates);

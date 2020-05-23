@@ -34,7 +34,7 @@ public class Op2NNNTest {
 
     verify(machineMock.getProgramCounter(), times(1)).push(expectedPushAddress);
     verify(machineMock.getProgramCounter(), never()).pop();
-    verify(machineMock.getRoutineRunner(), never()).runSingleCycle();
+//    verify(machineMock.getRoutineRunner(), never()).runSingleCycle();
   }
 
 }

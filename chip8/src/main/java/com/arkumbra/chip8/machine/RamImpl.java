@@ -1,13 +1,10 @@
-package com.arkumbra.chip8;
+package com.arkumbra.chip8.machine;
 
-import com.arkumbra.chip8.machine.Font;
-import com.arkumbra.chip8.machine.FontLabel;
-import com.arkumbra.chip8.machine.IndexRegister;
-import com.arkumbra.chip8.machine.ProgramCounter;
+import com.arkumbra.chip8.Logger;
 import java.util.Arrays;
 import org.apache.commons.codec.binary.Hex;
 
-public class MemoryImpl implements Memory {
+public class RamImpl implements Ram {
   private final Logger logger = new Logger(getClass());
   private static final int CAPACITY = 0x1000;
   public static final int SERIALIZED_LENGTH = CAPACITY;

@@ -36,7 +36,7 @@ public class OpDXYN implements OpCode {
     DataRegister registerY = machine.getRegisters().getRegister(RegisterLabel.toKey(yRegisterRaw));
 
 
-    byte[] bytesOfPixels = machine.getMemory().readBytes(machine.getIndexRegister(), nRows);
+    byte[] bytesOfPixels = machine.getRam().readBytes(machine.getIndexRegister(), nRows);
 
     if (nRows != bytesOfPixels.length) {
       throw new RuntimeException("Size mismatch. Requsted " + nRows + ", but got " + bytesOfPixels.length);

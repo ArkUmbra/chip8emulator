@@ -33,7 +33,7 @@ public class OpFX65Test {
     byte[] bytesInMemory = new byte[]{1, 2, 3, 4, 5, 6, 7, 8};
 
 
-    when(machineMock.getMemory().readBytes(any(), anyInt()))
+    when(machineMock.getRam().readBytes(any(), anyInt()))
         .thenReturn(bytesInMemory);
 
 

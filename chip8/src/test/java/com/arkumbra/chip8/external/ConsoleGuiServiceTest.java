@@ -2,7 +2,7 @@ package com.arkumbra.chip8.external;
 
 import org.junit.Test;
 
-public class ConsoleScreenOutputterTest {
+public class ConsoleGuiServiceTest {
 
   @Test
   public void test() {

@@ -26,4 +26,7 @@ public interface Screen {
      *  of this draw
      */
     boolean draw(byte bitFlagsToDraw, int fromX, int y);
+
+//    void blockReads();
+//    void unblockReads();
 }

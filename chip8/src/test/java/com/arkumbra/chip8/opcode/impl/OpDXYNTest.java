@@ -56,7 +56,7 @@ public class OpDXYNTest {
 
     when(machineMock.getProgramCounter().getPosition())
         .thenReturn(currentMemoryLocation);
-    when(machineMock.getMemory().readBytes(machineMock.getIndexRegister(), 1))
+    when(machineMock.getRam().readBytes(machineMock.getIndexRegister(), 1))
         .thenReturn(new byte[]{memoryContentAtI});
 
     Screen screen = machineMock.getScreen();
