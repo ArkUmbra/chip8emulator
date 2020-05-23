@@ -24,10 +24,19 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.VisUI.SkinScale;
+import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisTable;
 import java.io.File;
 
-public class GdxOutputter extends ApplicationAdapter implements GuiService {
+public class GdxGameWindow extends ApplicationAdapter implements GuiService {
 
 	private Environment environment;
 
@@ -45,7 +54,7 @@ public class GdxOutputter extends ApplicationAdapter implements GuiService {
 
 	private final SaveStateFileManager saveStateFileManager;
 
-	public GdxOutputter(SaveStateFileManager saveStateFileManager) {
+	public GdxGameWindow(SaveStateFileManager saveStateFileManager) {
 		this.saveStateFileManager = saveStateFileManager;
 	}
 
@@ -53,6 +62,7 @@ public class GdxOutputter extends ApplicationAdapter implements GuiService {
 	public void create () {
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+		// TODO turn off in 2d mode
 		environment.add(new PointLight().set(Color.valueOf("CCAACC"), new Vector3(32, 16, 10), 500f));
 
 
@@ -60,7 +70,7 @@ public class GdxOutputter extends ApplicationAdapter implements GuiService {
 
 		// Set up camera to look at the game screen face on
 		cam = new PerspectiveCamera(80, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		cam.position.set(ScreenMemory.WIDTH / 2, ScreenMemory.HEIGHT / 2, -30f);
+		cam.position.set(ScreenMemory.WIDTH / 2, ScreenMemory.HEIGHT / 2, -20f);
 		cam.lookAt(ScreenMemory.WIDTH / 2,ScreenMemory.HEIGHT / 2,0);
 		cam.near = 1f;
 		cam.far = 50f;
@@ -69,20 +79,47 @@ public class GdxOutputter extends ApplicationAdapter implements GuiService {
 
 
 		createBoxPerPixel();
-
+		createUiLayer();
 
 		String relativePath = "chip8/src/main/resources/BLINKY.ch8"; // TODO Add file loader
 //		String relativePath = "chip8/src/main/resources/TANK.ch8"; // TODO Add file loader
 		String absolutePath = new File(relativePath).getAbsolutePath();
 
 		SoundService soundService = new GdxSoundService();
-
 		Chip8 chip8 = new Chip8(this, soundService);
 		this.saveStateHandler = chip8.getSaveStateHandler();
 
 		// final step
 		chip8.loadGame(absolutePath);
 		chip8.runAsync();
+	}
+
+	private Stage stage;
+	private VisTable table;
+
+	private void createUiLayer() {
+//		VisUI.load(SkinScale.X2);
+		VisUI.load();
+		stage = new Stage();
+		Gdx.input.setInputProcessor(stage);
+
+		table = new VisTable();
+		table.align(Align.topRight);
+		table.setFillParent(true);
+		stage.addActor(table);
+
+
+		Label v0Label = new VisLabel("V0");
+		table.add(v0Label);
+		Label v0Data = new VisLabel("000");
+		table.add(v0Data);
+		table.row();
+		Label v1Label = new VisLabel("V1");
+		table.add(v1Label);
+		Label v1Data = new VisLabel("000");
+		table.add(v1Data);
+
+		table.setDebug(true); // This is optional, but enables debug lines for tables.
 	}
 
 	private void createBoxPerPixel() {
@@ -93,7 +130,8 @@ public class GdxOutputter extends ApplicationAdapter implements GuiService {
 		Material material = new Material(emissive, diffuse, ambient, reflective);
 
 		ModelBuilder modelBuilder = new ModelBuilder();
-		Model model = modelBuilder.createBox(1f, 1f, 0.5f,
+		// TODO change to depth of 0.05 in 2d mode
+		Model model = modelBuilder.createBox(1f, 1f, 0.05f,
 				material,
 				Usage.Position | Usage.Normal | Usage.TextureCoordinates);
 
@@ -118,6 +156,11 @@ public class GdxOutputter extends ApplicationAdapter implements GuiService {
 	}
 
 	@Override
+	public void resize (int width, int height) {
+		stage.getViewport().update(width, height, true);
+	}
+
+	@Override
 	public void render () {
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
@@ -134,12 +177,17 @@ public class GdxOutputter extends ApplicationAdapter implements GuiService {
 
 		modelBatch.begin(cam);
 		modelBatch.render(modelInstancesForFrame, environment);
+		// render UI
+		stage.act(Gdx.graphics.getDeltaTime());
+		stage.draw();
+
 		modelBatch.end();
 	}
 	
 	@Override
-	public void dispose () {
+	public void dispose() {
 		modelBatch.dispose();
+		VisUI.dispose();
 	}
 
 	@Override

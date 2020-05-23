@@ -3,7 +3,7 @@ package com.arkumbra.startchip8.gdx.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.arkumbra.startchip8.gdx.GdxOutputter;
+import com.arkumbra.startchip8.gdx.GdxGameWindow;
 
 public class HtmlLauncher extends GwtApplication {
 
@@ -46,6 +46,6 @@ public class HtmlLauncher extends GwtApplication {
 
         @Override
         public ApplicationListener createApplicationListener () {
-                return new GdxOutputter(new SaveStateFileManagerImpl());
+                return new GdxGameWindow(new SaveStateFileManagerImpl());
         }
 }
