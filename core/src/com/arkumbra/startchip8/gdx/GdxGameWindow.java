@@ -2,6 +2,7 @@ package com.arkumbra.startchip8.gdx;
 
 
 import com.arkumbra.chip8.Chip8;
+import com.arkumbra.chip8.debug.Debugger;
 import com.arkumbra.chip8.state.SaveStateHandler;
 import com.arkumbra.chip8.external.GuiService;
 import com.arkumbra.chip8.machine.KeyPressListener;
@@ -38,25 +39,71 @@ import java.io.File;
 
 public class GdxGameWindow extends ApplicationAdapter implements GuiService {
 
-	private Environment environment;
-
-	private PerspectiveCamera cam;
-	private InputProcessor inputProcessor;
-
-	private ModelBatch modelBatch;
-
+	// Emuluator
+	private final SaveStateFileManager saveStateFileManager;
+	private Chip8 chip8;
+	private GdxSoundService soundService;
+	private SaveStateHandler saveStateHandler;
+	private Debugger debugger;
 	private ScreenMemory screenMemory;
 
+	// LibGDX
+	private Environment environment;
+	private PerspectiveCamera cam;
+	private InputProcessor inputProcessor;
+	private ModelBatch modelBatch;
 	private ModelInstance[][] pixelInstances = new ModelInstance[ScreenMemory.WIDTH][ScreenMemory.HEIGHT];
 	private Array<ModelInstance> modelInstances = new Array<>();
 
-	private SaveStateHandler saveStateHandler;
-
-	private final SaveStateFileManager saveStateFileManager;
 
 	public GdxGameWindow(SaveStateFileManager saveStateFileManager) {
 		this.saveStateFileManager = saveStateFileManager;
 	}
+
+	// ===============================================================================================
+	// ================================== Managing Chip 8 Emulator ===================================
+	// ===============================================================================================
+
+	public void setUpChip8() {
+		soundService = new GdxSoundService();
+		chip8 = new Chip8(this, soundService);
+	}
+
+
+	// Callback from Chip8 emulator once the emulato has been created
+	@Override
+	public void init(ScreenMemory screenMemory, KeyPressListener keyPressListener,
+			SaveStateHandler saveStateHandler, Debugger debugger) {
+
+		this.screenMemory = screenMemory;
+		this.saveStateHandler = saveStateHandler;
+		this.debugger = debugger;
+
+		inputProcessor = new GdxInputProcessor(keyPressListener, saveStateHandler, saveStateFileManager);
+		Gdx.input.setInputProcessor(inputProcessor);
+	}
+
+	public void loadGame() {
+		String relativePath = "chip8/src/main/resources/BLINKY.ch8"; // TODO Add file loader
+//		String relativePath = "chip8/src/main/resources/TANK.ch8"; // TODO Add file loader
+
+		String absolutePath = new File(relativePath).getAbsolutePath();
+
+		chip8.loadGame(absolutePath);
+	}
+
+	public void startChip8() {
+		soundService.init();
+		chip8.runAsync();
+	}
+
+	public Debugger getDebugger() {
+		return debugger;
+	}
+
+	// ===============================================================================================
+	// ===================================== LibGDX processing =======================================
+	// ===============================================================================================
 
 	@Override
 	public void create () {
@@ -80,18 +127,6 @@ public class GdxGameWindow extends ApplicationAdapter implements GuiService {
 
 		createBoxPerPixel();
 		createUiLayer();
-
-		String relativePath = "chip8/src/main/resources/BLINKY.ch8"; // TODO Add file loader
-//		String relativePath = "chip8/src/main/resources/TANK.ch8"; // TODO Add file loader
-		String absolutePath = new File(relativePath).getAbsolutePath();
-
-		SoundService soundService = new GdxSoundService();
-		Chip8 chip8 = new Chip8(this, soundService);
-		this.saveStateHandler = chip8.getSaveStateHandler();
-
-		// final step
-		chip8.loadGame(absolutePath);
-		chip8.runAsync();
 	}
 
 	private Stage stage;
@@ -101,7 +136,7 @@ public class GdxGameWindow extends ApplicationAdapter implements GuiService {
 //		VisUI.load(SkinScale.X2);
 		VisUI.load();
 		stage = new Stage();
-		Gdx.input.setInputProcessor(stage);
+//		Gdx.input.setInputProcessor(stage);
 
 		table = new VisTable();
 		table.align(Align.topRight);
@@ -190,12 +225,5 @@ public class GdxGameWindow extends ApplicationAdapter implements GuiService {
 		VisUI.dispose();
 	}
 
-	@Override
-	public void init(ScreenMemory screenMemory, KeyPressListener keyPressListener) {
-		this.screenMemory = screenMemory;
-
-		inputProcessor = new GdxInputProcessor(keyPressListener, saveStateHandler, saveStateFileManager);
-		Gdx.input.setInputProcessor(inputProcessor);
-	}
 
 }

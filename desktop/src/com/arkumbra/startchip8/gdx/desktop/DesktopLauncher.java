@@ -15,6 +15,12 @@ public class DesktopLauncher {
 
 		SaveStateFileManager saveStateFileManager = new SaveStateFileManagerImpl();
 		GdxGameWindow gdxGameWindow = new GdxGameWindow(saveStateFileManager);
-		new LwjglApplication(gdxGameWindow, config);
+
+		LwjglApplication gdxApp = new LwjglApplication(gdxGameWindow, config);
+		gdxGameWindow.setUpChip8();
+		gdxGameWindow.loadGame();
+		gdxGameWindow.startChip8();
+
+		DebugPanel debugPanel = new DebugPanel(gdxGameWindow.getDebugger());
 	}
 }

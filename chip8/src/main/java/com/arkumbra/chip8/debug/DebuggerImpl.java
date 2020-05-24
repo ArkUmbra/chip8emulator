@@ -39,16 +39,22 @@ public class DebuggerImpl implements Debugger {
 
   @Override
   public void toggleFreezeExecution() {
+    // TODO, should just manage this in here, rather than putting it in program counter...
+    //  Let the emulator check at the end of each cycle
     machine.getProgramCounter().toggleFreezeExecution();
   }
 
   @Override
   public void freeze() {
+    // TODO, should just manage this in here, rather than putting it in program counter...
+    //  Let the emulator check at the end of each cycle
     machine.getProgramCounter().freeze();
   }
 
   @Override
   public void unfreeze() {
+    // TODO, should just manage this in here, rather than putting it in program counter...
+    //  Let the emulator check at the end of each cycle
     machine.getProgramCounter().unfreeze();
   }
 }

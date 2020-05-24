@@ -1,4 +1,4 @@
-package com.arkumbra.chip8.external;
+package com.arkumbra.startchip8.gdx.desktop;
 
 import com.arkumbra.chip8.debug.Debugger;
 import com.arkumbra.chip8.machine.DataRegisters;
@@ -12,6 +12,7 @@ import com.arkumbra.chip8.machine.SoundTimer;
 import com.arkumbra.chip8.machine.TickUpdateable;
 import com.arkumbra.chip8.machine.Timer;
 import com.arkumbra.chip8.machine.Timers;
+import com.badlogic.gdx.LifecycleListener;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;

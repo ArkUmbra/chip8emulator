@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 @Deprecated
-public class JPanelOutputter extends JPanel implements JPanelDrawer, GuiService, KeyListener {
+public class JPanelOutputter extends JPanel implements JPanelDrawer,/*, GuiService*/ KeyListener {
 
   private static final int PIXELSIZE = 10;
   private static final int GAME_WIDTH = 64 * PIXELSIZE;
@@ -117,14 +117,14 @@ public class JPanelOutputter extends JPanel implements JPanelDrawer, GuiService,
       keyPressListener.keyReleased(keyLabel);
     }
   }
-
-  @Override
-  public void init(ScreenMemory screenMemory, KeyPressListener keyPressListener) {
-    this.screenMemory = screenMemory;
-    this.keyPressListener = keyPressListener;
-
-    new Thread(new DrawRunner(this)).start();
-  }
+//
+//  @Override
+//  public void init(ScreenMemory screenMemory, KeyPressListener keyPressListener) {
+//    this.screenMemory = screenMemory;
+//    this.keyPressListener = keyPressListener;
+//
+//    new Thread(new DrawRunner(this)).start();
+//  }
 
   @Override
   public void drawFrame() {

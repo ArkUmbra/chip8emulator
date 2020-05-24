@@ -71,6 +71,7 @@ public class KeysImpl implements Keys {
 
   @Override
   public void keyPressed(KeyLabel keyLabel) {
+    System.out.println("Key Pressed " + keyLabel);
     keys.get(keyLabel).press(true);
 
     synchronized (LOCK) {

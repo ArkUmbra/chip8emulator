@@ -1,5 +1,7 @@
 package com.arkumbra.chip8;
 
+import com.arkumbra.chip8.debug.Debugger;
+import com.arkumbra.chip8.debug.DebuggerImpl;
 import com.arkumbra.chip8.external.GuiService;
 import com.arkumbra.chip8.machine.Dumpable;
 import com.arkumbra.chip8.machine.MachineImpl;
@@ -21,13 +23,17 @@ public class Chip8 implements Dumpable {
   private MachineImpl machine;
   private GuiService guiService;
   private SaveStateManager saveStateManager = new SaveStateManager();
+  private Debugger debugger;
   private Thread gameThread;
 
 
 
   public Chip8(GuiService guiService, SoundService soundService) {
     this.machine = new MachineImpl(soundService);
+    this.debugger = new DebuggerImpl(machine);
     this.guiService = guiService;
+
+    guiService.init(machine.getScreenMemoryHandle(), machine.getKeys(), saveStateManager, debugger);
   }
 
   public void loadGame(String gameFilePath) {
@@ -39,8 +45,6 @@ public class Chip8 implements Dumpable {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
-    guiService.init(machine.getScreenMemoryHandle(), machine.getKeys());
   }
 
   public void runAsync() {
@@ -87,11 +91,13 @@ public class Chip8 implements Dumpable {
     return machine.dump();
   }
 
-  public SaveStateHandler getSaveStateHandler() {
-    return saveStateManager;
-  }
-
-
+//  public SaveStateHandler getSaveStateHandler() {
+//    return saveStateManager;
+//  }
+//
+//  public Debugger getDebugger() {
+//    return debugger;
+//  }
 
   // ===============================================================================================
 
