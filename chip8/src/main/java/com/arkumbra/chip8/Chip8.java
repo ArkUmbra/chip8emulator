@@ -1,6 +1,5 @@
 package com.arkumbra.chip8;
 
-import com.arkumbra.chip8.debug.Debugger;
 import com.arkumbra.chip8.debug.DebuggerImpl;
 import com.arkumbra.chip8.external.GuiService;
 import com.arkumbra.chip8.machine.Dumpable;
@@ -23,14 +22,14 @@ public class Chip8 implements Dumpable {
   private MachineImpl machine;
   private GuiService guiService;
   private SaveStateManager saveStateManager = new SaveStateManager();
-  private Debugger debugger;
+  private DebuggerImpl debugger;
   private Thread gameThread;
 
 
 
   public Chip8(GuiService guiService, SoundService soundService) {
     this.machine = new MachineImpl(soundService);
-    this.debugger = new DebuggerImpl(machine);
+    this.debugger = new DebuggerImpl(machine, saveStateManager);
     this.guiService = guiService;
 
     guiService.init(machine.getScreenMemoryHandle(), machine.getKeys(), saveStateManager, debugger);
@@ -82,6 +81,9 @@ public class Chip8 implements Dumpable {
 
     saveStateManager.recordState();
 
+    debugger.endOfCycle();
+    debugger.blockUntilExecutionUnpaused();
+
     // TODO add better clock speed control
     Thread.sleep(1);
   }
@@ -91,13 +93,6 @@ public class Chip8 implements Dumpable {
     return machine.dump();
   }
 
-//  public SaveStateHandler getSaveStateHandler() {
-//    return saveStateManager;
-//  }
-//
-//  public Debugger getDebugger() {
-//    return debugger;
-//  }
 
   // ===============================================================================================
 
@@ -110,21 +105,40 @@ public class Chip8 implements Dumpable {
     }
 
     @Override
-    public void loadFromSaveState(byte[] state) {
+    public void loadFromSaveStateAndRun(byte[] state) {
       this.state.clear();
       gameThread.interrupt();
 
       try {
-        Thread.sleep(100);
+        Thread.sleep(50);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
 
-      machine.getProgramCounter().freeze();
-      machine.loadFromSaveState(state);
-      machine.getProgramCounter().unfreeze();
+      debugger.freeze();
+      machine.deserialize(state);
+      debugger.unfreeze();
 
       runAsync();
+    }
+
+    @Override
+    public void stepStateBackAndPause() {
+      debugger.freeze();
+
+      try {
+        Thread.sleep(20);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+
+      // Discard the last cycle state that completed. This is because the cycle will finish /after/
+      // the 'step back' has been requested. So we actually want to restore the state before that
+      state.removeLast();
+      byte[] requiredState = state.removeLast();
+
+      machine.deserialize(requiredState);
+
     }
 
     public void recordState() {
@@ -132,7 +146,7 @@ public class Chip8 implements Dumpable {
         state.removeFirst();
       }
 
-      state.addLast(machine.createSaveState());
+      state.addLast(machine.serialize());
     }
   }
 

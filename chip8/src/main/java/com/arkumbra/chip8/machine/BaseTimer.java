@@ -3,6 +3,7 @@ package com.arkumbra.chip8.machine;
 import java.nio.ByteBuffer;
 
 // Needs work probably
+// TODO fix to account for debug breakpoints
 public class BaseTimer implements Timer {
 
   public static final int SERIALIZED_LENGTH = Character.BYTES + Long.BYTES;

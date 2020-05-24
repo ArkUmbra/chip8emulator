@@ -22,7 +22,6 @@ TODO
 # Bugs / TODO
 - BUG   Glitchy sound output, seemingly after many consecutive calls
 - BUG   Occasionally, loading a save state results in incorrect screen output. I haven't been able to put time into finding the source of the issue, yet, but this is sometimes finding by re-loading the save state
-- TODO  Debug window
 - TODO  Game selector (currently hardcoded)
 - TODO  Colour changer
 

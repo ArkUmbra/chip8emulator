@@ -58,7 +58,7 @@ public class GdxInputProcessor extends InputAdapter {
 
   private void loadGameState() {
     byte[] saveState = saveStateFileManager.load();
-    saveStateHandler.loadFromSaveState(saveState);
+    saveStateHandler.loadFromSaveStateAndRun(saveState);
   }
 
   @Override

@@ -5,7 +5,7 @@ import com.arkumbra.chip8.state.SaveStateHandler;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-public class MachineImpl implements Machine, SaveStateHandler, Dumpable {
+public class MachineImpl implements Machine, SerializableData, Dumpable {
 
 //  private final RoutineRunner routineRunner;
   private final ScreenImpl screen;
@@ -123,8 +123,9 @@ public class MachineImpl implements Machine, SaveStateHandler, Dumpable {
     return sb.toString();
   }
 
+
   @Override
-  public byte[] createSaveState() {
+  public byte[] serialize() {
     byte[] screenData = screen.serialize();
     byte[] registerData = registers.serialize();
     byte[] memoryData = ram.serialize();
@@ -147,8 +148,7 @@ public class MachineImpl implements Machine, SaveStateHandler, Dumpable {
   }
 
   @Override
-  public void loadFromSaveState(byte[] state) {
-
+  public void deserialize(byte[] state) {
     int screenDataSize = ScreenImpl.SERIALIZED_LENGTH;
     int registerDataSize = DataRegistersImpl.SERIALIZED_LENGTH;
     int memoryDataSize = RamImpl.SERIALIZED_LENGTH;
@@ -177,5 +177,4 @@ public class MachineImpl implements Machine, SaveStateHandler, Dumpable {
     this.soundTimer.deserialize(soundData);
     this.programCounter.deserialize(programCounterData);
   }
-
 }

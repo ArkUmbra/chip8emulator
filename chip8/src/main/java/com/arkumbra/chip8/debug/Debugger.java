@@ -15,4 +15,9 @@ public interface Debugger {
   void freeze();
   void unfreeze();
 
+  void stepForward();
+  void stepBackward();
+
+  void setCycleListener(CycleListener cycleListener);
+
 }

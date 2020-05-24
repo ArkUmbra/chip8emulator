@@ -65,6 +65,8 @@ project(":desktop") {
 //        api "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
 //        api "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+
+        api("com.google.guava:guava:29.0-jre")
     }
 }
 
@@ -99,7 +101,6 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
 //        api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        compile "com.kotcrab.vis:vis-ui:$visuiVersion"
     }
 }
 
